@@ -12,16 +12,12 @@ import { View, Text } from 'react-native';
 
 import Activities from './components/Activities'
 import ActivityFilter from './components/ActivityFilter'
+import AppNavigator from "./AppNavigator";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Filter" component={ActivityFilter} />
-          <Stack.Screen name="Activities" component={Activities} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <AppNavigator/>
   );
 }

@@ -6,6 +6,8 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen1 from "./screens/screen1";
 import Screen2 from "./screens/screen2";
+import ActivityFilter from "./components/ActivityFilter";
+import Activities from "./components/Activities";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -14,7 +16,8 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator();
 function OneStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Screen1" component={Screen1} />
+            <Stack.Screen name="Filter" component={ActivityFilter} />
+            <Stack.Screen name="Activities" component={Activities} />
         </Stack.Navigator>
     );
 }
