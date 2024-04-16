@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Screen1 from "./screens/screen1";
+import Screen2 from "./screens/screen2";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 
@@ -11,7 +13,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
-function Home() {
+function OneStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Filter" component={ActivityFilter} />
@@ -20,21 +22,36 @@ function Home() {
     );
 }
 
-function Activity() {
+function TwoStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Filter" component={ActivityFilter} />
-            <Stack.Screen name="Activities" component={Activities} />
+            <Stack.Screen name="Screen2" component={Screen2} />
         </Stack.Navigator>
     );
 }
 
-function Account() {
+function BottomTabs() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Filter" component={ActivityFilter} />
-            <Stack.Screen name="Activities" component={Activities} />
-        </Stack.Navigator>
+        <Tab.Navigator>
+            <Tab.Screen
+                name="OneStack"
+                component={OneStack}
+                options={{
+                    tabBarLabel: "Screen 1",
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen name="TwoStack"
+                        component={TwoStack}
+                        options={{ tabBarLabel: "Screen 2",
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="bell" color={color} size={26} />
+                            ),
+                        }}
+            />
+        </Tab.Navigator>
     );
 }
 
@@ -42,9 +59,7 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <MaterialBottomTabs.Navigator>
-                <MaterialBottomTabs.Screen name="Hjem" component={Home} options={{tabBarIcon: "home-outline", color: "blue"}} />
-                <MaterialBottomTabs.Screen name="Legg til" component={Activity} options={{tabBarIcon: "plus"}} />
-                <MaterialBottomTabs.Screen name="Konto" component={Account} options={{tabBarIcon: "account-outline"}} />
+                <MaterialBottomTabs.Screen name="BottomTabs" component={BottomTabs} options={{ tabBarIcon: 'home-account', }} />
             </MaterialBottomTabs.Navigator>
         </NavigationContainer>
     );
