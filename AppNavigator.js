@@ -6,7 +6,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
-import Login from "./components/Login";
+import Login from "./Login";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
