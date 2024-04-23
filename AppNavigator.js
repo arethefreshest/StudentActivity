@@ -6,6 +6,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
+import Login from "./Login";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,7 @@ function Account() {
         <Stack.Navigator>
             <Stack.Screen name="Filter" component={ActivityFilter} />
             <Stack.Screen name="Activities" component={Activities} />
+            <Stack.Screen name="Login/Register" component={Login} />
         </Stack.Navigator>
     );
 }
@@ -45,6 +47,7 @@ export default function AppNavigator() {
                 <MaterialBottomTabs.Screen name="Hjem" component={Home} options={{tabBarIcon: "home-outline", color: "blue"}} />
                 <MaterialBottomTabs.Screen name="Legg til" component={Activity} options={{tabBarIcon: "plus"}} />
                 <MaterialBottomTabs.Screen name="Konto" component={Account} options={{tabBarIcon: "account-outline"}} />
+                <MaterialBottomTabs.Screen name="Logg inn" component={Login} options={{tabBarIcon: "account-outline"}} />
             </MaterialBottomTabs.Navigator>
         </NavigationContainer>
     );
