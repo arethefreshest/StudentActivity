@@ -4,7 +4,10 @@ import { getAuth } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
-require('dotenv').config();
+import { APIKEY, APPID, MESSAGING_SENDER_ID, MEASUREMENT_ID } from 'react-native-dotenv'
+
+
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,13 +15,13 @@ require('dotenv').config();
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: process.env.APIKEY,
+    apiKey: APIKEY,
     authDomain: "lifesaver-419c4.firebaseapp.com",
     projectId: "lifesaver-419c4",
     storageBucket: "lifesaver-419c4.appspot.com",
-    messagingSenderId: process.env.MESSENGERSENDERID,
-    appId: process.env.APPDATA,
-    measurementId: process.env.MEASURMENTID,
+    messagingSenderId: MESSAGING_SENDER_ID,
+    appId: APPID,
+    measurementId: MEASUREMENT_ID,
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

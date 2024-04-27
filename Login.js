@@ -64,11 +64,14 @@ function AuthScreen({ navigation }) {
 export default AuthScreen;
 */
 
-import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./FirebaseConfig";
+import React, { useState, useContext } from 'react';
+import { TextInput, Button, View, Text, StyleSheet } from 'react-native';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from './FirebaseConfig';
+import { AuthContext } from './AuthContext';
 
-function AuthScreen() {
+/* function AuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -119,4 +122,13 @@ function AuthScreen() {
     );
 }
 
-export default AuthScreen;
+export default AuthScreen; */
+
+function Login() {
+    const [isLogin, setIsLogin] = useState(true);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+
+}
