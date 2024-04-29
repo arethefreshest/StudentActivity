@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, initializeAuth } from "firebase/auth";
 import {auth} from "firebase/auth";
 import { app } from "./FirebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 function AuthScreen() {

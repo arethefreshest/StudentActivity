@@ -3,9 +3,8 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import * as auth from "firebase/auth/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {getReactNativePersistence, initializeAuth } from "firebase/auth/react-native";
+import { initializeAuth } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -34,10 +33,7 @@ export const firebaseApp = initializeApp({
     measurementId: "G-HNMLKWJ6YK"
 });
 
-
-export const auth = initializeAuth(firebaseApp, {
-    persistence: getReactNativePersistence(AsyncStorage),
-});
+export const auth = initializeAuth(firebaseApp);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
