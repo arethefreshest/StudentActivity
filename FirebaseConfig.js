@@ -3,7 +3,6 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeAuth } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -12,7 +11,8 @@ import { initializeAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCZEPuwt1QvvdyIQ_c09F068WBGbpP0Cg0",
+    //apiKey: "AIzaSyCZEPuwt1QvvdyIQ_c09F068WBGbpP0Cg0",
+    apiKey: "AIzaSyANF7_u7cQwdkxI6XFupp0PLYv2I607PSA",
     authDomain: "lifesaver-419c4.firebaseapp.com",
     projectId: "lifesaver-419c4",
     storageBucket: "lifesaver-419c4.appspot.com",
@@ -23,8 +23,8 @@ const firebaseConfig = {
 
 
 export const firebaseApp = initializeApp({
-    // enter your firebase project details
-    apiKey: "AIzaSyCZEPuwt1QvvdyIQ_c09F068WBGbpP0Cg0",
+    //apiKey: "AIzaSyCZEPuwt1QvvdyIQ_c09F068WBGbpP0Cg0",
+    apiKey: "AIzaSyANF7_u7cQwdkxI6XFupp0PLYv2I607PSA",
     authDomain: "lifesaver-419c4.firebaseapp.com",
     projectId: "lifesaver-419c4",
     storageBucket: "lifesaver-419c4.appspot.com",
@@ -33,13 +33,14 @@ export const firebaseApp = initializeApp({
     measurementId: "G-HNMLKWJ6YK"
 });
 
-export const auth = initializeAuth(firebaseApp);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
 const db = getFirestore(app);
+
+const auth = initializeAuth(app);
 
 // Initialize Analytics
 isSupported().then((supported) => {
@@ -50,4 +51,4 @@ isSupported().then((supported) => {
     }
 });
 
-export { app, db };
+export { app, db, auth};
