@@ -4,8 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AuthContext } from "./AuthContext";
-
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
@@ -20,13 +18,9 @@ const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
 function ProfilNavigator() {
-    const { user } = React.useContext(AuthContext);
-
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {user ? (
-                <Stack.Screen name="Profil" component={Profil} />
-            ) : (
+            {(
                 <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
             )}
         </Stack.Navigator>
