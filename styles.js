@@ -1,6 +1,7 @@
 import {Dimensions, StatusBar, StyleSheet} from 'react-native';
 
 
+
 const { width, height } = Dimensions.get('window'); // Get device dimensions
 export const styles = StyleSheet.create({
     container: {
@@ -71,14 +72,15 @@ export const styles = StyleSheet.create({
     },
     inputGroup: {
         position: 'absolute',
-        width: 236,
+        width: 238,
+        right: 332,
         height: 50.7,
         borderRadius: 10,
         backgroundColor: '#FFECE7',
     },
     inputLabel: {
-        fontFamily: 'Roboto-Flex',
-        fontWeight: '500',
+        fontFamily: 'Roboto-Medium',
+        //fontWeight: '500',
         fontSize: 16,
         //lineHeight: 14,
         color: '#FFECE7',
@@ -89,7 +91,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     inputOuter: {
-        width: 236,
+        width: 238,
         height: 50.7,
         borderRadius: 10,
         backgroundColor: '#FFECE7',
@@ -121,9 +123,9 @@ export const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        fontFamily: 'Roboto-Flex',
+        fontFamily: 'Roboto-Italic',
         fontSize: 16,
-        fontStyle: 'italic',
+        //fontStyle: 'italic',
         textAlign: 'right',
         color: '#000000',
         opacity: 0.5,
@@ -131,8 +133,8 @@ export const styles = StyleSheet.create({
     forgotPassword: {
         color: '#FFECE7',
         fontSize: 15,
-        fontFamily: 'Roboto-Flex',
-        fontWeight: '600',
+        fontFamily: 'Roboto-Medium',
+        //fontWeight: '600',
         position: 'absolute'
     },
     forgotPasswordText: {
@@ -150,36 +152,56 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4},
         shadowOpacity: 0.25,
         shadowRadius: 4,
+        position: 'absolute',
+        width: 177,
     },
     loginButtonText: {
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
+        //fontWeight: '700',
         color: '#FFECE7',
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 4},
+        shadowOpacity: 0.5,
+        shadowRadius: 20,
     },
     thirdPartyLogin: {
         marginTop: 20,
     },
-    thirdPartyText: {
+    thirdPartyRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        //justifyContent: 'space-evenly',
+        padding: 10,
+        position: 'absolute',
+        //left: 96,
+        top: 475,
+        width: 236,
+        height: 48,
+    },
+    italicText: {
         fontSize: 18,
         fontFamily: 'Roboto-Italic',
         color: '#FFECE7',
-    },
-    thirdPartyIcons: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 4},
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        position: 'absolute',
     },
     thirdPartyIcon: {
         width: 48,
         height: 48,
-        borderRadius: 10,
+        position: 'absolute',
+        //borderRadius: 10,
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.5,
         shadowRadius: 10,
     },
     newHereText: {
-        marginTop: 30,
+        width: 59,
+        height: 14,
         fontSize: 18,
         fontFamily: 'Roboto-Italic',
         color: '#FFECE7',

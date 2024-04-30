@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles";
 import { auth } from "../FirebaseConfig";
 import GradientScreen from "../components/GradientScreen";
 import InputField from "../components/InputField";
+import Button from "../components/Button";
+import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
 
@@ -30,8 +31,8 @@ const ProfilLoggInn = () => {
     return (
             <View style={{flex: 1}}>
                 <GradientScreen>
-                    <Text style={[styles.inputLabel, { left: 96, top: 172, fontFamily: 'Roboto-Flex' }]}>Brukernavn/e-post</Text>
-                    <View style={[styles.inputGroup, { left: 96, top: 193.3, fontFamily: 'Roboto-Flex' }]}>
+                    <Text style={[styles.inputLabel, { left: 96, top: 172 }]}>Brukernavn/e-post</Text>
+                    <View style={[styles.inputGroup, { left: 96, top: 193.3 }]}>
                         <InputField
                             icon={Brukerikon}
                             placeholder={"olanordman1"}
@@ -50,6 +51,24 @@ const ProfilLoggInn = () => {
                     <TouchableOpacity>
                         <Text style={[styles.forgotPassword, { left: 226, top: 315 }]}>Glemt Passord?</Text>
                     </TouchableOpacity>
+                    <Button
+                        text="Logg inn"
+                        onPress={handleLogin}
+                        style={{ left: 126, top: 368}}
+                    />
+                    <Text style={[styles.italicText, { left: 127, top: 443 }]}>Eller logg deg inn med</Text>
+                    <ThirdPartyIconRow
+                        onPressGoogle={() => console.log('Google Login')}
+                        onPressApple={() => console.log('Apple Login')}
+                        onPressOutlook={() => console.log('Outlook Login')}
+                        onPressFacebook={() => console.log('Facebook Login')}
+                    />
+                    <Text style={[styles.italicText, { left: 184, top: 564 }]}>Ny her?</Text>
+                    <Button
+                        text="Registrer deg"
+                        onPress={() => navigation.navigate('ProfilRegistrering')}
+                        style={{ left: 126, top: 604 }}
+                    />
                 </GradientScreen>
         </View>
     );
