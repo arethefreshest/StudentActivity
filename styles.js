@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         fontFamily: 'Roboto-Flex',
         fontSize: 16,
-        //fontStyle: 'italic',
+        fontStyle: 'italic',
         textAlign: 'right',
         color: '#000000',
         opacity: 0.5,
