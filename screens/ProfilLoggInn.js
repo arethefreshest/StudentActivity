@@ -5,10 +5,14 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles";
 import { auth } from "../FirebaseConfig";
+import GradientScreen from "../components/GradientScreen";
+import InputField from "../components/InputField";
+import Brukerikon from "../assets/Brukerikon";
+import Passordikon from "../assets/Passordikon";
 
 const ProfilLoggInn = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = (useState(''));
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigation = useNavigation();
 
@@ -24,72 +28,30 @@ const ProfilLoggInn = () => {
     };
 
     return (
-        <LinearGradient
-            colors={['#61A0AF', '#00796B']} // Top to bottom gradient for background
-            style={styles.gradientBackground}
-            >
-            <TouchableOpacity style={styles.burgerMenu}>
-                <Image source={require('../assets/burgermeny.svg')} style={styles.burgerIcon} />
-            </TouchableOpacity>
-
-            <Image source={require('../assets/studaklogo.svg')} style={styles.logo} />
-
-            <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Brukernavn/e-post</Text>
-                <View style={styles.inputOuter}>
-                    <TextInput
-                        style={styles.inputInner}
-                        placeholder={"olanordman1"}
-                        onChangeText={(text) => setEmail(text)}
-                    />
-                    <Image source={require('../assets/brukerikon.svg')} style={styles.inputIcon} />
-                </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Passord</Text>
-                <View style={styles.inputOuter}>
-                    <TextInput
-                        style={styles.inputInner}
-                        placeholder={"********"}
-                        secureTextEntry
-                        onChangeText={(text) => setPassword(text)}
-                    />
-                    <Image source={require('../assets/keyicon.svg')} style={styles.inputIcon} />
-                </View>
-            </View>
-
-            <TouchableOpacity style={styles.forgotPassword} onPress={() => { /* Forgot password logic */ }}>
-                <Text style={styles.forgotPasswordText}>Glemt passord?</Text>
-            </TouchableOpacity>
-
-            <View style={styles.thirdPartyLogin}>
-                <Text style={styles.thirdPartyText}>Eller logg deg inn med</Text>
-                <View style={styles.thirdPartyIcons}>
+            <View style={{flex: 1}}>
+                <GradientScreen>
+                    <Text style={[styles.inputLabel, { left: 96, top: 172, fontFamily: 'Roboto-Flex' }]}>Brukernavn/e-post</Text>
+                    <View style={[styles.inputGroup, { left: 96, top: 193.3, fontFamily: 'Roboto-Flex' }]}>
+                        <InputField
+                            icon={Brukerikon}
+                            placeholder={"olanordman1"}
+                            onChangeText={setEmail}
+                        />
+                    </View>
+                    <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>Passord</Text>
+                    <View style={[styles.inputGroup, { left: 96, top: 273.3 }]}>
+                        <InputField
+                            icon={Passordikon}
+                            placeholder={"*********"}
+                            secureTextEntry
+                            onChangeText={setPassword}
+                        />
+                    </View>
                     <TouchableOpacity>
-                        <Image source={require('../assets/googlelogo.svg')} style={styles.thirdPartyIcon} />
+                        <Text style={[styles.forgotPassword, { left: 226, top: 315 }]}>Glemt Passord?</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/applelogo.svg')} style={styles.thirdPartyIcon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/outlooklogo.svg')} style={styles.thirdPartyIcon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/facebooklogo.svg')} style={styles.thirdPartyIcon} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <Text style={styles.newHereText}>Ny her?</Text>
-
-            <TouchableOpacity
-                style={styles.registerButton}
-                onPress={() => navigation.navigate('screen1')}
-            >
-               <Text style={styles.registerButtonText}>Registrer deg</Text>
-            </TouchableOpacity>
-        </LinearGradient>
+                </GradientScreen>
+        </View>
     );
 };
 

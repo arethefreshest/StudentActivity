@@ -4,13 +4,15 @@ import { getAuth } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
-import { APIKEY, APPID, MESSAGING_SENDER_ID, MEASUREMENT_ID } from 'react-native-dotenv'
+import Constants  from "expo-constants";
 
 
 
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+
+const { APIKEY, APPID, MESSAGING_SENDER_ID, MEASUREMENT_ID } = Constants.expoConfig.extra;
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

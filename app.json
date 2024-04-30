@@ -4,27 +4,41 @@
     "slug": "StudentActivity",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/applogo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "extra": {
+      "APIKEY": "AIzaSyCZEPuwt1QvvdyIQ_c09F068WBGbpP0Cg0",
+      "APPID": "1:111694861959:web:69695be7db75cfd27a8a22",
+      "MESSAGING_SENDER_ID": "111694861959",
+      "MEASUREMENT_ID": "G-HNMLKWJ6YK"
+    },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*", "assets/fonts/*"
     ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/applogo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/RobotoFlex.ttf"]
+        }
+      ]
+    ]
   }
 }

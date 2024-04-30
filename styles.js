@@ -1,10 +1,15 @@
-import { StyleSheet } from 'react-native';
+import {Dimensions, StatusBar, StyleSheet} from 'react-native';
 
+
+const { width, height } = Dimensions.get('window'); // Get device dimensions
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    baseText: {
+        fontFamily: 'Roboto-Flex',
     },
     text: {
         textAlign: 'center',
@@ -28,9 +33,19 @@ export const styles = StyleSheet.create({
     },
     gradientBackground: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30,
+        //justifyContent: 'center',
+        //alignItems: 'center',
+        borderTopWidth: 0, // Ensure no borders
+        borderWidth: 0,
+        borderColor: 'transparent',
+        shadowOffset: { height: 0, width: 0 }, // No shadow offset
+        shadowOpacity: 0, // No shadow opacity
+        shadowColor: 'transparent', // No shadow color
+    },
+    contentContainer: {
+        flex: 1,
+        paddingTop: 24,
+        position: 'relative',
     },
     burgerMenu: {
         position: 'absolute',
@@ -42,40 +57,83 @@ export const styles = StyleSheet.create({
         height: 36,
         tintColor: '#FFECE7',
     },
-    logo: {
+    logoContainer: {
         position: 'absolute',
         left: 92,
         top: 38,
+    },
+    logo: {
+        position: 'absolute',
+        top: 38,
+        left: (width - 248) / 2,
         width: 248,
         height: 98,
     },
     inputGroup: {
-        marginTop: 30,
+        position: 'absolute',
+        width: 236,
+        height: 50.7,
+        borderRadius: 10,
+        backgroundColor: '#FFECE7',
     },
     inputLabel: {
+        fontFamily: 'Roboto-Flex',
+        fontWeight: '500',
         fontSize: 16,
-        color: '#FFECE7'
+        //lineHeight: 14,
+        color: '#FFECE7',
+        position: 'absolute',
+        // width: 140,
+        //height: 14,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     inputOuter: {
-        backgroundColor: '#FFECE7',
+        width: 236,
+        height: 50.7,
         borderRadius: 10,
-        padding: 8,
+        backgroundColor: '#FFECE7',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     inputInner: {
+        width: 230,
+        height: 42.59,
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        padding: 10,
         flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 28,
+        height: '100%',
+        padding: 0
     },
     inputIcon: {
         width: 28,
         height: 28,
         tintColor: '#000000',
+        marginLeft: 0,
+        marginRight: 10,
+    },
+    textInput: {
+        flex: 1,
+        fontFamily: 'Roboto-Flex',
+        fontSize: 16,
+        //fontStyle: 'italic',
+        textAlign: 'right',
+        color: '#000000',
+        opacity: 0.5,
     },
     forgotPassword: {
-        alignSelf: 'flex-end',
-        paddingRight: 20,
-        marginTop: 10
+        color: '#FFECE7',
+        fontSize: 15,
+        fontFamily: 'Roboto-Flex',
+        fontWeight: '600',
+        position: 'absolute'
     },
     forgotPasswordText: {
         fontSize: 15,
