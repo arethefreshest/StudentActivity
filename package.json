@@ -47,7 +47,7 @@
     "expo-modules-core": "~1.11.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.4",
+    "@babel/core": "^7.20.0",
     "dotenv-webpack": "^8.1.0",
     "metro-react-native-babel-preset": "^0.77.0"
   },
