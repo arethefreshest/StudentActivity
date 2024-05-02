@@ -88,7 +88,7 @@ function CustomTabNavigator() {
                 name="Profil"
                 component={ProfilNavigator}
                 options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account-outline" color={color} size={size} />,
-                    unmountOnBlur: true,}}
+                unmountOnBlur: true,}}
             />
         </MaterialBottomTabs.Navigator>
     );
@@ -108,17 +108,17 @@ function CustomTabNavigator() {
 
 export default function AppNavigator() {
     return (
-        <NavigationContainer
-            screenOptions={{
-                headerShown: false,
-                headerStyle: {
-                    borderBottomWidth: 0,
-                    shadowColor: 'transparent',
-                    elevation: 0,
-                },
-            }}
-        >
-            <CustomTabNavigator />
-        </NavigationContainer>
+                <NavigationContainer
+                    screenOptions={{
+                            headerShown: false,
+                        headerStyle: {
+                            borderBottomWidth: 0,
+                            shadowColor: 'transparent',
+                            elevation: 0,
+                        },
+                        }}
+                >
+                    <CustomTabNavigator />
+                </NavigationContainer>
     );
 }
