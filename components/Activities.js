@@ -11,7 +11,7 @@ function Activities({ route }) {
 
     const numericPeople = Number(people);  // Move numericPeople to a broader scope
 
-    useEffect(() => {
+    useEffect(async () => {
         const locQuery = location ? location.toLowerCase() : null;
         const q = query(
             collection(db, "Activities"),
@@ -30,7 +30,7 @@ function Activities({ route }) {
                 const data = doc.data();
                 const totalPrice = data.Price * numericPeople;
                 if (totalPrice <= price) {
-                    filteredActivities.push({ id: doc.id, ...data, totalPrice });
+                    filteredActivities.push({id: doc.id, ...data, totalPrice});
                 }
             });
             setActivities(filteredActivities);
@@ -39,7 +39,7 @@ function Activities({ route }) {
         } finally {
             setLoading(false);
         }
-    }, [people, price, location, numericPeople]);  // Add numericPeople as a dependency
+    }, [people, price, location, numericPeople]);
 
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
