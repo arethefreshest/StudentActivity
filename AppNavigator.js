@@ -8,7 +8,7 @@ import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
-import ProfilRegistering from "./screens/ProfilRegistrering";
+import ProfilRegistrering from "./screens/ProfilRegistrering";
 import GradientScreen from "./components/GradientScreen";
 
 // import Login from "./Login";
@@ -19,10 +19,9 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
 function ProfilNavigator() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {(
-                <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
-            )}
+        <Stack.Navigator screenOptions={{ headerShown: false }} >
+            <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
+            <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
         </Stack.Navigator>
     );
 }
@@ -78,7 +77,7 @@ function CustomTabNavigator() {
             <MaterialBottomTabs.Screen
                 name="Home"
                 component={Home}
-                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="home-outline" color={color} size={size} tabBar /> }}
+                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="home-outline" color={color} size={size} /> }}
             />
             <MaterialBottomTabs.Screen
                 name="Activity"
@@ -88,7 +87,8 @@ function CustomTabNavigator() {
             <MaterialBottomTabs.Screen
                 name="Profil"
                 component={ProfilNavigator}
-                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account-outline" color={color} size={size} /> }}
+                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account-outline" color={color} size={size} />,
+                unmountOnBlur: true,}}
             />
         </MaterialBottomTabs.Navigator>
     );

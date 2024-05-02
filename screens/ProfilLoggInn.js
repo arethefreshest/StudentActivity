@@ -10,12 +10,14 @@ import Button from "../components/Button";
 import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
+import ProfilRegistrering from "./ProfilRegistrering";
 
 const ProfilLoggInn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigation = useNavigation();
+    console.log(navigation);
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -66,7 +68,11 @@ const ProfilLoggInn = () => {
                     <Text style={[styles.italicText, { left: 184, top: 564 }]}>Ny her?</Text>
                     <Button
                         text="Registrer deg"
-                        onPress={() => navigation.navigate('ProfilRegistrering')}
+                        onPress={() => {
+                            console.log('Current Navigation State:', navigation.getState());
+                            const action = navigation.navigate('Profil', { screen: 'ProfilRegistering' });
+                            console.log('Navigation action response:', action);
+                        }}
                         style={{ left: 126, top: 604 }}
                     />
                 </GradientScreen>
