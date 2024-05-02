@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, initializeAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from "./FirebaseConfig";
 import { app } from "./FirebaseConfig";
 

@@ -10,6 +10,9 @@ import Button from "../components/Button";
 import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
+import AuthScreen from "../Login";
+import ProfilRegistrering from "./screens/ProfilRegistrering";
+
 
 const ProfilLoggInn = () => {
     const [email, setEmail] = useState('');

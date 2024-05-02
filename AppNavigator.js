@@ -20,9 +20,10 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator();
 function ProfilNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {(
+            (
                 <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
-            )}
+                <Stack.Screen name ="ProfilRegistrering" component={ProfilRegistrering} />
+            )
         </Stack.Navigator>
     );
 }
@@ -111,7 +112,7 @@ export default function AppNavigator() {
                 <NavigationContainer
                     screenOptions={{
                             headerShown: false,
-                        headerStyle: {
+                            headerStyle: {
                             borderBottomWidth: 0,
                             shadowColor: 'transparent',
                             elevation: 0,
