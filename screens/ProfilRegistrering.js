@@ -10,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import InputField from "../components/InputField";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
-import ProfilLoggInn from "./screens/ProfilLoggInn";
 
 const handleSignUp = () => {
     if (password !== confirmPassword) {

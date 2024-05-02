@@ -11,7 +11,6 @@ import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
 import AuthScreen from "../Login";
-import ProfilRegistrering from "./screens/ProfilRegistrering";
 
 
 const ProfilLoggInn = () => {
@@ -69,8 +68,8 @@ const ProfilLoggInn = () => {
                     <Text style={[styles.italicText, { left: 184, top: 564 }]}>Ny her?</Text>
                     <Button
                         text="Registrer deg"
-                        onPress={() => navigation.navigate('ProfilRegistrering')}
-                        style={{ left: 126, top: 604 }}
+                        onPress={() => navigation.navigate("Profil", {screen: 'ProfilRegistrering'})}
+                    style={{ left: 126, top: 604 }}
                     />
                 </GradientScreen>
         </View>
