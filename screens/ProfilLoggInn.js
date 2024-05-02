@@ -68,9 +68,12 @@ const ProfilLoggInn = () => {
                     <Text style={[styles.italicText, { left: 184, top: 564 }]}>Ny her?</Text>
                     <Button
                         text="Registrer deg"
-                        onPress={() => navigation.navigate("Profil", {screen: 'ProfilRegistrering'})}
-                    style={{ left: 126, top: 604 }}
-                    />
+                        onPress={() => {
+                            console.log('Current Navigation State:', navigation.getState());
+                            const action = navigation.navigate('Profil', { screen: 'ProfilRegistering' });
+                            console.log('Navigation action response:', action);
+                        }}>
+                    </Button>
                 </GradientScreen>
         </View>
     );
