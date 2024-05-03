@@ -1,7 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import HjemIkon from "./assets/HjemIkon";
+import LeggTilIkon from "./assets/LeggTilIkon";
+import ProfilIkon from "./assets/ProfilIkon";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
@@ -48,43 +50,64 @@ function AppNavigator({ isAuthenticated }) {
     return (
         <MaterialBottomTabs.Navigator
             barStyle={{
-                backgroundColor: 'transparent', // Allows gradient to show through
-                borderTopWidth: 0, // Removes top border
-                borderColor: 'transparent', // Ensures there's no border
+                backgroundColor: 'transparent',
+                borderTopWidth: 0,
+                borderColor: 'transparent',
                 position: 'absolute',
                 bottom: 0,
-                elevation: 0, // Eliminates shadow effect
-                shadowOffset: { height: 0, width: 0 }, // Removes any shadow offset
-                shadowOpacity: 0, // Removes shadow opacity
+                elevation: 0,
+                shadowOffset: { height: 0, width: 0 },
+                shadowOpacity: 0,
+                height: 104,
             }}
-            screenOptions={{
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused }) => {
+                    let iconName;
+                    let iconColor = focused ? "#FFECE7" : "#9DB3B3";
+                    switch (route.name) {
+                        case "Home":
+                            iconName = <HjemIkon fill={iconColor} />;
+                            break;
+                        case "Activity":
+                            iconName = <LeggTilIkon fill={iconColor} />;
+                            break;
+                        case "Profil":
+                            iconName = <ProfilIkon fill={iconColor} stroke={iconColor} strokeWidth={focused ? 2.33333 : 0} />;
+                            break;
+                    }
+                    return iconName;
+                },
+                tabBarLabelStyle: { color: '#9DB3B3' },
+                tabBarActiveTintColor: '#FFECE7',
+                tabBarInactiveTintColor: '#9DB3B3',
                 tabBarStyle: {
                     borderTopWidth: 0,
                     shadowColor: 'transparent',
                     elevation: 0,
+                    backgroundColor: 'transparent'
                 },
                 headerStyle: {
                     borderBottomWidth: 0,
                     shadowColor: 'transparent',
                     elevation: 0,
                 }
-            }}
+            })}
         >
             <MaterialBottomTabs.Screen
                 name="Home"
                 component={Home}
-                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="home-outline" color={color} size={size} /> }}
+                options={{ tabBarLabel: 'Hjem' }}
             />
             <MaterialBottomTabs.Screen
                 name="Activity"
                 component={Activity}
-                options={{ tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="plus" color={color} size={size} /> }}
+                options={{ tabBarLabel: 'Legg til' }}
             />
             <MaterialBottomTabs.Screen
                 name="Profil"
                 component={ProfilNavigator}
                 options={{
-                    tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="account-outline" color={color} size={size} />,
+                    tabBarLabel: 'Profil',
                     unmountOnBlur: true
                 }}
             />
