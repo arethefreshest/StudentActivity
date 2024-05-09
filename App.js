@@ -1,17 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import React from 'react';
-import AppNavigator from "./AppNavigator";
-import GoogleMaps from "./components/GoogleMaps";
-
-export default function App() {
-  return <GoogleMaps />
-}
-=======
 import React, { useEffect } from 'react';
-=======
 import React, { useEffect, useState } from 'react';
->>>>>>> dev-main
 import AppNavigator from "./AppNavigator";
 import GradientScreen from "./components/GradientScreen";
 import FontLoader from "./FontLoader";
@@ -40,4 +28,3 @@ export default function App() {
         </FontLoader>
   );
 }
->>>>>>> dev-main
