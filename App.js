@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import React, { useEffect, useState } from 'react';
 import AppNavigator from "./AppNavigator";
 import GradientScreen from "./components/GradientScreen";
