@@ -4,7 +4,6 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import {auth} from "./FirebaseConfig";
 import { app } from "./FirebaseConfig";
 
-
 function AuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -57,7 +56,7 @@ function AuthScreen() {
             <Button title="Login" onPress={handleSignIn} />
             {error && <Text style={{ color: 'red' }}>{error}</Text>}
         </View>
-    );
+);
 }
 
 export default AuthScreen;
