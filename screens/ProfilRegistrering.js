@@ -1,35 +1,51 @@
-import React, {Fragment, useState} from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import AuthScreen from "../Login";
-import GradientScreen from "../components/GradientScreen";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {auth} from "../FirebaseConfig";
-import Button from "../components/Button";
-import { styles } from "../styles";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "../styles";
+import { auth, db } from "../FirebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+import GradientScreen from "../components/GradientScreen";
 import InputField from "../components/InputField";
+import Button from "../components/Button";
+import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
-import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import EpostIkon from "../assets/EpostIkon";
-
-const handleSignUp = () => {
-    if (password !== confirmPassword) {
-        setError('Passwords do not match.');
-        return;
-    }
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // User created and signed in
-            console.log("User created and signed in:", userCredential.user);
-        })
-        .catch((error) => {
-            setError(`Sign up failed: ${error.message} (Error Code: ${error.code})`);
-            console.error("Full error details:", error);
-        });
-};
 const ProfilRegistrering = () => {
     console.log("ProfilRegistrering is rendering");
+    const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSignUp = async () => {
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Passord stemmer ikke overens!");
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("User created and signed in: ", userCredential.user);
+
+            await setDoc(doc(db, "users", userCredential.user.uid), {
+                fullName,
+                userName,
+                email
+            });
+            Alert.alert("Success", "User registered successfully!");
+            console.log('Current Navigation State:', navigation.getState());
+            const action = navigation.navigate('ProfilHome');
+            console.log('Navigation action response:', action);
+        } catch (error) {
+            setError(error.message);
+            Alert.alert("Registration failed", error.message);
+        }
+    };
     return (
         <View style={{flex: 1}}>
             <GradientScreen>
@@ -38,6 +54,8 @@ const ProfilRegistrering = () => {
                     <InputField
                         icon={Brukerikon}
                         placeholder={"Ola Nordmann"}
+                        onChangeText={setFullName}
+                        value={fullName}
                     />
                 </View>
                 <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>Velg ditt brukernavn</Text>
@@ -45,6 +63,8 @@ const ProfilRegistrering = () => {
                     <InputField
                         icon={Brukerikon}
                         placeholder={"olanordmann31"}
+                        onChangeText={setUserName}
+                        value={userName}
                     />
                 </View>
                 <Text style={[styles.inputLabel, { left: 96, top: 332 }]}>E-post</Text>
@@ -52,6 +72,9 @@ const ProfilRegistrering = () => {
                     <InputField
                         icon={EpostIkon}
                         placeholder={"ola@nordmann.no"}
+                        onChangeText={setEmail}
+                        value={email}
+                        keyboardType={"email-address"}
                         // I disse fieldsene kan vi også bruke onChangeText for å hente prop til å håndtere info
                     />
                 </View>
@@ -60,6 +83,9 @@ const ProfilRegistrering = () => {
                     <InputField
                         icon={Passordikon}
                         placeholder={"*********"}
+                        onChangeText={setPassword}
+                        value={password}
+                        secureTextEntry
                     />
                 </View>
                 <Text style={[styles.inputLabel, { left: 96, top: 492 }]}>Bekreft passord</Text>
@@ -67,11 +93,14 @@ const ProfilRegistrering = () => {
                     <InputField
                         icon={Passordikon}
                         placeholder={"*********"}
+                        onChangeText={setConfirmPassword}
+                        value={confirmPassword}
+                        secureTextEntry
                     />
                 </View>
                 <Button
                     text="Lag min bruker"
-                    //onPress={registrer bruker logikk}
+                    onPress={handleSignUp}
                     style={{ left: 126, top: 592}}
                 />
                 <Text style={[styles.italicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
@@ -82,54 +111,10 @@ const ProfilRegistrering = () => {
                     onPressFacebook={() => console.log('Facebook Login')}
                     style={{top: 689}}
                 />
+                <Button text="Already have an account? Log In" onPress={() => navigation.navigate('ProfilLoggInn')} />
             </GradientScreen>
         </View>
     );
 };
 
 export default ProfilRegistrering;
-
-/*
-const ProfilRegistrering = () => {
-return (
-    <view style={{flex: 1}}>
-    <GradientScreen>
-        <Text style={[styles.inputLabel, { left: 96, top: 172 }]}>e-post</Text>
-        <View style={[styles.inputGroup, { left: 96, top: 193.3 }]}>
-            <InputField
-                icon={Brukerikon}
-                placeholder={"olanordman1"}
-                onChangeText={setEmail}
-            />
-        </View>
-        <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>Passord</Text>
-        <View style={[styles.inputGroup, { left: 96, top: 273.3 }]}>
-            <InputField
-                icon={Passordikon}
-                placeholder={"*********"}
-                secureTextEntry
-                onChangeText={setPassword}
-            />
-        </View>
-        <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>Gjenta passord</Text>
-        <View style={[styles.inputGroup, { left: 96, top: 273.3 }]}>
-            <InputField
-                icon={Passordikon}
-                placeholder={"*********"}
-                secureTextEntry
-                onChangeText={setConfirmPassword}
-            />
-        </View>
-        <Button
-            text="Registrer"
-            onPress={handleSignUp}
-            style={{ left: 126, top: 368}}
-        />
-        {error && <Text style={{ color: 'red' }}>{error}</Text>}
-    </GradientScreen>
-    </view>
-);};
-
-    export default ProfilRegistrering;
-
-     */
