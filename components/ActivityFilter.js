@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 30,
-        backgroundColor: '#008080', // Change to your app's theme color
+        backgroundColor: '#008080',
         padding: 10,
         borderRadius: 15,
-        borderWidth: 2, // Add border width
-        borderColor: '#FFF', // Add border color
+        borderWidth: 2,
+        borderColor: '#FFF',
         alignItems: 'center',
         height: 60,
     },
