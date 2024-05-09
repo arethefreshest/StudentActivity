@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import {View, Text, TextInput, TouchableOpacity, Image, Alert} from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../styles";
@@ -23,7 +23,10 @@ const ProfilLoggInn = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 console.log("User signed in: ", userCredential.user);
-                // Perform actions after successful login
+                Alert.alert("Success", "User logged in successfully!");
+                console.log('Current Navigation State:', navigation.getState());
+                const action = navigation.navigate('Profil', { screen: 'Profil' });
+                console.log('Navigation action response:', action);
             })
             .catch((error) => {
                 setError(`Login failed: ${error.message}`);
