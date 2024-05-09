@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*", "assets/fonts/*"
+      "**/*",
+      "assets/fonts/*"
     ],
     "ios": {
       "supportsTablet": true
@@ -30,9 +31,12 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/RobotoFlex.ttf"]
+          "fonts": [
+            "./assets/fonts/RobotoFlex.ttf"
+          ]
         }
-      ]
+      ],
+      "expo-asset"
     ]
   }
 }
