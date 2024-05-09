@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Picker } from '@react-native-picker/picker';
 import GradientScreen from "./GradientScreen";
@@ -7,7 +7,7 @@ import GradientScreen from "./GradientScreen";
 function ActivityFilter({ navigation }) {
     const [people, setPeople] = useState(5);
     const [price, setPrice] = useState(500);
-    const [location, setLocation] = useState('grm');
+    const [location, setLocation] = useState('krs');
 
     const handlePeopleChange = (value) => {
         setPeople(value);
@@ -16,7 +16,7 @@ function ActivityFilter({ navigation }) {
         setPrice(value);
     };
     const handleTypeChange = (itemValue, itemIndex) => {
-        setLocation(itemValue);
+        setLocation(itemValue.toLowerCase());
     };
     const applyFilters = () => {
         console.log("Applying filters with:", { people, price, location });
@@ -25,7 +25,7 @@ function ActivityFilter({ navigation }) {
 
     return (
         <GradientScreen>
-            <View style={{ width: 200 }}>
+            <View style={{ width: 200, left: 114, top: 156 }}>
                 <View style={{ width: 200, padding: 10 }}>
                     <Text>Antall personer</Text>
                     <Slider minimumValue={0} maximumValue={10} step={1} value={people} onValueChange={handlePeopleChange}/>
