@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
     container: {
         width: '80%',
         marginLeft: '10%',
-        marginTop: '25%',
+        marginTop: '35%',
         padding: 20,
-        backgroundColor: 'rgba(255,255,255,0.34)',
+        backgroundColor: 'rgba(255,255,255,0.44)',
         borderRadius: 20,
-        shadowColor: '#000',
+        shadowColor: 'rgba(0,0,0,0)',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     },
     pickerItem: {
         alignItems: "center",
-        height: 80, // Smaller item height
+        height: 80,
     },
     label: {
         fontSize: 19,
