@@ -1,7 +1,5 @@
 import {Dimensions, StatusBar, StyleSheet} from 'react-native';
 
-
-
 const { width, height } = Dimensions.get('window'); // Get device dimensions
 export const styles = StyleSheet.create({
     container: {
@@ -38,15 +36,16 @@ export const styles = StyleSheet.create({
         //alignItems: 'center',
         borderTopWidth: 0, // Ensure no borders
         borderWidth: 0,
-        borderColor: 'transparent',
+        borderColor: 'none',
         shadowOffset: { height: 0, width: 0 }, // No shadow offset
         shadowOpacity: 0, // No shadow opacity
-        shadowColor: 'transparent', // No shadow color
+        shadowColor: 'none', // No shadow color
+        shadow: 'none',
     },
     contentContainer: {
         flex: 1,
         paddingTop: 24,
-        position: 'relative',
+        position: 'static',
     },
     burgerMenu: {
         position: 'absolute',
@@ -72,21 +71,16 @@ export const styles = StyleSheet.create({
     },
     inputGroup: {
         position: 'absolute',
-        width: 238,
-        right: 332,
-        height: 50.7,
         borderRadius: 10,
         backgroundColor: '#FFECE7',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     inputLabel: {
         fontFamily: 'Roboto-Medium',
-        //fontWeight: '500',
         fontSize: 16,
-        //lineHeight: 14,
         color: '#FFECE7',
         position: 'absolute',
-        // width: 140,
-        //height: 14,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -171,10 +165,8 @@ export const styles = StyleSheet.create({
     thirdPartyRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        //justifyContent: 'space-evenly',
         padding: 10,
         position: 'absolute',
-        //left: 96,
         top: 475,
         width: 236,
         height: 48,
