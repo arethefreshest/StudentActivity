@@ -3,13 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import HjemIkon from "./assets/HjemIkon";
 import LeggTilIkon from "./assets/LeggTilIkon";
-import Add from "./screens/Add";
 import ProfilIkon from "./assets/ProfilIkon";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
+import Add from "./screens/Add";
 
 
 const Stack = createStackNavigator();
