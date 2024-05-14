@@ -4,11 +4,13 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import HjemIkon from "./assets/HjemIkon";
 import LeggTilIkon from "./assets/LeggTilIkon";
 import ProfilIkon from "./assets/ProfilIkon";
+import CalendarIcon from "./assets/CalendarIcon";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
+import Calender from "./screens/Calender";
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -74,6 +76,8 @@ function AppNavigator({ isAuthenticated }) {
                         case "Profil":
                             iconName = <ProfilIkon fill={iconColor} stroke={iconColor} strokeWidth={focused ? 2.33333 : 0} />;
                             break;
+                        case "calendar":
+                            iconName = <CalendarIcon fill={iconColor} />;
                     }
                     return iconName;
                 },
@@ -110,6 +114,11 @@ function AppNavigator({ isAuthenticated }) {
                     tabBarLabel: 'Profil',
                     unmountOnBlur: true
                 }}
+            />
+            <MaterialBottomTabs.Screen
+                name="calendar"
+                component={Calender}
+                options={{ tabBarLabel: 'Kalender' }}
             />
         </MaterialBottomTabs.Navigator>
     );

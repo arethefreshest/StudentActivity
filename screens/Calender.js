@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import GradientScreen from '../components/GradientScreen';
 
 export default function CalendarScreen() {
     return (
+        <GradientScreen>
         <View style={styles.container}>
             <Text style={styles.title}>My Calendar</Text>
             <Calendar
@@ -29,10 +31,16 @@ export default function CalendarScreen() {
                 }}
             />
         </View>
+        </GradientScreen>
     );
 }
 
 const styles = StyleSheet.create({
+    gradientScreen: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
