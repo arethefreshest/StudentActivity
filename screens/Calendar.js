@@ -10,7 +10,8 @@ export default function CalendarScreen() {
             <Text style={styles.title}>My Calendar</Text>
             <Calendar
                 // Initially visible month. Default = now
-                current={'2024-05-09'}
+                //current={'2024-05-09'}
+                curent={'now'}
                 // Handler which gets executed on day press. Default = undefined
                 onDayPress={(day) => {
                     console.log('selected day', day);

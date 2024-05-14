@@ -10,7 +10,7 @@ import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
-import Calender from "./screens/Calender";
+import Calender from "./screens/Calendar";
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();

@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
+import {Calendar} from "react-native-calendars";
 
 function Activities({ route }) {
     const { people, price, location } = route.params;
@@ -104,7 +105,7 @@ if (activities.length === 0 && !loading) {
                                     <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
                                     <TouchableOpacity
                                         style={styles.addButton}
-                                        onPress={() => console.log('Legg til knappen trykket!')} // Her kan du legge til din egen logikk
+                                        onPress={() => console.log('Legg til knappen trykket!') => } // Her kan du legge til din egen logikk
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
