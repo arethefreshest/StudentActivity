@@ -19,7 +19,6 @@ const ProfilRegistrering = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [fullName, setFullName] = useState('');
-    const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
 
     const handleSignUp = async () => {
@@ -34,7 +33,6 @@ const ProfilRegistrering = () => {
 
             await setDoc(doc(db, "users", userCredential.user.uid), {
                 fullName,
-                userName,
                 email
             });
             Alert.alert("Success", "User registered successfully!");
@@ -58,17 +56,8 @@ const ProfilRegistrering = () => {
                         value={fullName}
                     />
                 </View>
-                <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>Velg ditt brukernavn</Text>
+                <Text style={[styles.inputLabel, { left: 96, top: 252 }]}>E-post</Text>
                 <View style={[styles.inputGroup, { left: 96, top: 273.3 }]}>
-                    <InputField
-                        icon={Brukerikon}
-                        placeholder={"olanordmann31"}
-                        onChangeText={setUserName}
-                        value={userName}
-                    />
-                </View>
-                <Text style={[styles.inputLabel, { left: 96, top: 332 }]}>E-post</Text>
-                <View style={[styles.inputGroup, { left: 96, top: 353.3 }]}>
                     <InputField
                         icon={EpostIkon}
                         placeholder={"ola@nordmann.no"}
@@ -78,8 +67,8 @@ const ProfilRegistrering = () => {
                         // I disse fieldsene kan vi også bruke onChangeText for å hente prop til å håndtere info
                     />
                 </View>
-                <Text style={[styles.inputLabel, { left: 96, top: 412 }]}>Passord</Text>
-                <View style={[styles.inputGroup, { left: 96, top: 433.3 }]}>
+                <Text style={[styles.inputLabel, { left: 96, top: 332 }]}>Passord</Text>
+                <View style={[styles.inputGroup, { left: 96, top: 353.3 }]}>
                     <InputField
                         icon={Passordikon}
                         placeholder={"*********"}
@@ -88,8 +77,8 @@ const ProfilRegistrering = () => {
                         secureTextEntry
                     />
                 </View>
-                <Text style={[styles.inputLabel, { left: 96, top: 492 }]}>Bekreft passord</Text>
-                <View style={[styles.inputGroup, { left: 96, top: 513.3 }]}>
+                <Text style={[styles.inputLabel, { left: 96, top: 412 }]}>Bekreft passord</Text>
+                <View style={[styles.inputGroup, { left: 96, top: 433.3 }]}>
                     <InputField
                         icon={Passordikon}
                         placeholder={"*********"}
@@ -101,7 +90,7 @@ const ProfilRegistrering = () => {
                 <Button
                     text="Lag min bruker"
                     onPress={handleSignUp}
-                    style={{ left: 126, top: 592}}
+                    style={{ left: 126, top: 510}}
                 />
                 <Text style={[styles.italicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
                 <ThirdPartyIconRow
@@ -111,7 +100,7 @@ const ProfilRegistrering = () => {
                     onPressFacebook={() => console.log('Facebook Login')}
                     style={{top: 689}}
                 />
-                <Button text="Already have an account? Log In" onPress={() => navigation.navigate('ProfilLoggInn')} />
+                <Button text="Om du alt har bruker? Logg inn!" onPress={() => navigation.navigate('ProfilLoggInn')} style={{width: 310, left: 60 , top: 580}}/>
             </GradientScreen>
         </View>
     );

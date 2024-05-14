@@ -9,6 +9,7 @@ import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
+import Add from "./components/Add";
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -68,7 +69,7 @@ function AppNavigator({ isAuthenticated }) {
                         case "Home":
                             iconName = <HjemIkon fill={iconColor} />;
                             break;
-                        case "Activity":
+                        case "Add":
                             iconName = <LeggTilIkon fill={iconColor} />;
                             break;
                         case "Profil":
@@ -99,8 +100,8 @@ function AppNavigator({ isAuthenticated }) {
                 options={{ tabBarLabel: 'Hjem' }}
             />
             <MaterialBottomTabs.Screen
-                name="Activity"
-                component={Activity}
+                name="Add"
+                component={Add}
                 options={{ tabBarLabel: 'Legg til' }}
             />
             <MaterialBottomTabs.Screen
