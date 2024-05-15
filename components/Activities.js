@@ -11,11 +11,11 @@ function Activities({ route }) {
     const [error, setError] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
 
-    const numericPeople = Number(people);  // Move numericPeople to a broader scope
+    const numericPeople = Number(people); // Move numericPeople to a broader scope
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
-        const numericPeople = Number(people);  // Convert people to number
+        const numericPeople = Number(people); // Convert people to number
         const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
         const q = query(
             collection(db, "Activities"),

@@ -4,20 +4,27 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 
-function AddVenn({route}) {
-    const {email} = route.params;
+function AddVenn({ route }) {
+    const { email } = route.params || {}; // Ensure email is destructured from route.params
+
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
 
     useEffect(() => {
-        const keyWord = {email};
+        console.log('Route params:', route.params);
+
+        if (!email) {
+            setError(new Error('Email parameter is missing'));
+            setLoading(false);
+            return;
+        }
+
         const q = query(
             collection(db, "users"),
-            where("email", "=", keyWord)
+            where("email", "==", email)
         );
-
 
         async function fetchData() {
             setLoading(true);
@@ -27,6 +34,7 @@ function AddVenn({route}) {
                 const result = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    result.push(data);
                 });
                 setUsers(result);
             } catch (e) {
@@ -45,7 +53,7 @@ function AddVenn({route}) {
     if (loading) {
         return (
             <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
+                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300 }} />
             </GradientScreen>
         );
     }
@@ -60,40 +68,34 @@ function AddVenn({route}) {
         );
     }
 
-    if (activities.length === 0 && !loading) {
+    if (users.length === 0 && !loading) {
         return (
             <GradientScreen>
                 <View style={styles.container}>
-                    <Text style={styles.noResults}>No activities found with the selected filters.</Text>
+                    <Text style={styles.noResults}>No Users with that email were found.</Text>
                 </View>
             </GradientScreen>
         );
     }
 
-
     return (
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.safeArea}>
                 <ScrollView style={styles.container}>
-                    {activities.map((activity) => (
+                    {users.map((user) => (
                         <TouchableOpacity
-                            key={activity.id}
+                            key={user.id}
                             style={styles.activityContainer}
-                            onPress={() => toggleExpand(activity.id)}
+                            onPress={() => toggleExpand(user.id)}
                         >
-                            <Text style={styles.title}>{activity.Name}</Text>
-                            <Text style={styles.textTop}>Sted: {activity.Location}</Text>
-                            <Text style={styles.textTop}>Deltager: {numericPeople} people</Text>
-                            <Text style={styles.textTop}>Pris: {activity.totalPrice} kr</Text>
-                            {expandedId === activity.id && (
+                            <Text style={styles.title}>{user.Name}</Text>
+                            <Text style={styles.textTop}>Email: {user.email}</Text>
+                            {expandedId === user.id && (
                                 <View style={styles.details}>
-                                    <Text style={styles.textCont}>Price per Person: {activity.Price} kr</Text>
-                                    <Text style={styles.textCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
-                                    <Text style={styles.textCont2}>{activity.Description}</Text>
-                                    <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
+                                    <Text style={styles.textCont}>Additional details here</Text>
                                     <TouchableOpacity
                                         style={styles.addButton}
-                                        onPress={() => console.log('Legg til knappen trykket!')} // Her kan du legge til din egen logikk
+                                        onPress={() => console.log('Legg til knappen trykket!')}
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
@@ -106,6 +108,7 @@ function AddVenn({route}) {
         </GradientScreen>
     );
 }
+
 const styles = StyleSheet.create({
     gradientScreen: {
         flex: 1,
@@ -131,7 +134,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-
         fontWeight: 'bold',
     },
     details: {
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '50%',
-        marginLeft:'25%',
+        marginLeft: '25%',
     },
     addButtonText: {
         color: 'white',
@@ -184,17 +186,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 60,
     },
-    textCont2: {
-        fontWeight: "bold",
-        fontSize: 16,
-        marginTop: 30,
-        marginLeft: 40,
-    },
-    textLink: {
-        marginTop: 20,
-        fontSize:18,
-        marginLeft: 60,
-    }
 });
 
 export default AddVenn;

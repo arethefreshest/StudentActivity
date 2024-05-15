@@ -4,15 +4,11 @@ import GradientScreen from "./GradientScreen";
 import InputField from "./InputField";
 
 function SearchVenn({ navigation }) {
-    const [keyWord, setKeyWord] = useState("Bruker");
+    const [email, setEmail] = useState("Bruker@example.com");
 
-    const handlePeopleChange = (value) => {
-        setKeyWord(value);
-    };
-
-    const applyFilters = () => {
-        console.log("Applying filters with:", {keyWord});
-        navigation.navigate('AddVenn', {keyWord});
+    const search = () => {
+        console.log("Applying filters with:", {email});
+        navigation.navigate('AddVenn', {email});
     };
 
     return (
@@ -21,17 +17,13 @@ function SearchVenn({ navigation }) {
                 <View style={styles.container}>
                     <Text style={styles.label}>Søk:</Text>
                     <InputField
-                        style={styles.slider}
-                        minimumValue={0}
-                        maximumValue={10}
-                        step={1}
-                        value={keyWord}
-                        onValueChange={setKeyWord(value)}
+                        value={email}
+                        onChangeText={setEmail}
                         minimumTrackTintColor="#FFFFFF"
                         maximumTrackTintColor="#000000"
                     />
-                    <TouchableOpacity style={styles.button} onPress={applyFilters}>
-                        <Text style={styles.buttonText}>SØK</Text>
+                    <TouchableOpacity style={styles.button} onPress={search}>
+                        <Text style={styles.buttonText}>Finn Venn</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -39,6 +31,7 @@ function SearchVenn({ navigation }) {
     );
 }
 
+export default SearchVenn;
 
 const styles = StyleSheet.create({
     gradientScreen: {
@@ -104,5 +97,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
-
-export default SearchVenn;
