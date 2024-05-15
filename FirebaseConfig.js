@@ -2,7 +2,8 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import { initializeAuth } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {APIKEY, APPID, MESSAGINSENDERID, MEASURMENTID, STORAGEBUCKET, PROJECTID, AUTHDOMAIN} from "@env";
 
 // Define Firebase configuration
@@ -18,8 +19,13 @@ const firebaseConfig = {
 
 // Initialize Firebase, Firestore and Auth
 const app = initializeApp(firebaseConfig);
+
+// Initialize Firestore
 const db = getFirestore(app);
-const auth = initializeAuth(app);
+
+const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
 
 // Initialize Analytics
 isSupported().then((supported) => {

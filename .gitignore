@@ -46,6 +46,9 @@ yarn-error.*
 .idea/**/dictionaries
 .idea/**/shelf
 
+# Git Toolbox plugin
+.idea/git_toolbox_prj.xml
+
 # AWS User-specific
 .idea/**/aws.xml
 
