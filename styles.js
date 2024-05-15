@@ -1,6 +1,4 @@
-import {Dimensions, StatusBar, StyleSheet} from 'react-native';
-
-
+import {Dimensions, StyleSheet, Platform} from 'react-native';
 
 const { width, height } = Dimensions.get('window'); // Get device dimensions
 export const styles = StyleSheet.create({
@@ -39,9 +37,6 @@ export const styles = StyleSheet.create({
         borderTopWidth: 0, // Ensure no borders
         borderWidth: 0,
         borderColor: 'transparent',
-        shadowOffset: { height: 0, width: 0 }, // No shadow offset
-        shadowOpacity: 0, // No shadow opacity
-        shadowColor: 'transparent', // No shadow color
     },
     contentContainer: {
         flex: 1,
@@ -148,22 +143,33 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         height: 50,
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4},
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
         position: 'absolute',
         width: 177,
     },
     loginButtonText: {
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
-        //fontWeight: '700',
         color: '#FFECE7',
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 20,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000000',
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.5,
+                shadowRadius: 20,
+            },
+            android: {
+                shadowColor: '#000000',
+                elevation: 4,
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.5,
+                shadowRadius: 20,
+            },
+            web: {
+                textShadowColor: '#000000',
+                textShadowOffset: { width: 0, height: 4},
+                textShadowRadius: 20,
+            }
+        }),
     },
     thirdPartyLogin: {
         marginTop: 20,
@@ -183,10 +189,24 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Roboto-Italic',
         color: '#FFECE7',
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4},
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000000',
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+            },
+            android: {
+                shadowColor: '#000000',
+                elevation: 4,
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+            },
+            web: {
+
+            }
+        }),
         position: 'absolute',
     },
     thirdPartyIcon: {
@@ -217,6 +237,132 @@ export const styles = StyleSheet.create({
     registerButtonText: {
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
+        backgroundColor: 'transparent',
         color: '#FFECE7',
     },
+
+    profileHeader: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        top: 120,
+    },
+
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 20,
+    },
+
+    profileImagePlaceholder: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 20,
+        backgroundColor: '#ccc',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    userName: {
+        fontSize: 24,
+        fontFamily: 'Roboto-Bold',
+        color: '#FFECE7',
+    },
+
+    sectionTitle: {
+        fontSize: 20,
+        fontFamily: 'Roboto-Bold',
+        color: '#FFECE7',
+        marginTop: 20,
+        marginBottom: 10,
+        paddingHorizontal: 20,
+    },
+
+    feedContainer: {
+        flex: 1,
+        top: 160,
+        alignItems: 'center',
+    },
+
+    activityItemContainer: {
+        backgroundColor: '#4a90e2',
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10,
+        flexDirection: 'column',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+    },
+
+    activityHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+    },
+
+    activityContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    activityProfileImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 10,
+    },
+
+    activityTextContainer: {
+        flex: 1,
+    },
+
+    activityItem: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FFECE7'
+    },
+    boldText: {
+        fontFamily: 'Roboto-Bold',
+        color: '#FFECE7',
+    },
+
+    activityLocationContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    activityIconsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+
+    friendRequestItem: {
+        //flexDirection: 'row',
+        //justifyContent: 'space-between',
+        //padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FFECE7',
+        //alignItems: 'center',
+    },
+    feedText: {
+        color: '#FFECE7',
+    },
+    feedListContainer: {
+        paddingHorizontal: 20,
+    },
+    requestContainer: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FFECE7',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
 });

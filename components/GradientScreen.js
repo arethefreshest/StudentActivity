@@ -12,7 +12,6 @@ const GradientScreen = ({ children, onBurgerMenuPress }) => (
         style={styles.gradientBackground}
     >
         <View style={styles.contentContainer}>
-            <BurgerMenu onPress={onBurgerMenuPress} />
             <Logo />
             {children}
         </View>
