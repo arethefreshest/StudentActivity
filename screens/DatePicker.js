@@ -1,5 +1,3 @@
-/*
-
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useEffect, useState} from "react";
 import {Button, SafeAreaView, Text} from "react-native";
@@ -36,18 +34,19 @@ export const DatePicker = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
+            <Button onPress={showDatepicker} title="Show date picker!" />
+            <Button onPress={showTimepicker} title="Show time picker!" />
+            <Text>selected: {date.toLocaleString()}</Text>
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={date}
-                    mode="date"
-                    display="default"
-                    onChange={onChange}
+                    mode={mode}
                     is24Hour={true}
+                    onChange={onChange}
                 />
             )}
-            <Text>Selected Date: {date.toLocaleDateString()}</Text>
         </SafeAreaView>
     );
 };
@@ -55,4 +54,3 @@ export const DatePicker = () => {
 export default DatePicker;
 
 
- */
