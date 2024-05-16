@@ -1,110 +1,117 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
+import { sendFriendRequest } from "../FirebaseFunksjoner";
 
-function Activities({ route }) {
-    const { people, price, location } = route.params;
-    const [activities, setActivities] = useState([]);
-    const [loading, setLoading] = useState(true);
+function AddVenn({ route }) {
+    const { email, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params
+
+    const [users, setUsers] = useState(initialUsers || []);
+    const [loading, setLoading] = useState(!initialUsers);
     const [error, setError] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
 
-    const numericPeople = Number(people); // Move numericPeople to a broader scope
-    const locQuery = location ? location.toLowerCase() : null;
-
     useEffect(() => {
-        const numericPeople = Number(people); // Convert people to number
-        const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
-        const q = query(
-            collection(db, "Activities"),
-            where("MinP", "<=", numericPeople),
-            where("MaxP", ">=", numericPeople),
-            where("Location", "==", locQuery)
-        );
+        console.log('Route params:', route.params);
 
+        if (!email) {
+            setError(new Error('Email parameter is missing'));
+            setLoading(false);
+            return;
+        }
+
+        if (initialUsers) {
+            setLoading(false);
+            return;
+        }
+
+
+
+        const q = query(
+            collection(db, "users"),
+            where("email", "==", email)
+        );
 
         async function fetchData() {
             setLoading(true);
             setError(null);
             try {
                 const querySnapshot = await getDocs(q);
-                const filteredActivities = [];
+                console.log("Query Snapshot Size:", querySnapshot.size); // Log the size of the snapshot
+                const result = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const totalPrice = data.Price * numericPeople;
-                    if (totalPrice <= price) {
-                        filteredActivities.push({ id: doc.id, ...data, totalPrice });
-                    }
+                    console.log("User Data:", data); // Log each user data
+                    result.push({ id: doc.id, ...data });
                 });
-                setActivities(filteredActivities);
+                setUsers(result);
             } catch (e) {
+                console.error('Error fetching users:', e)
                 setError(e);
             } finally {
                 setLoading(false);
             }
         }
-
-    fetchData();
-}, [people, price, location]); // Removed numericPeople from dependencies
+        fetchData();
+    }, [email]);
 
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
     };
 
-if (loading) {
-    return (
-        <GradientScreen>
-            <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
-        </GradientScreen>
-    );
-}
+    const addFriend = async (friendId) => {
+        await sendFriendRequest(friendId);
+        Alert.alert('Venneforespørsel sendt', 'Venneforespørsel sendt til bruker');
+    };
 
-if (error) {
-    return (
-        <GradientScreen>
-            <View style={styles.container}>
-                <Text style={styles.error}>Error: {error.message}</Text>
-            </View>
-        </GradientScreen>
-    );
-}
+    if (loading) {
+        return (
+            <GradientScreen>
+                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300 }} />
+            </GradientScreen>
+        );
+    }
 
-if (activities.length === 0 && !loading) {
-    return (
-        <GradientScreen>
-            <View style={styles.container}>
-                <Text style={styles.noResults}>No activities found with the selected filters.</Text>
-            </View>
-        </GradientScreen>
-    );
-}
+    if (error) {
+        return (
+            <GradientScreen>
+                <View style={styles.container}>
+                    <Text style={styles.error}>Error: {error.message}</Text>
+                </View>
+            </GradientScreen>
+        );
+    }
 
+    if (users.length === 0 && !loading) {
+        return (
+            <GradientScreen>
+                <View style={styles.container}>
+                    <Text style={styles.noResults}>No Users with that email were found.</Text>
+                </View>
+            </GradientScreen>
+        );
+    }
 
     return (
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.safeArea}>
                 <ScrollView style={styles.container}>
-                    {activities.map((activity) => (
+                    {users.map((user) => (
                         <TouchableOpacity
-                            key={activity.id}
+                            key={user.id}
                             style={styles.activityContainer}
-                            onPress={() => toggleExpand(activity.id)}
+                            onPress={() => toggleExpand(user.id)}
                         >
-                            <Text style={styles.title}>{activity.Name}</Text>
-                            <Text style={styles.textTop}>Sted: {activity.Location}</Text>
-                            <Text style={styles.textTop}>Deltager: {numericPeople} people</Text>
-                            <Text style={styles.textTop}>Pris: {activity.totalPrice} kr</Text>
-                            {expandedId === activity.id && (
+                            <Text style={styles.title}>{user.Name}</Text>
+                            <Text style={styles.textTop}>Email: {user.email}</Text>
+                            {expandedId === user.id && (
                                 <View style={styles.details}>
-                                    <Text style={styles.textCont}>Price per Person: {activity.Price} kr</Text>
-                                    <Text style={styles.textCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
-                                    <Text style={styles.textCont2}>{activity.Description}</Text>
-                                    <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
+                                    <Text style={styles.textCont}>Additional details here</Text>
                                     <TouchableOpacity
                                         style={styles.addButton}
-                                        onPress={() => console.log('Legg til knappen trykket!')} // Her kan du legge til din egen logikk
+                                        onPress={() => addFriend(user.id)}
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
@@ -117,6 +124,7 @@ if (activities.length === 0 && !loading) {
         </GradientScreen>
     );
 }
+
 const styles = StyleSheet.create({
     gradientScreen: {
         flex: 1,
@@ -142,7 +150,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-
         fontWeight: 'bold',
     },
     details: {
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '50%',
-        marginLeft:'25%',
+        marginLeft: '25%',
     },
     addButtonText: {
         color: 'white',
@@ -195,17 +202,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 60,
     },
-    textCont2: {
-        fontWeight: "bold",
-        fontSize: 16,
-        marginTop: 30,
-        marginLeft: 40,
-    },
-    textLink: {
-        marginTop: 20,
-        fontSize:18,
-        marginLeft: 60,
-    }
 });
 
-export default Activities;
+export default AddVenn;
