@@ -10,7 +10,8 @@ import Activities from "./components/Activities";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
-import Calender from "./screens/Calendar";
+import Calendar from "./screens/Calendar";
+import DatePicker from "./screens/DatePicker";
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -36,6 +37,8 @@ function AppNavigator({ isAuthenticated }) {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Filter" component={ActivityFilter} />
                 <Stack.Screen name="Activities" component={Activities} />
+                <Stack.Screen name="Calendar" component={Calendar} />
+                <Stack.Screen name="DatePicker" component={DatePicker} />
             </Stack.Navigator>
         );
     }
@@ -117,7 +120,7 @@ function AppNavigator({ isAuthenticated }) {
             />
             <MaterialBottomTabs.Screen
                 name="calendar"
-                component={Calender}
+                component={Calendar}
                 options={{ tabBarLabel: 'Kalender' }}
             />
         </MaterialBottomTabs.Navigator>

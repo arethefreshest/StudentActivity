@@ -219,4 +219,39 @@ export const styles = StyleSheet.create({
         fontFamily: 'Roboto-Bold',
         color: '#FFECE7',
     },
+    gradientScreen: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    safeArea: {
+        flex: 1,
+        marginTop: 140,
+        marginBottom: 100,
+    },
+    activityContainer: {
+        margin: 10,
+        padding: 20,
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    textTop: {
+        fontSize: 18,
+        marginTop: 10,
+    },
+    error: {
+        fontSize: 16,
+        color: 'red',
+        textAlign: 'center',
+    },
+    noResults: {
+        fontSize: 16,
+        textAlign: 'center',
+    }
 });
