@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import GradientScreen from '../components/GradientScreen';
-import { db } from '../FirebaseConfig';
-import { collection, addDoc } from "firebase/firestore";
+import { db, auth } from '../FirebaseConfig';
+import {collection, addDoc, query, where} from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 import {styles} from "../styles"
 import DatePicker from "../screens/DatePicker";
@@ -12,29 +12,38 @@ export default function CalendarScreen({navigation}) {
     const [markedDates, setMarkedDates] = useState({});
     const route = useRoute();
     const selectedActivity = route.params?.selectedActivity;
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
+/*
     useEffect(() => {
         if (selectedActivity) {
             console.log(selectedActivity.Name);
-            const activityDate = selectedActivity.date; // Assuming date is passed like this
+            let activity = selectedActivity.Name;
+            let date = selectedDate;
+
             const newMarkedDates = {
                 ...markedDates,
-                [activityDate]: {selected: true, marked: true, selectedColor: 'blue'}
+                [date]: {selected: true, marked: true, selectedColor: 'blue'}
             };
             setMarkedDates(newMarkedDates);
 
-            // Add the activity to Firestore
-            addActivityToCalendar(selectedActivity.id, activityDate, ""); // Replace "current_user_id" with actual user ID
+            let email = auth.currentUser.email;
+
+            addActivityToCalendar(activity, date, email);
         }
-    }, [selectedActivity]);
+    }, [selectedActivity, selectedDate]);
+
+
 
     const handleDayPress = (day) => {
         if (selectedActivity) {
-            addActivityToCalendar(selectedActivity.id, day.dateString, "current_user_id"); // Replace "current_user_id" with actual user ID
+            addActivityToCalendar(activity, day.dateString, "current_user_id"); // Replace "current_user_id" with actual user ID
         } else {
             Alert.alert('No activity selected', 'Please select an activity before choosing a date.');
         }
     };
+
+ */
 
     if (!selectedActivity) {
         return (
@@ -43,7 +52,7 @@ export default function CalendarScreen({navigation}) {
                     <Text style={styles.title}>My Calendar</Text>
                     <Calendar
                         markedDates={markedDates}
-                        onDayPress={handleDayPress}
+                        onDayPress={({ dateString }) => Alert.alert('Day Selected', dateString)}
                         monthFormat={'yyyy MM'}
                         hideExtraDays={true}
                         firstDay={1}
@@ -54,14 +63,16 @@ export default function CalendarScreen({navigation}) {
             </GradientScreen>
         );
     }
+
+   // return <DatePicker onDateSelected={setSelectedDate} />;
 }
 
 
-async function addActivityToCalendar(activityId, date, email) {
+async function addActivityToCalendar(activity, date, email) {
     try {
-        await addDoc(collection(db, "UserActivities"), {
+        await addDoc(collection(db, "calendar"), {
             email: email,
-            activityId: activityId,
+            activity: activity,
             date: date,
         });
         Alert.alert('Activity Added', `Activity added on ${date}`);

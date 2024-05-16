@@ -6,7 +6,7 @@ import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import CustomPicker from "./CustomPicker";
-import { styles } from '../styles'; // Import styles from styles.js
+import { styles } from '../styles';
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -22,6 +22,15 @@ function Activities({ route, navigation }) {
 
     const numericPeople = Number(people);  // Move numericPeople to a broader scope
     const locQuery = location ? location.toLowerCase() : null;
+
+    const friendsList = [
+        "Are Berntsen",
+        "Storm Selvig",
+        "Eivind Solberg",
+        "Ole Sveinung Berget",
+        "Tore Knudsen",
+        "David Holt"
+    ];
 
     useEffect(() => {
         const q = query(
@@ -59,11 +68,6 @@ function Activities({ route, navigation }) {
         setExpandedId(expandedId === id ? null : id);
     };
 
-    const calendaradd = (activity) => {
-        navigation.navigate('Calendar', {selectedActivity: activity});
-    }
-
-
 
     if (loading) {
         return (
@@ -72,6 +76,9 @@ function Activities({ route, navigation }) {
             </GradientScreen>
         );
     }
+
+//    navigation.navigate('Calendar', {selectedActivity: activity});
+
     const handleAddActivity = async () => {
         const activityData = {
             activityName,
@@ -80,7 +87,8 @@ function Activities({ route, navigation }) {
             description,
         };
         try {
-            await addDoc(collection(db, "Activities"), activityData);
+            await addDoc(collection(db, "calendar"), activityData);
+
             console.log("Activity added successfully");
             setModalVisible(false);
             setActivityName('');
@@ -149,7 +157,6 @@ function Activities({ route, navigation }) {
                                     <TouchableOpacity
                                         style={styles.addButton}
                                         onPress={() => openModalWithActivityDetails(activity)}
-                                        onPress={() => calendaradd(activity)}
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
