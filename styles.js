@@ -242,6 +242,7 @@ export const styles = StyleSheet.create({
         fontFamily: 'Roboto-Italic',
         color: '#FFECE7',
     },
+
     registerButton: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -250,6 +251,7 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         height: 50,
     },
+
     registerButtonText: {
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
@@ -278,9 +280,16 @@ export const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50,
         marginBottom: 20,
-        backgroundColor: '#ccc',
+        backgroundColor: '#transparent',
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: '#FFECE7',
+    },
+
+    addPictureIcon: {
+        fontSize: 40,
+        color: '#FFECE7',
     },
 
     userName: {
@@ -344,6 +353,7 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#FFECE7'
     },
+
     boldText: {
         fontFamily: 'Roboto-Bold',
         color: '#FFECE7',
@@ -368,14 +378,17 @@ export const styles = StyleSheet.create({
         borderBottomColor: '#FFECE7',
         alignItems: 'center',
     },
+
     feedText: {
         color: '#FFECE7',
         fontSize: 16,
         marginRight: 20,
     },
+
     feedListContainer: {
         paddingBottom: 20,
     },
+
     requestContainer: {
         padding: 15,
         borderBottomWidth: 1,
@@ -384,12 +397,14 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+
     modalOverlay: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
+
     modalContainer: {
         width: '80%',
         padding: 20,
@@ -401,15 +416,18 @@ export const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
     },
+
     modalOption: {
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
     },
+
     modalText: {
         color: '#333',
         fontSize: 18,
     },
+
     modalCloseButton: {
         marginTop: 10,
         padding: 10,
@@ -417,6 +435,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
+
     friendItem: {
         padding: 15,
         borderBottomWidth: 1,
@@ -425,6 +444,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+
     toggleButton: {
         fontSize: 18,
         color: '#008080',

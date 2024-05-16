@@ -89,7 +89,7 @@ const Profil = () => {
                         <Image source={{ uri: image }} style={styles.profileImage} />
                     ) : (
                         <View style={styles.profileImagePlaceholder}>
-                            <Text>+</Text>
+                            <Text style={styles.addPictureIcon}>+</Text>
                         </View>
                     )}
                 </TouchableOpacity>
