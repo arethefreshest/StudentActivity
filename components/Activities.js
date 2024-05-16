@@ -79,7 +79,6 @@ function Activities({ route, navigation }) {
         );
     }
 
-//    navigation.navigate('Calendar', {selectedActivity: activity});
 
     const handleAddActivity = async () => {
         const activityData = {

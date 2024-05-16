@@ -427,6 +427,30 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    // styles for Calendar.js
+   containerCalendar: {
+        margin: 10,
+        padding: 20,
+        marginTop: 130,
+        height: 600,
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+    },
+    titleCalendar: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 40,
+    },
+    CalendarStyle: {
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+        height:400,
+    },
+
+
     // Styles for Activities.js
     gradientScreen: {
         flex: 1,
@@ -675,4 +699,40 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         backgroundColor: 'lightgray',
     },
+
+modalOverlayCalendar: {
+    flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContainerCalendar: {
+    width: '80%',
+        padding: 20,
+        backgroundColor: '#FFECE7',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+},
+modalTitleCalendar: {
+    fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+},
+modalTextCalendar: {
+    color: '#333',
+        fontSize: 18,
+        marginBottom: 10,
+},
+modalCloseButtonCalendar: {
+    marginTop: 10,
+        padding: 10,
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        borderRadius: 10,
+},
+
 });

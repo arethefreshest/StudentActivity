@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
@@ -13,6 +13,7 @@ const Add = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [isAdded, setIsAdded] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
 
@@ -26,7 +27,6 @@ const Add = () => {
     ];
 
     useEffect(() => {
-        console.log('Received route params:', route.params); // Debugging
         if (route.params) {
             if (route.params.activityName) {
                 setActivityName(route.params.activityName);
@@ -49,11 +49,21 @@ const Add = () => {
             description,
         };
         try {
-            await addDoc(collection(db, "Activities"), activityData);
-            console.log("Activity added successfully");
-            navigation.navigate('Activities', { activityName, selectedDate, selectedFriends, description });
+            await addDoc(collection(db, "calendar"), activityData);
+            setIsAdded(true);
+
+            // Clear the fields
+            setActivityName('');
+            setSelectedDate(new Date());
+            setDescription('');
+            setSelectedFriends([]);
+
+            // Show a success message
+            Alert.alert("Success", "Activity added successfully");
+
         } catch (error) {
             console.error("Error adding activity: ", error);
+            Alert.alert("Error", "There was an error adding the activity");
         }
     };
 
@@ -97,6 +107,8 @@ const Add = () => {
                     <TouchableOpacity style={styles.buttonAdd} onPress={addActivity}>
                         <Text style={styles.buttonTextAdd}>Legg til</Text>
                     </TouchableOpacity>
+
+                    {isAdded}
                 </View>
             </SafeAreaView>
         </GradientScreen>

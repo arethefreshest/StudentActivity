@@ -4,7 +4,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import HjemIkon from "./assets/HjemIkon";
 import LeggTilIkon from "./assets/LeggTilIkon";
 import ProfilIkon from "./assets/ProfilIkon";
-import CalendarIcon from "./assets/CalendarIcon";
+import Kalenderikon from "./assets/Kalenderikon";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
 import SearchVenn from "./components/SearchVenn";
@@ -14,6 +14,7 @@ import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
 import Calendar from "./screens/Calendar";
 import Add from "./screens/Add";
+import Sosialtikon from "./assets/Sosialtikon";
 
 
 const Stack = createStackNavigator();
@@ -85,7 +86,7 @@ return (
                                 iconName = <HjemIkon fill={iconColor}/>;
                                 break;
                             case "Social":
-                                iconName = <HjemIkon fill={iconColor}/>;
+                                iconName = <Sosialtikon fill={iconColor}/>;
                                 break;
                             case "Add":
                                 iconName = <LeggTilIkon fill={iconColor}/>;
@@ -94,7 +95,7 @@ return (
                                 iconName = <ProfilIkon fill={iconColor} stroke={iconColor} strokeWidth={focused ? 2.33333 : 0}/>;
                                 break;
                             case "calendar":
-                                iconName = <CalendarIcon fill={iconColor}/>;
+                                iconName = <Kalenderikon fill={iconColor}/>;
                         }
                         return iconName;
                     },
