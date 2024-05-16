@@ -33,6 +33,8 @@ function Activities({ route }) {
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
+        const numericPeople = Number(people); // Convert people to number
+        const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
         const q = query(
             collection(db, "Activities"),
             where("MinP", "<=", numericPeople),

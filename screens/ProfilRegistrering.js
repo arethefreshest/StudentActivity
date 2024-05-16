@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { View, Text, Alert } from "react-native";
+//import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../styles";
-import { auth, db } from "../FirebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+//import { auth, db } from "../FirebaseConfig";
+//import { doc, setDoc } from "firebase/firestore";
 import GradientScreen from "../components/GradientScreen";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
@@ -12,6 +12,7 @@ import ThirdPartyIconRow from "../components/ThirdPartyIconRow";
 import Brukerikon from "../assets/Brukerikon";
 import Passordikon from "../assets/Passordikon";
 import EpostIkon from "../assets/EpostIkon";
+import { registerUser } from "../FirebaseFunksjoner";
 const ProfilRegistrering = () => {
     console.log("ProfilRegistrering is rendering");
     const navigation = useNavigation();
@@ -28,17 +29,31 @@ const ProfilRegistrering = () => {
         }
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log("User created and signed in: ", userCredential.user);
+            await registerUser(email, password, fullName);
+            Alert.alert("Suksess", "Bruker ble registrert!");
 
-            await setDoc(doc(db, "users", userCredential.user.uid), {
+            /*const userRef = doc(db, "users", userCredential.user.uid);
+
+            await setDoc(userRef, {
                 fullName,
                 email
             });
+
+            // Subcollections for the user to reference activities and other user collections
+            const activitiesRef = doc(db, `users/${userCredential.user.uid}/activities`, "init");
+            await setDoc(activitiesRef, { initialized: true });
+
+            const friendsRef = doc(db, `users/${userCredential.user.uid}/friends`, "init");
+            await setDoc(friendsRef, { initialized: true });
+
+            const friendRequestsRef = doc(db, `users/${userCredential.user.uid}/friendRequests`, "init");
+            await setDoc(friendRequestsRef, { initialized: true});
+
             Alert.alert("Success", "User registered successfully!");
-            console.log('Current Navigation State:', navigation.getState());
+            console.log('Current Navigation State:', navigation.getState()); */
             const action = navigation.navigate('ProfilHome');
             console.log('Navigation action response:', action);
+            console.log('Display name:', auth.currentUser.displayName);
         } catch (error) {
             setError(error.message);
             Alert.alert("Registration failed", error.message);
@@ -90,7 +105,12 @@ const ProfilRegistrering = () => {
                 <Button
                     text="Lag min bruker"
                     onPress={handleSignUp}
-                    style={{ left: 126, top: 510}}
+                    style={{ left: 126, top: 512}}
+                />
+                <Button
+                    text="Har bruker allerede"
+                    onPress={() => navigation.navigate('ProfilLoggInn')}
+                    style={{ left: 126, top: 572 }}
                 />
                 <Text style={[styles.italicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
                 <ThirdPartyIconRow
@@ -100,7 +120,6 @@ const ProfilRegistrering = () => {
                     onPressFacebook={() => console.log('Facebook Login')}
                     style={{top: 689}}
                 />
-                <Button text="Om du alt har bruker? Logg inn!" onPress={() => navigation.navigate('ProfilLoggInn')} style={{width: 310, left: 60 , top: 580}}/>
             </GradientScreen>
         </View>
     );
