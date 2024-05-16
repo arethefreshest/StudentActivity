@@ -14,6 +14,8 @@ import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
 import Calendar from "./screens/Calendar";
 import DatePicker from "./screens/DatePicker";
+import Add from "./screens/Add";
+
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -45,10 +47,12 @@ function AppNavigator({ isAuthenticated }) {
     }
 
     function Social() {
+    function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SearchVenn" component={SearchVenn} />
                 <Stack.Screen name="AddVenn" component={AddVenn} />
+                <Stack.Screen name="Add" component={Add} />
             </Stack.Navigator>
         );
     }
@@ -75,6 +79,7 @@ function AppNavigator({ isAuthenticated }) {
                             iconName = <HjemIkon fill={iconColor} />;
                             break;
                         case "Social":
+                        case "Add":
                             iconName = <LeggTilIkon fill={iconColor} />;
                             break;
                         case "Profil":
@@ -110,6 +115,9 @@ function AppNavigator({ isAuthenticated }) {
                 name="Social"
                 component={Social}
                 options={{ tabBarLabel: 'Sosialt' }}
+                name="Add"
+                component={AddActivity}
+                options={{ tabBarLabel: 'Legg til' }}
             />
             <MaterialBottomTabs.Screen
                 name="Profil"
