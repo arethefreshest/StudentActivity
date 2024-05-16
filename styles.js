@@ -105,9 +105,7 @@ export const styles = StyleSheet.create({
     iconContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 28,
-        height: '100%',
-        padding: 0
+        marginRight: 0,
     },
     inputIcon: {
         width: 28,
@@ -145,6 +143,24 @@ export const styles = StyleSheet.create({
         height: 50,
         position: 'absolute',
         width: 177,
+    },
+    menuButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#FFECE7',
+        borderWidth: 2,
+        borderRadius: 10,
+        height: 50,
+        width: 50,
+        position: 'relative',
+    },
+    acceptButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        borderColor: '#FFECE7',
+        borderWidth: 2,
+        borderRadius: 15,
     },
     loginButtonText: {
         fontSize: 20,
@@ -253,6 +269,8 @@ export const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50,
         marginBottom: 20,
+        borderWidth: 2,
+        borderColor: '#FFECE7',
     },
 
     profileImagePlaceholder: {
@@ -343,18 +361,20 @@ export const styles = StyleSheet.create({
     },
 
     friendRequestItem: {
-        //flexDirection: 'row',
-        //justifyContent: 'space-between',
-        //padding: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#FFECE7',
-        //alignItems: 'center',
+        alignItems: 'center',
     },
     feedText: {
         color: '#FFECE7',
+        fontSize: 16,
+        marginRight: 20,
     },
     feedListContainer: {
-        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     requestContainer: {
         padding: 15,
@@ -364,5 +384,51 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        width: '80%',
+        padding: 20,
+        backgroundColor: '#FFECE7',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+    },
+    modalOption: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    modalText: {
+        color: '#333',
+        fontSize: 18,
+    },
+    modalCloseButton: {
+        marginTop: 10,
+        padding: 10,
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    friendItem: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FFECE7',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    toggleButton: {
+        fontSize: 18,
+        color: '#008080',
+        marginVertical: 10,
+        textAlign: 'center',
+    },
 });

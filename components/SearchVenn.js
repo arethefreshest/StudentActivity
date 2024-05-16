@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import GradientScreen from "./GradientScreen";
 import InputField from "./InputField";
+import { searchUsers } from "../FirebaseFunksjoner";
 
 function SearchVenn({ navigation }) {
     const [email, setEmail] = useState("Bruker@example.com");
 
-    const search = () => {
+    const search = async () => {
         console.log("Applying filters with:", {email});
+        const users = await searchUsers(email);
         navigation.navigate('AddVenn', {email});
     };
 

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
+import { sendFriendRequest } from "../FirebaseFunksjoner";
 
 function AddVenn({ route }) {
-    const { email } = route.params || {}; // Ensure email is destructured from route.params
+    const { email, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params
 
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState(initialUsers || []);
+    const [loading, setLoading] = useState(!initialUsers);
     const [error, setError] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
 
@@ -21,6 +22,13 @@ function AddVenn({ route }) {
             return;
         }
 
+        if (initialUsers) {
+            setLoading(false);
+            return;
+        }
+
+
+
         const q = query(
             collection(db, "users"),
             where("email", "==", email)
@@ -31,13 +39,16 @@ function AddVenn({ route }) {
             setError(null);
             try {
                 const querySnapshot = await getDocs(q);
+                console.log("Query Snapshot Size:", querySnapshot.size); // Log the size of the snapshot
                 const result = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    result.push(data);
+                    console.log("User Data:", data); // Log each user data
+                    result.push({ id: doc.id, ...data });
                 });
                 setUsers(result);
             } catch (e) {
+                console.error('Error fetching users:', e)
                 setError(e);
             } finally {
                 setLoading(false);
@@ -48,6 +59,11 @@ function AddVenn({ route }) {
 
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
+    };
+
+    const addFriend = async (friendId) => {
+        await sendFriendRequest(friendId);
+        Alert.alert('Venneforespørsel sendt', 'Venneforespørsel sendt til bruker');
     };
 
     if (loading) {
@@ -95,7 +111,7 @@ function AddVenn({ route }) {
                                     <Text style={styles.textCont}>Additional details here</Text>
                                     <TouchableOpacity
                                         style={styles.addButton}
-                                        onPress={() => console.log('Legg til knappen trykket!')}
+                                        onPress={() => addFriend(user.id)}
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
