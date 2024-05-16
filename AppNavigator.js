@@ -7,6 +7,8 @@ import ProfilIkon from "./assets/ProfilIkon";
 import CalendarIcon from "./assets/CalendarIcon";
 import ActivityFilter from "./components/ActivityFilter";
 import Activities from "./components/Activities";
+import SearchVenn from "./components/SearchVenn";
+import AddVenn from "./components/AddVenn";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
@@ -26,8 +28,7 @@ function AppNavigator({ isAuthenticated }) {
                     <>
                         <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
                         <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
-                    </>
-                )}
+                    </>)}
             </Stack.Navigator>
         );
     }
@@ -35,7 +36,7 @@ function AppNavigator({ isAuthenticated }) {
     function Home() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Filter" component={ActivityFilter} />
+                <Stack.Screen name="ActivityFilter" component={ActivityFilter} />
                 <Stack.Screen name="Activities" component={Activities} />
                 <Stack.Screen name="Calendar" component={Calendar} />
                 <Stack.Screen name="DatePicker" component={DatePicker} />
@@ -43,11 +44,11 @@ function AppNavigator({ isAuthenticated }) {
         );
     }
 
-    function Activity() {
+    function Social() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Filter" component={ActivityFilter} />
-                <Stack.Screen name="Activities" component={Activities} />
+                <Stack.Screen name="SearchVenn" component={SearchVenn} />
+                <Stack.Screen name="AddVenn" component={AddVenn} />
             </Stack.Navigator>
         );
     }
@@ -73,7 +74,7 @@ function AppNavigator({ isAuthenticated }) {
                         case "Home":
                             iconName = <HjemIkon fill={iconColor} />;
                             break;
-                        case "Activity":
+                        case "Social":
                             iconName = <LeggTilIkon fill={iconColor} />;
                             break;
                         case "Profil":
@@ -106,9 +107,9 @@ function AppNavigator({ isAuthenticated }) {
                 options={{ tabBarLabel: 'Hjem' }}
             />
             <MaterialBottomTabs.Screen
-                name="Activity"
-                component={Activity}
-                options={{ tabBarLabel: 'Legg til' }}
+                name="Social"
+                component={Social}
+                options={{ tabBarLabel: 'Sosialt' }}
             />
             <MaterialBottomTabs.Screen
                 name="Profil"

@@ -30,14 +30,14 @@ function ActivityFilter({ navigation }) {
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
-                    <Text style={styles.label}>Deltagere:</Text>
+                    <Text style={styles.label}>Deltakere:</Text>
                     <Slider
                         style={styles.slider}
-                        minimumValue={0}
+                        minimumValue={1}
                         maximumValue={10}
                         step={1}
                         value={people}
-                        onValueChange={handlePeopleChange}
+                        onValueChange={setPeople}
                         minimumTrackTintColor="#FFFFFF"
                         maximumTrackTintColor="#000000"
                     />
@@ -50,7 +50,7 @@ function ActivityFilter({ navigation }) {
                         maximumValue={1000}
                         step={50}
                         value={price}
-                        onValueChange={handlePriceChange}
+                        onValueChange={setPrice}
                         minimumTrackTintColor="#FFFFFF"
                         maximumTrackTintColor="#000000"
                     />
@@ -59,7 +59,7 @@ function ActivityFilter({ navigation }) {
                     <Text style={styles.label}>Sted:</Text>
                     <Picker
                         selectedValue={location}
-                        onValueChange={handleTypeChange}
+                        onValueChange={setLocation}
                         style={styles.picker}
                         itemStyle={styles.pickerItem}
                     >
