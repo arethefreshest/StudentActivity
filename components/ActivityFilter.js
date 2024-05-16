@@ -76,7 +76,7 @@ function ActivityFilter({ navigation }) {
 }
 
 
-const styles = StyleSheet.create({
+const styles= StyleSheet.create({
     gradientScreen: {
         flex: 1,
         alignItems: 'center',

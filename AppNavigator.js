@@ -42,11 +42,16 @@ function AppNavigator({ isAuthenticated }) {
     }
 
     function Social() {
-    function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SearchVenn" component={SearchVenn} />
                 <Stack.Screen name="AddVenn" component={AddVenn} />
+            </Stack.Navigator>
+        );
+    }
+    function AddActivity() {
+        return (
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Add" component={Add} />
             </Stack.Navigator>
         );
@@ -74,6 +79,8 @@ function AppNavigator({ isAuthenticated }) {
                             iconName = <HjemIkon fill={iconColor} />;
                             break;
                         case "Social":
+                            iconName = <LeggTilIkon fill={iconColor} />;
+                            break;
                         case "Add":
                             iconName = <LeggTilIkon fill={iconColor} />;
                             break;
@@ -108,6 +115,8 @@ function AppNavigator({ isAuthenticated }) {
                 name="Social"
                 component={Social}
                 options={{ tabBarLabel: 'Sosialt' }}
+            />
+            <MaterialBottomTabs.Screen
                 name="Add"
                 component={AddActivity}
                 options={{ tabBarLabel: 'Legg til' }}
