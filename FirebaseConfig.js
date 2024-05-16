@@ -2,9 +2,12 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import { initializeAuth } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {APIKEY, APPID, MESSAGINSENDERID, MEASURMENTID, STORAGEBUCKET, PROJECTID, AUTHDOMAIN} from "@env";
 
+// Define Firebase configuration
 const firebaseConfig = {
     apiKey: APIKEY,
     authDomain: AUTHDOMAIN,
@@ -15,11 +18,20 @@ const firebaseConfig = {
     measurementId: MEASURMENTID,
 };
 
-// Initialize Firebase, Firestore and Firebase Auth
+// Initialize Firebase, Firestore and Auth
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = initializeAuth(app);
 
+// Initialize Firestore
+const db = getFirestore(app);
+
+const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
+
+// Initialize Storage
+const storage = getStorage(app);
+
+// Initialize Analytics
 isSupported().then((supported) => {
     if (supported) {
         const analytics = getAnalytics(app);
