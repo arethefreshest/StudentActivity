@@ -2,10 +2,12 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getAuth, initializeAuth, browserLocalPersistence, getReactNativePersistence } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import Constants from "expo-constants";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {APIKEY, APPID, MESSAGINSENDERID, MEASURMENTID, STORAGEBUCKET, PROJECTID, AUTHDOMAIN} from "@env";
+
 
 // Define Firebase configuration
 const firebaseConfig = {
@@ -24,9 +26,29 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(app);
 
-const auth = initializeAuth(app, {
+// Initialize Auth
+let auth;
+if (Constants.platform?.web) {
+    // Web-specific initialization logic
+    auth = getAuth(app);
+    auth.setPersistence(browserLocalPersistence)
+        .then(() => {
+            console.log('Auth state persisted in current session');
+        })
+        .catch((error) => {
+            // Handle errors
+            console.error('Error setting Auth state persistence:', error);
+        });
+} else {
+    // Initialize Auth for native platforms
+    auth = initializeAuth(app, {
+        persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+    });
+}
+
+/*const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-});
+});*/
 
 // Initialize Storage
 const storage = getStorage(app);
@@ -40,4 +62,4 @@ isSupported().then((supported) => {
     }
 });
 
-export { app, db, auth};
+export { app, db, auth, storage};
