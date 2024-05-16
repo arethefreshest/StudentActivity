@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, initializeAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from "./FirebaseConfig";
 import { app } from "./FirebaseConfig";
-
 
 function AuthScreen() {
     const [email, setEmail] = useState('');
@@ -57,7 +56,7 @@ function AuthScreen() {
             <Button title="Login" onPress={handleSignIn} />
             {error && <Text style={{ color: 'red' }}>{error}</Text>}
         </View>
-    );
+);
 }
 
 export default AuthScreen;

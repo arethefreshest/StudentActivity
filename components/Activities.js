@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Modal from 'react-native-modal';
+import CustomPicker from "./CustomPicker";
+import { styles } from '../styles';
 
-function Activities({ route }) {
+function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [activityName, setActivityName] = useState('');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [description, setDescription] = useState('');
+    const [selectedFriends, setSelectedFriends] = useState([]);
 
-    const numericPeople = Number(people); // Move numericPeople to a broader scope
+    const friendsList = [
+        "Are Berntsen",
+        "Storm Selvig",
+        "Eivind Solberg",
+        "Ole Sveinung Berget",
+        "Tore Knudsen",
+        "David Holt"
+    ];
+
+    const numericPeople = Number(people);
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
@@ -23,7 +41,6 @@ function Activities({ route }) {
             where("MaxP", ">=", numericPeople),
             where("Location", "==", locQuery)
         );
-
 
         async function fetchData() {
             setLoading(true);
@@ -46,41 +63,77 @@ function Activities({ route }) {
             }
         }
 
-    fetchData();
-}, [people, price, location]); // Removed numericPeople from dependencies
+        fetchData();
+    }, [people, price, location]);
 
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
     };
 
-if (loading) {
-    return (
-        <GradientScreen>
-            <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
-        </GradientScreen>
-    );
-}
 
-if (error) {
-    return (
-        <GradientScreen>
-            <View style={styles.container}>
-                <Text style={styles.error}>Error: {error.message}</Text>
-            </View>
-        </GradientScreen>
-    );
-}
+    if (loading) {
+        return (
+            <GradientScreen>
+                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
+            </GradientScreen>
+        );
+    }
 
-if (activities.length === 0 && !loading) {
-    return (
-        <GradientScreen>
-            <View style={styles.container}>
-                <Text style={styles.noResults}>No activities found with the selected filters.</Text>
-            </View>
-        </GradientScreen>
-    );
-}
 
+    const handleAddActivity = async () => {
+        const activityData = {
+            activityName,
+            selectedDate,
+            selectedFriends,
+            description,
+        };
+        try {
+            await addDoc(collection(db, "calendar"), activityData);
+
+            console.log("Activity added successfully");
+            setModalVisible(false);
+            setActivityName('');
+            setSelectedDate(new Date());
+            setDescription('');
+            setSelectedFriends([]);
+        } catch (error) {
+            console.error("Error adding activity: ", error);
+        }
+    };
+
+    const openModalWithActivityDetails = (activity) => {
+        setActivityName(activity.Name);
+        setDescription(activity.WhatYouNeed);
+        setModalVisible(true);
+    };
+
+    if (loading) {
+        return (
+            <GradientScreen>
+                <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />
+            </GradientScreen>
+        );
+    }
+
+    if (error) {
+        return (
+            <GradientScreen>
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>Error: {error.message}</Text>
+                </View>
+            </GradientScreen>
+        );
+    }
+
+    if (activities.length === 0 && !loading) {
+        return (
+            <GradientScreen>
+                <View style={styles.noResultsContainer}>
+                    <Text style={styles.noResultsText}>No activities found with the selected filters.</Text>
+                </View>
+            </GradientScreen>
+        );
+    }
 
     return (
         <GradientScreen style={styles.gradientScreen}>
@@ -104,7 +157,7 @@ if (activities.length === 0 && !loading) {
                                     <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
                                     <TouchableOpacity
                                         style={styles.addButton}
-                                        onPress={() => console.log('Legg til knappen trykket!')} // Her kan du legge til din egen logikk
+                                        onPress={() => openModalWithActivityDetails(activity)}
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
@@ -113,99 +166,53 @@ if (activities.length === 0 && !loading) {
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
+                <Modal isVisible={isModalVisible}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Aktivitetsnavn"
+                            value={activityName}
+                            onChangeText={setActivityName}
+                        />
+                        <View style={styles.rowContainer}>
+                            <CustomPicker
+                                items={friendsList}
+                                selectedItems={selectedFriends}
+                                onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
+                                onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
+                            />
+                            <DateTimePicker
+                                value={selectedDate}
+                                mode="date"
+                                display="default"
+                                onChange={(event, date) => date && setSelectedDate(date)}
+                                style={styles.date}
+                            />
+
+                        </View>
+
+                        <TextInput
+                            style={styles.textArea}
+                            placeholder="Beskrivelse"
+                            multiline
+                            numberOfLines={4}
+                            value={description}
+                            onChangeText={setDescription}
+                        />
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
+                                <Text style={styles.buttonText}>Legg til</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.buttonText}>Avbryt</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
             </SafeAreaView>
         </GradientScreen>
     );
 }
-const styles = StyleSheet.create({
-    gradientScreen: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    safeArea: {
-        flex: 1,
-        marginTop: 140,
-        marginBottom: 100,
-    },
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    activityContainer: {
-        margin: 10,
-        padding: 20,
-        backgroundColor: 'rgba(255,255,255,0.63)',
-        borderRadius: 15,
-        borderWidth: 1,
-        borderColor: '#1e1d1d',
-    },
-    title: {
-        fontSize: 20,
-
-        fontWeight: 'bold',
-    },
-    details: {
-        marginTop: 10,
-    },
-    activityIndicator: {
-        top: 300,
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 16,
-    },
-    noResultsContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    noResultsText: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    addButton: {
-        marginTop: 40,
-        backgroundColor: '#008080',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '50%',
-        marginLeft:'25%',
-    },
-    addButtonText: {
-        color: 'white',
-        fontSize: 16,
-    },
-    textTop: {
-        fontSize: 18,
-        marginLeft: 40,
-        marginTop: 10,
-    },
-    textCont: {
-        fontStyle: "italic",
-        fontSize: 14,
-        marginTop: 10,
-        marginLeft: 60,
-    },
-    textCont2: {
-        fontWeight: "bold",
-        fontSize: 16,
-        marginTop: 30,
-        marginLeft: 40,
-    },
-    textLink: {
-        marginTop: 20,
-        fontSize:18,
-        marginLeft: 60,
-    }
-});
 
 export default Activities;

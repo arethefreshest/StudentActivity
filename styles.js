@@ -213,13 +213,9 @@ export const styles = StyleSheet.create({
 
     inputLabel: {
         fontFamily: 'Roboto-Medium',
-        //fontWeight: '500',
         fontSize: 16,
-        //lineHeight: 14,
         color: '#FFECE7',
         position: 'absolute',
-        // width: 140,
-        //height: 14,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -236,6 +232,21 @@ export const styles = StyleSheet.create({
     italicText: {
         fontSize: 18,
         fontFamily: 'Roboto-Italic',
+        fontSize: 18,
+        textAlign: 'right',
+        color: '#000000',
+        opacity: 0.5,
+        borderColor: '#000000',
+        borderRadius: 15,
+    },
+    forgotPassword: {
+        color: '#FFECE7',
+        fontSize: 15,
+        fontFamily: 'Roboto-Medium',
+        position: 'absolute'
+    },
+    forgotPasswordText: {
+        fontSize: 15,
         color: '#FFECE7',
         ...Platform.select({
             ios: {
@@ -487,6 +498,315 @@ export const styles = StyleSheet.create({
         marginVertical: 10,
         textAlign: 'center',
     },
+
+    // styles for Calendar.js
+   containerCalendar: {
+        margin: 10,
+        padding: 20,
+        marginTop: 130,
+        height: 600,
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+    },
+    titleCalendar: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 40,
+    },
+    CalendarStyle: {
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+        height:400,
+    },
+
+
+    // Styles for Activities.js
+    gradientScreen: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 50,
+        width: '100%',
+        marginTop: 30,
+        zIndex: 1,
+    },
+    safeArea: {
+        flex: 1,
+        marginTop: 140,
+        marginBottom: 100,
+    },
+    container: {
+        flex: 1,
+        padding: 10,
+    },
+    activityContainer: {
+        margin: 10,
+        padding: 20,
+        backgroundColor: 'rgba(255,255,255,0.63)',
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#1e1d1d',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    details: {
+        marginTop: 10,
+    },
+    activityIndicator: {
+        top: 300,
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 16,
+    },
+    noResultsContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noResultsText: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    addButton: {
+        marginTop: 40,
+        backgroundColor: '#008080',
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '50%',
+        marginLeft: '25%',
+    },
+    addButtonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    textTop: {
+        fontSize: 18,
+        marginLeft: 40,
+        marginTop: 10,
+    },
+    textCont: {
+        fontStyle: "italic",
+        fontSize: 14,
+        marginTop: 10,
+        marginLeft: 60,
+    },
+    textCont2: {
+        fontWeight: "bold",
+        fontSize: 16,
+        marginTop: 30,
+        marginLeft: 40,
+    },
+    textLink: {
+        marginTop: 20,
+        fontSize: 18,
+        marginLeft: 60,
+    },
+    modalContent: {
+        backgroundColor: '#a3caca',
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 10,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        width: '100%',
+    },
+    textArea: {
+        height: 100,
+        borderColor: 'gray',
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 15,
+        marginBottom: 20,
+        width: '100%',
+    },
+    date: {
+        marginBottom: 10,
+        marginLeft: 130,
+        width: '60%',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    button: {
+        backgroundColor: '#008080',
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    cancelButton: {
+        backgroundColor: '#ff4d4d',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+
+    // Styles for Add.js
+    containerAdd: {
+        width: '90%',
+        margin: '5%',
+        padding: 20,
+        marginTop: 20,
+        height: '90%',
+        backgroundColor: 'rgba(255,255,255,0.49)',
+        borderRadius: 20,
+        shadowColor: 'rgba(0,0,0,0.2)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+        overflow: 'visible',
+    },
+    rowContainerAdd: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 60,
+        marginTop: 40,
+        zIndex: 1,
+    },
+    inputAdd: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginBottom: 10,
+        fontSize: 20,
+    },
+    dateText: {
+        fontSize: 20,
+        textAlign: 'center',
+    },
+    dateAdd: {
+        width: '60%',
+        marginLeft: '40%',
+    },
+    label: {
+        fontSize: 18,
+        marginBottom: 0,
+        fontWeight: 'bold',
+    },
+    label1: {
+        fontSize: 18,
+        marginBottom: 50,
+        fontWeight: 'bold',
+    },
+    labelContainer: {
+        marginRight:40,
+    },
+    textAreaAdd: {
+        height: 100,
+        borderColor: 'gray',
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 10,
+        marginBottom: 70,
+        fontSize: 18,
+    },
+    buttonAdd: {
+        backgroundColor: '#008080',
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    buttonTextAdd: {
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    pickerContainer: {
+        backgroundColor: 'rgb(255,255,255)',
+        padding: 10,
+        width: '60%',
+        height: 'auto',
+        borderRadius: 10,
+        marginBottom: 10,
+        position: 'absolute',
+        top: 1,
+        zIndex: 1000,
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+    },
+    selectedItem: {
+        padding: 10,
+        fontSize: 18,
+        backgroundColor: 'lightgray',
+    },
+
+modalOverlayCalendar: {
+    flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContainerCalendar: {
+    width: '80%',
+        padding: 20,
+        backgroundColor: '#FFECE7',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+},
+modalTitleCalendar: {
+    fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+},
+modalTextCalendar: {
+    color: '#333',
+        fontSize: 18,
+        marginBottom: 10,
+},
+modalCloseButtonCalendar: {
+    marginTop: 10,
+        padding: 10,
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        borderRadius: 10,
+},
+
 
     userName: {
         fontSize: 24,
