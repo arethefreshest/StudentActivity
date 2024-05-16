@@ -40,7 +40,7 @@ function AppNavigator({ isAuthenticated }) {
         );
     }
 
-    function Add() {
+    function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Add" component={Add} />
@@ -101,7 +101,7 @@ function AppNavigator({ isAuthenticated }) {
             />
             <MaterialBottomTabs.Screen
                 name="Add"
-                component={Add}
+                component={AddActivity}
                 options={{ tabBarLabel: 'Legg til' }}
             />
             <MaterialBottomTabs.Screen
