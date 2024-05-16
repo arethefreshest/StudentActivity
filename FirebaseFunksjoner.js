@@ -14,6 +14,17 @@ import { auth, db, storage} from "./FirebaseConfig";
 import {createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+// Helper function to remove undefined keys from an object
+const removeUndefinedKeys = (obj) => {
+    let newObj = {};
+    for (let key in obj) {
+        if (obj[key] !== undefined) {
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+};
+
 export const registerUser = async (email, password, fullName) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const userRef = doc(db, "users", userCredential.user.uid);
@@ -134,16 +145,27 @@ export const fetchFriendsAndRequests = async (userId) => {
 export const uploadProfileImage = async (uri, userId) => {
     if (!uri) return null;
 
-    const response = await fetch(uri);
-    const blob = await response.blob();
+    try {
+        console.log('Fetching image from URI...');
+        const response = await fetch(uri);
+        const blob = await response.blob();
 
-    const storageRef = ref(storage, `profileImages/${userId}`);
-    await uploadBytes(storageRef, blob);
+        console.log('Uploading image to Firebase Storage...');
+        const storageRef = ref(storage, `profileImages/${userId}`);
+        await uploadBytes(storageRef, blob);
 
-    const downloadURL = await getDownloadURL(storageRef);
+        console.log('Getting download URL...');
+        const downloadURL = await getDownloadURL(storageRef);
 
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-        profileImageUrl: downloadURL
-    });
+        console.log('Updating Firestore document...');
+        const userRef = doc(db, 'users', userId);
+        await updateDoc(userRef, removeUndefinedKeys({
+            profileImageUrl: downloadURL
+        }));
+
+        return downloadURL;
+    } catch (error) {
+        console.error('Error uploading profile image:', error);
+        throw error; // Re-throw the error to handle it in the calling function
+    }
 };

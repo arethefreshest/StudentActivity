@@ -101,6 +101,19 @@ export const styles = StyleSheet.create({
         position: 'relative',
     },
 
+    deleteButton: {
+        marginTop: 20,
+        backgroundColor: '#FF0000',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+
+    deleteButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+    },
+
     feedContainer: {
         flex: 1,
         top: 160,
@@ -415,9 +428,20 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
 
+    settingsContainer: {
+      padding: 16,
+    },
+
     text: {
         textAlign: 'center',
         fontSize: 18,
+    },
+
+    textFieldInput: {
+        fontSize: 24,
+        fontFamily: 'Roboto-Bold',
+        marginBottom: 16,
+        color: '#FFECE7',
     },
 
     textInput: {

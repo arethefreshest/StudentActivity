@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Modal, TouchableOpacity } from "react-native";
 import { styles } from "../styles";
 
-const DropDownModal = ({ visible, onClose }) => {
+const DropDownModal = ({ visible, onClose, onSelectOption }) => {
     return (
         <Modal
             animationType="slide"
@@ -12,13 +12,13 @@ const DropDownModal = ({ visible, onClose }) => {
         >
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
-                    <TouchableOpacity onPress={() => console.log('Feed selected')} style={styles.modalOption}>
+                    <TouchableOpacity onPress={() => { onSelectOption('Feed'); onClose(); }} style={styles.modalOption}>
                         <Text style={styles.modalText}>Feed</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log('Profilinnstillinger selected')} style={styles.modalOption}>
+                    <TouchableOpacity onPress={() => { onSelectOption('ProfilInnstillinger'); onClose(); }} style={styles.modalOption}>
                         <Text style={styles.modalText}>Profilinnstillinger</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log('Venner selected')} style={styles.modalOption}>
+                    <TouchableOpacity onPress={() => { onSelectOption('Venner'); onClose(); }} style={styles.modalOption}>
                         <Text style={styles.modalText}>Venner</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={onClose} style={styles.modalCloseButton}>
