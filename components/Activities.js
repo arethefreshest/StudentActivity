@@ -6,9 +6,9 @@ import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import CustomPicker from "./CustomPicker";
-import { styles } from '../styles'; // Import styles from styles.js
+import { styles } from '../styles';
 
-function Activities({ route }) {
+function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -70,6 +70,17 @@ function Activities({ route }) {
         setExpandedId(expandedId === id ? null : id);
     };
 
+
+    if (loading) {
+        return (
+            <GradientScreen>
+                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
+            </GradientScreen>
+        );
+    }
+
+//    navigation.navigate('Calendar', {selectedActivity: activity});
+
     const handleAddActivity = async () => {
         const activityData = {
             activityName,
@@ -78,7 +89,8 @@ function Activities({ route }) {
             description,
         };
         try {
-            await addDoc(collection(db, "Activities"), activityData);
+            await addDoc(collection(db, "calendar"), activityData);
+
             console.log("Activity added successfully");
             setModalVisible(false);
             setActivityName('');
