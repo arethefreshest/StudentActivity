@@ -59,7 +59,7 @@ function AppNavigator({ isAuthenticated }) {
     function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name="Add" component={Add}/>
+                <Stack.Screen name="AddAktivitet" component={Add}/>
             </Stack.Navigator>
         );
     }

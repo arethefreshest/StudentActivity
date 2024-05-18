@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
         color: '#FFECE7',
     },
 
-    button: {
+    /*button: {
         backgroundColor: 'blue',
         paddingHorizontal: 16,
         paddingVertical: 8,
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
 
     buttonText: {
         color: 'white',
-    },
+    },*/
 
     container: {
         flex: 1,
@@ -99,6 +99,17 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 24,
         position: 'relative',
+    },
+
+    customButton: {
+      position: "relative",
+      width: '90%',
+      marginVertical: 8,
+    },
+
+    davidContainer: {
+        flex: 1,
+        padding: 10,
     },
 
     deleteButton: {
@@ -116,8 +127,9 @@ export const styles = StyleSheet.create({
 
     feedContainer: {
         flex: 1,
-        top: 160,
-        alignItems: 'center',
+        top: 0,
+        alignItems: 'left',
+        marginLeft: 20,
     },
 
     feedListContainer: {
@@ -159,6 +171,25 @@ export const styles = StyleSheet.create({
     forgotPasswordText: {
         fontSize: 15,
         color: '#FFECE7',
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000000',
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+            },
+            android: {
+                shadowColor: '#000000',
+                elevation: 4,
+                shadowOffset: { width: 0, height: 4},
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+            },
+            web: {
+
+            }
+        }),
+        position: 'absolute',
     },
 
     gradientBackground: {
@@ -176,13 +207,13 @@ export const styles = StyleSheet.create({
         marginRight: 0,
     },
 
-    input: {
+    /*input: {
         borderColor: 'gray',
         borderWidth: 1,
         width: 200,
         padding: 8,
         borderRadius: 4,
-    },
+    },*/
 
     inputGroup: {
         position: 'absolute',
@@ -191,6 +222,15 @@ export const styles = StyleSheet.create({
         height: 50.7,
         borderRadius: 10,
         backgroundColor: '#FFECE7',
+    },
+
+    inputGroup2: {
+        width: 238,
+        marginVertical: 10,
+        alignSelf: 'center',
+        backgroundColor: '#FFECE7',
+        borderRadius: 10,
+        //padding: 10,
     },
 
     inputIcon: {
@@ -232,21 +272,20 @@ export const styles = StyleSheet.create({
     italicText: {
         fontSize: 18,
         fontFamily: 'Roboto-Italic',
-        fontSize: 18,
         textAlign: 'right',
         color: '#000000',
         opacity: 0.5,
         borderColor: '#000000',
         borderRadius: 15,
     },
-    forgotPassword: {
-        color: '#FFECE7',
-        fontSize: 15,
-        fontFamily: 'Roboto-Medium',
-        position: 'absolute'
+
+    keyboardAvoidingContainer: {
+        flex: 1,
     },
-    forgotPasswordText: {
-        fontSize: 15,
+
+    profilItalicText: {
+        fontSize: 18,
+        fontFamily: 'Roboto-Italic',
         color: '#FFECE7',
         ...Platform.select({
             ios: {
@@ -378,10 +417,11 @@ export const styles = StyleSheet.create({
     },
 
     profileHeader: {
-        justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        top: 120,
+        paddingTop: 160,
+        paddingBottom: 20,
+        //zIndex: 1,
+        backgroundColor: 'transparent',
     },
 
     profileImage: {
@@ -403,6 +443,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 2,
         borderColor: '#FFECE7',
+    },
+
+    profileSettingsContainer: {
+        flex: 1,
+        //paddingTop: 100,
+        paddingBottom: 100,
     },
 
     registerButton: {
@@ -430,17 +476,48 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        //paddingBottom: 800,
+        //paddingTop: 20,
+        //top: '54%',
+    },
+
+    scrollContentContainer: {
+        flexGrow: 1,
+        paddingBottom: 100, // Adjust as needed to ensure scrolling area doesn't overlap with the bottom tab
+    },
+
+    scrollViewContainer: {
+        flex: 1,
+        marginTop: 20, // Adjust as needed to ensure spacing below the header
+        paddingBottom: 100, // Adjust as needed to ensure scrolling area doesn't overlap with the bottom tab
+    },
+
+    scrollView: {
+      flex: 1,
+    },
+
+    scrollViewContent: {
+        //flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
     sectionTitle: {
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
         color: '#FFECE7',
         marginTop: 20,
         marginBottom: 10,
-        paddingHorizontal: 20,
+        //paddingHorizontal: 20,
     },
 
     settingsContainer: {
-      padding: 16,
+        padding: 20,
+        alignItems: 'center',
     },
 
     text: {
@@ -541,10 +618,6 @@ export const styles = StyleSheet.create({
         flex: 1,
         marginTop: 140,
         marginBottom: 100,
-    },
-    container: {
-        flex: 1,
-        padding: 10,
     },
     activityContainer: {
         margin: 10,
@@ -660,6 +733,14 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
     },
+
+    buttonContainer2: {
+        width: '50%',
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+
     button: {
         backgroundColor: '#008080',
         padding: 10,
@@ -806,9 +887,7 @@ modalCloseButtonCalendar: {
         alignItems: 'center',
         borderRadius: 10,
 },
-
-
-    userName: {
+userName: {
         fontSize: 24,
         fontFamily: 'Roboto-Bold',
         color: '#FFECE7',

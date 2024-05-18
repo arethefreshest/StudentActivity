@@ -10,7 +10,7 @@ function SearchVenn({ navigation }) {
     const search = async () => {
         console.log("Applying filters with:", {email});
         const users = await searchUsers(email);
-        navigation.navigate('AddVenn', {email});
+        navigation.navigate('AddVenn', { email, users });
     };
 
     return (

@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, TextInput, Button, Alert, TouchableOpacity } from "react-native";
+import {View, Text, Alert, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform} from "react-native";
 import { styles } from "../styles";
 import { auth, db } from "../FirebaseConfig";
 import {doc, updateDoc, deleteDoc, getDoc} from "firebase/firestore";
+import InputField from "./InputField";
+import Button from "./Button";
+import { EmailAuthProvider, reauthenticateWithCredential} from "@firebase/auth";
+import { useNavigation } from '@react-navigation/native';
 
 const ProfilSettings = () => {
     const [dob, setDob] = useState('');
@@ -10,6 +14,7 @@ const ProfilSettings = () => {
     const [degree, setDegree] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const navigation = useNavigation();
 
 
     useEffect(() => {
@@ -51,53 +56,91 @@ const ProfilSettings = () => {
         }
     };
     const handleDeleteProfile = async () => {
-        const userId = auth.currentUser.uid;
-        const userRef = doc(db, 'users', userId);
+        const user = auth.currentUser;
+        if (!user) return;
 
-        await deleteDoc(userRef);
-        await auth.currentUser.delete();
+        // Prompt the user to re-enter their password
+        Alert.prompt(
+            'Re-authenticate',
+            'Please enter your password to confirm:',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: async (password) => {
+                        try {
+                            // Re-authenticate the user
+                            const credential = EmailAuthProvider.credential(user.email, password);
+                            await reauthenticateWithCredential(user, credential);
 
-        Alert.alert('Profil slettet', 'Brukeren din er slettet');
+                            // Proceed with deleting the user's Firestore document and authentication profile
+                            const userId = user.uid;
+                            const userRef = doc(db, 'users', userId);
+
+                            await deleteDoc(userRef);
+                            await user.delete();
+
+                            Alert.alert('Profil slettet', 'Brukeren din er slettet');
+                            navigation.navigate("ProfilRegistrering");
+                        } catch (error) {
+                            console.error('Error during re-authentication or deletion:', error);
+                            Alert.alert('Error', 'Failed to delete profile. Please try again.');
+                        }
+                    }
+                }
+            ],
+            'secure-text'
+        );
     };
 
     return (
-        <View style={styles.settingsContainer}>
-            <Text style={styles.sectionTitle}>Profile Settings</Text>
-            <TextInput
-                style={styles.textFieldInput}
-                placeholder="Date of Birth"
-                value={dob}
-                onChangeText={setDob}
-            />
-            <TextInput
-                style={styles.textFieldInput}
-                placeholder="University"
-                value={university}
-                onChangeText={setUniversity}
-            />
-            <TextInput
-                style={styles.textFieldInput}
-                placeholder="Degree"
-                value={degree}
-                onChangeText={setDegree}
-            />
-            <TextInput
-                style={styles.textFieldInput}
-                placeholder="Start Date"
-                value={startDate}
-                onChangeText={setStartDate}
-            />
-            <TextInput
-                style={styles.textFieldInput}
-                placeholder="End Date"
-                value={endDate}
-                onChangeText={setEndDate}
-            />
-            <Button title="Save" onPress={handleSave} />
-            <TouchableOpacity onPress={handleDeleteProfile} style={styles.deleteButton}>
-                <Text style={styles.deleteButtonText}>Delete Profile</Text>
-            </TouchableOpacity>
-        </View>
+            <View style={styles.profileSettingsContainer}>
+                <ScrollView contentContainerStyle={styles.scrollContainer} style={{ flex: 1}}>
+                    <Text style={styles.sectionTitle}>Profile Settings</Text>
+                    <View style={styles.inputGroup2}>
+                        <InputField
+                            placeholder="Date of Birth"
+                            value={dob}
+                            onChangeText={setDob}
+                        />
+                    </View>
+                    <View style={styles.inputGroup2}>
+                        <InputField
+                            placeholder="University"
+                            value={university}
+                            onChangeText={setUniversity}
+                        />
+                    </View>
+                    <View style={styles.inputGroup2}>
+                        <InputField
+                            placeholder="Degree"
+                            value={degree}
+                            onChangeText={setDegree}
+                        />
+                    </View>
+                    <View style={styles.inputGroup2}>
+                        <InputField
+                            placeholder="Start Date"
+                            value={startDate}
+                            onChangeText={setStartDate}
+                        />
+                    </View>
+                    <View style={styles.inputGroup2}>
+                        <InputField
+                            placeholder="End Date"
+                            value={endDate}
+                            onChangeText={setEndDate}
+                        />
+                    </View>
+                    <View style={styles.buttonContainer2}>
+                        <Button text="Lagre" onPress={handleSave} style={styles.customButton} />
+                        <Button text="Slett profil" onPress={handleDeleteProfile} style={styles.customButton}/>
+                    </View>
+                </ScrollView>
+            </View>
     );
 };
 

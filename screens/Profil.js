@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {View, Text, Image, TouchableOpacity, Alert, FlatList } from "react-native";
+import {View, Text, Image, TouchableOpacity, Alert, FlatList, ScrollView } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary from 'expo-media-library';
@@ -191,17 +191,15 @@ const Profil = () => {
         <View style={{ flex: 1 }}>
             <GradientScreen>
                 <TouchableOpacity
-                    onPress={() => {
-                        console.log('Menyknapp er trykket!!!');
-                        setModalVisible(true);
-                    }}
+                    onPress={() => setModalVisible(true)}
                     style={[styles.menuButton, {
                         position: 'absolute',
                         top: '24%',
                         right: '5%',
                         zIndex: 1,
                         alignItems: 'center',
-                        justifyContent: 'center',}]}
+                        justifyContent: 'center',
+                    }]}
                 >
                     <FontAwesome name="angle-down" size={24} color="white" />
                 </TouchableOpacity>
@@ -209,37 +207,28 @@ const Profil = () => {
                     visible={modalVisible}
                     onClose={() => setModalVisible(false)}
                     onSelectOption={setSelectedOption}
+                    onLogOut={handleLogout}
                 />
-                <FlatList
-                    data={[]}
-                    renderItem={(item) => null}
-                    ListHeaderComponent={() => (
-                        <View style={{ paddingHorizontal: 16, paddingTop: 20 }}>
-                            <View style={[styles.profileHeader, { alignItems: 'center' }]}>
-                                {isCurrentUser && (
-                                    <TouchableOpacity onPress={pickImage}>
-                                        {image ? (
-                                            <Image source={{ uri: image }} style={styles.profileImage} />
-                                        ) : (
-                                            <View style={styles.profileImagePlaceholder}>
-                                                <Text style={styles.addPictureIcon}>+</Text>
-                                            </View>
-                                        )}
-                                    </TouchableOpacity>
-                                )}
-                                {!isCurrentUser && friend.profileImageUrl && (
-                                    <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
-                                )}
-                                <Text style={styles.userName}>Hei {isCurrentUser ? (auth.currentUser.displayName || 'User') : friend.fullName}!</Text>
-                            </View>
-                            {renderContent()}
-                        </View>
+                <View style={[styles.profileHeader, { alignItems: 'center'}]}>
+                    {isCurrentUser && (
+                        <TouchableOpacity onPress={pickImage}>
+                            {image ? (
+                                <Image source={{ uri: image }} style={styles.profileImage} />
+                            ) : (
+                                <View style={styles.profileImagePlaceholder}>
+                                    <Text style={styles.addPictureIcon}>+</Text>
+                                </View>
+                            )}
+                        </TouchableOpacity>
                     )}
-                    keyExtractor={(item, index) => index.toString()}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                />
+                    {!isCurrentUser && friend.profileImageUrl && (
+                        <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
+                    )}
+                    <Text style={styles.userName}>Hei {isCurrentUser ? (auth.currentUser.displayName || 'User') : friend.fullName}!</Text>
+                </View>
+                {renderContent()}
                 {isCurrentUser && (
-                    <View style={{ marginTop: 300, alignItems: 'center' }}>
+                    <View style={{ marginTop: 0, alignItems: 'center' }}>
                         <Button text="Logg ut" onPress={handleLogout} />
                     </View>
                 )}
