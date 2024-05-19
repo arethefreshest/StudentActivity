@@ -111,6 +111,10 @@ export const styles = StyleSheet.create({
         width: '100%', // Adjust width as needed
     },
 
+    customInputField2: {
+        width: '95%',
+    },
+
     container: {
         flex: 1,
         padding: 10,
@@ -894,7 +898,7 @@ export const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18,
-        marginBottom: 0,
+        marginBottom: 10,
         fontWeight: 'bold',
     },
     label1: {

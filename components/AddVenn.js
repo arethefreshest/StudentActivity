@@ -13,11 +13,11 @@ import {
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
-import { sendFriendRequest } from "../FirebaseFunksjoner";
+import { sendFriendRequest, searchUsers } from "../FirebaseFunksjoner";
 import {styles} from "../styles";
 
 function AddVenn({ route }) {
-    const { email, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params
+    const { searchParam, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params
 
     const [users, setUsers] = useState(initialUsers || []);
     const [loading, setLoading] = useState(!initialUsers);
@@ -27,8 +27,8 @@ function AddVenn({ route }) {
     useEffect(() => {
         console.log('Route params:', route.params);
 
-        if (!email) {
-            setError(new Error('Email parameter is missing'));
+        if (!searchParam) {
+            setError(new Error('Search parameter is missing'));
             setLoading(false);
             return;
         }
@@ -38,23 +38,11 @@ function AddVenn({ route }) {
             return;
         }
 
-        const q = query(
-            collection(db, "users"),
-            where("email", "==", email)
-        );
-
-        async function fetchData() {
+        const fetchData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const querySnapshot = await getDocs(q);
-                console.log("Query Snapshot Size:", querySnapshot.size); // Log the size of the snapshot
-                const result = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    console.log("User Data:", data); // Log each user data
-                    result.push({ id: doc.id, ...data });
-                });
+                const result = await searchUsers(searchParam);
                 setUsers(result);
             } catch (e) {
                 console.error('Error fetching users:', e)
@@ -64,7 +52,7 @@ function AddVenn({ route }) {
             }
         }
         fetchData();
-    }, [email]);
+    }, [searchParam]);
 
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
@@ -97,7 +85,7 @@ function AddVenn({ route }) {
         return (
             <GradientScreen>
                 <View style={styles.container}>
-                    <Text style={styles.noResults}>No Users with that email were found.</Text>
+                    <Text style={styles.noResults}>No Users with that email or name were found.</Text>
                 </View>
             </GradientScreen>
         );
@@ -116,7 +104,7 @@ function AddVenn({ route }) {
                             {user.profileImageUrl && (
                             <Image source={{ uri: user.profileImageUrl }} style={styles.profileImage} />
                             )}
-                            <Text style={styles.title}>{user.Name}</Text>
+                            <Text style={styles.title}>{user.fullName}</Text>
                             <Text style={styles.textTop}>Email: {user.email}</Text>
                             {expandedId === user.id && (
                                 <View style={styles.details}>

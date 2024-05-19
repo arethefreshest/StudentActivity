@@ -50,16 +50,50 @@ export const registerUser = async (email, password, fullName) => {
 
 export const searchUsers = async (searchParam) => {
     const userRef = collection(db, 'users');
-    const q = query(userRef, where('email', '==', searchParam));
+    const lowerCaseSearchParam = searchParam.toLowerCase();
+
+    // Create queries for both email and full name
+    const emailQuery = query(userRef, where('email', '==', lowerCaseSearchParam));
+    const fullNameQuery = query(userRef, where('fullName', '>=', lowerCaseSearchParam), where('fullName', '<=', lowerCaseSearchParam + '\uf8ff'));
+    const fullNameOriginalQuery = query(userRef, where('fullName', '>=', searchParam), where('fullName', '<=', searchParam + '\uf8ff'));
+
+    // Execute all of these queries
+    const [emailSnapShot, fullNameSnapShot, fullNameOriginalSnapShot] = await Promise.all([
+        getDocs(emailQuery),
+        getDocs(fullNameQuery),
+        getDocs(fullNameOriginalQuery)
+    ]);
+
+    const users = new Map();
+
+    // Add email results to the map
+    emailSnapShot.forEach((doc) => {
+        users.set(doc.id, { id: doc.id, ...doc.data() });
+    });
+
+    // Add name results to the map
+    fullNameSnapShot.forEach((doc) => {
+        users.set(doc.id, { id: doc.id, ...doc.data() });
+    });
+
+    // Add original case name results to the map
+    fullNameOriginalSnapShot.forEach((doc) => {
+        users.set(doc.id, { id: doc.id, ...doc.data() });
+    });
+
+    return Array.from(users.values());
+
+
+    /*const q = query(userRef, where('email', '==', searchParam));
     const querySnapshot = await getDocs(q);
 
-    const users = [];
+    //const users = [];
     querySnapshot.forEach((doc) => {
         users.push({ id: doc.id, ...doc.data() });
     });
 
-    return users;
-}
+    //return users;*/
+};
 export const sendFriendRequest = async (friendId) => {
     const user = auth.currentUser;
     if (!user) return;

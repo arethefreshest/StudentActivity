@@ -6,12 +6,12 @@ import { searchUsers } from "../FirebaseFunksjoner";
 import { styles } from "../styles";
 
 function SearchVenn({ navigation }) {
-    const [email, setEmail] = useState("Bruker@example.com");
+    const [searchParam, setSearchParam] = useState("Bruker@example.com");
 
     const search = async () => {
-        console.log("Applying filters with:", {email});
-        const users = await searchUsers(email);
-        navigation.navigate('AddVenn', { email, users });
+        console.log("Applying filters with:", { searchParam });
+        const users = await searchUsers( searchParam );
+        navigation.navigate('AddVenn', { searchParam, users });
     };
 
     return (
@@ -20,10 +20,12 @@ function SearchVenn({ navigation }) {
                 <View style={styles.davidContainer}>
                     <Text style={styles.label}>Søk:</Text>
                     <InputField
-                        value={email}
-                        onChangeText={setEmail}
+                        value={searchParam}
+                        onChangeText={setSearchParam}
                         minimumTrackTintColor="#FFFFFF"
                         maximumTrackTintColor="#000000"
+                        customStyle={styles.customInputField}
+                        customStyleInner={styles.customInputField2}
                     />
                     <TouchableOpacity style={styles.davidButton} onPress={search}>
                         <Text style={styles.davidButtonText}>Finn Venn</Text>
