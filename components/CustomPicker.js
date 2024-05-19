@@ -23,7 +23,7 @@ const CustomPicker = ({ items, selectedItems, onSelect, onRemove }) => {
                                 onPress={() => selectedItems.includes(friend) ? onRemove(friend) : onSelect(friend)}
                                 style={selectedItems.includes(friend) ? styles.selectedItem : styles.item}
                             >
-                                <Text>{friend}</Text>
+                                <Text>{friend.fullName}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>

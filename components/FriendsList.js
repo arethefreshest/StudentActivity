@@ -8,7 +8,7 @@ const FriendsList = ({ friends }) => {
     const navigation = useNavigation();
 
     const handleFriendClick = (friend) => {
-        navigation.navigate('Profil', { friend });
+        navigation.navigate('ProfilHome', { friend });
     };
 
     return (
@@ -21,7 +21,9 @@ const FriendsList = ({ friends }) => {
                     data={friends}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => handleFriendClick(item)} style={styles.friendItem}>
-                            <Image source={{ uri: item.profileImageUrl }} style={styles.friendProfileImage} />
+                            {item.profileImageUrl && (
+                                <Image source={{ uri: item.profileImageUrl }} style={styles.profileImageFriend} />
+                            )}
                             <Text style={styles.feedText}>{item.fullName}</Text>
                         </TouchableOpacity>
                     )}

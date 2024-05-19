@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {View, Text, Image, TouchableOpacity, Alert, FlatList, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary from 'expo-media-library';
 import { auth, db } from "../FirebaseConfig";
-//import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { styles } from "../styles";
 import GradientScreen from "../components/GradientScreen";
 import Button from "../components/Button";
@@ -16,25 +15,27 @@ import FriendRequests from "../components/FriendRequests";
 import DropDownModal from "../components/DropDownModal";
 import FriendsList from "../components/FriendsList";
 import ProfilSettings from "../components/ProfilSettings";
-import {MaterialCommunityIcons, FontAwesome} from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 import { fetchUserActivities, fetchFriendsAndRequests, acceptFriendRequest, uploadProfileImage } from "../FirebaseFunksjoner";
 
-const Profil = () => {
+const Profil = ({ loggedInUserId }) => {
     const [image, setImage] = useState(null);
     const [activities, setActivities] = useState([]);
     const [friends, setFriends] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
-    const [showRequests, setShowRequests] = useState(true);
-    const [showFriends, setShowFriends] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Feed');
     const navigation = useNavigation();
     const route = useRoute();
     const friend = route.params?.friend || null;
-    const isCurrentUser = !friend;
+    const isCurrentUser = !friend || friend.id === loggedInUserId;
 
-    /*useEffect(() => {
-        const userId = isCurrentUser ? auth.currentUser.uid : friend.id;
+    const fetchData = async (userId) => {
+        const userDoc = await getDoc(doc(db, 'users', userId));
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            setImage(data.profileImageUrl || null);
+        }
         fetchUserActivities(userId).then(setActivities);
         fetchFriendsAndRequests(userId).then(({ friends, friendRequests }) => {
             setFriends(friends);
@@ -42,29 +43,16 @@ const Profil = () => {
                 setFriendRequests(friendRequests);
             }
         });
-    }, [friend]);*/
+    };
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userId = user.uid;
-                const userDoc = await getDoc(doc(db, 'users', userId));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    setImage(data.profileImageUrl || null);
-                }
-                fetchUserActivities(userId).then(setActivities);
-                fetchFriendsAndRequests(userId).then(({ friends, friendRequests }) => {
-                    setFriends(friends);
-                    if (isCurrentUser) {
-                        setFriendRequests(friendRequests);
-                    }
-                });
+    useFocusEffect(
+        React.useCallback(() => {
+            const userId = isCurrentUser ? loggedInUserId : friend.id;
+            if (userId) {
+                fetchData(userId);
             }
-        });
-
-        return () => unsubscribe();
-    }, [friend]);
+        }, [friend, loggedInUserId])
+    );
 
     const openModal = () => {
         setModalVisible(true);
@@ -126,9 +114,6 @@ const Profil = () => {
         }
     };
 
-
-
-
     const handleLogout = () => {
         signOut(auth).then(() => {
             navigation.navigate("ProfilLoggInn");
@@ -152,40 +137,21 @@ const Profil = () => {
             case 'ProfilInnstillinger':
                 return isCurrentUser ? <ProfilSettings /> : null;
             case 'Venner':
-                return <FriendsList friends={friends} />;
+                return (
+                    <>
+                        <FriendsList friends={friends} />
+                        {isCurrentUser && (
+                            <FriendRequests friendRequests={friendRequests}
+                                            acceptFriend={acceptFriendRequest}
+                                            onFriendAccepted={handleFriendAccepted}
+                            />
+                        )}
+                    </>
+                );
             default:
                 return <ActivityFeed activities={activities} />;
         }
     }
-
-    /*const renderHeader = () => (
-        <View style={{ paddingHorizontal: 16, paddingTop: 20 }}>
-            <View style={[styles.profileHeader, { alignItems: 'center' }]}>
-                <TouchableOpacity onPress={pickImage}>
-                    {image ? (
-                        <Image source={{ uri: image }} style={styles.profileImage} />
-                    ) : (
-                        <View style={styles.profileImagePlaceholder}>
-                            <Text style={styles.addPictureIcon}>+</Text>
-                        </View>
-                    )}
-                </TouchableOpacity>
-                <Text style={styles.userName}>Hei {auth.currentUser.displayName || 'User'}!</Text>
-            </View>
-            <ActivityFeed activities={activities} />
-        </View>
-    );
-
-    const renderFooter = () => (
-        <View style={{ paddingHorizontal: 16, paddingTop: 20 }}>
-            <FriendRequests friendRequests={friendRequests} acceptFriend={acceptFriendRequest} onFriendAccepted={handleFriendAccepted} />
-            <FriendsList friends={friends} />
-            <View style={{ marginTop: 300, alignItems: 'center' }}>
-                <Button text="Logg ut" onPress={handleLogout} />
-            </View>
-        </View>
-    );*/
-
 
     return (
         <View style={{ flex: 1 }}>
@@ -224,7 +190,7 @@ const Profil = () => {
                     {!isCurrentUser && friend.profileImageUrl && (
                         <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
                     )}
-                    <Text style={styles.userName}>Hei {isCurrentUser ? (auth.currentUser.displayName || 'User') : friend.fullName}!</Text>
+                    <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
                 </View>
                 {renderContent()}
                 {isCurrentUser && (

@@ -31,7 +31,9 @@ export const registerUser = async (email, password, fullName) => {
 
     await setDoc(userRef, {
         fullName,
-        email
+        email,
+        friends: [], // Ensure friends array is initialized
+        friendRequests: [] // Ensure friendRequests array is initialized
     });
 
     await updateProfile(userCredential.user, {
@@ -98,7 +100,7 @@ export const fetchUserActivities = async (userId) => {
     const userActivitiesRef = collection(db, `users/${userId}/activities`);
     const querySnapshot = await getDocs(userActivitiesRef);
     const userActivities = [];
-    
+
     for (const docSnap of querySnapshot.docs) {
         const activityData = docSnap.data();
         if (activityData.linkedActivityId) {
@@ -112,14 +114,21 @@ export const fetchUserActivities = async (userId) => {
                     participants: activityData.participants
                 });
             }
+        } else {
+            userActivities.push(activityData); // Push activity data even if there's no linkedActivityId
         }
     }
+    console.log("Fetched user activities:", userActivities); // Log fetched activities
     return userActivities;
 };
 
 export const fetchFriendsAndRequests = async (userId) => {
     const userDoc = await getDoc(doc(db, `users/${userId}`));
-    const data = userDoc.data();
+    if (!userDoc.exists()) {
+        console.error("User document does not exist");
+        return { friends: [], friendRequests: [] };
+    }
+    const data = userDoc.data() || {};
 
     const friends = data.friends || [];
     const friendRequests = data.friendRequests || [];

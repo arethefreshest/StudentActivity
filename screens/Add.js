@@ -4,27 +4,44 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { db } from '../FirebaseConfig';
-import { addDoc, collection } from "firebase/firestore";
+import {auth, db} from '../FirebaseConfig';
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
+import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [friendsList, setFriendsList] = useState([]);
     const [isAdded, setIsAdded] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
 
-    const friendsList = [
+    /*const friendsList = [
         "Are Berntsen",
         "Storm Selvig",
         "Eivind Solberg",
         "Ole Sveinung Berget",
         "Tore Knudsen",
         "David Holt"
-    ];
+    ];*/
+
+    useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                const userId = auth.currentUser.uid;
+                console.log("Fetching friends for user ID:", userId);
+                const { friends } = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
+            } catch (e) {
+                console.error('Error fetching friends:', e);
+            }
+        };
+        fetchFriends();
+    }, []);
+
 
     useEffect(() => {
         if (route.params) {
@@ -44,7 +61,7 @@ const Add = () => {
     const addActivity = async () => {
         const activityData = {
             activityName,
-            selectedDate,
+            selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends,
             description,
         };

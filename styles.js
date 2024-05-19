@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
         color: 'white',
     },*/
 
-    container: {
+    AreContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
       marginVertical: 8,
     },
 
-    davidContainer: {
+    container: {
         flex: 1,
         padding: 10,
     },
@@ -431,6 +431,17 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         borderWidth: 2,
         borderColor: '#FFECE7',
+    },
+
+    profileImageFriend: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        marginBottom: 20,
+        borderWidth: 2,
+        borderColor: '#FFECE7',
+        marginRight: 10,
+        marginTop: 10,
     },
 
     profileImagePlaceholder: {

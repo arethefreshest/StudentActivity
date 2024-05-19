@@ -20,12 +20,14 @@ import Sosialtikon from "./assets/Sosialtikon";
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
-function AppNavigator({ isAuthenticated }) {
+function AppNavigator({ isAuthenticated, loggedInUserId }) {
     function ProfilNavigator() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 {isAuthenticated ? (
-                    <Stack.Screen name="ProfilHome" component={Profil}/>
+                    <Stack.Screen name="ProfilHome">
+                        {(props) => <Profil {...props} loggedInUserId={loggedInUserId}/>}
+                    </Stack.Screen>
                 ) : (
                     <>
                         <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
