@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal, Platform, Button } from 'react-native';
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
@@ -9,7 +9,6 @@ import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 import { addActivity } from '../addActivity';
-import Constants from "expo-constants";
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -23,14 +22,14 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         const fetchFriends = async () => {
             try {
                 const userId = auth.currentUser.uid;
-                console.log("Fetching friends for user ID:", userId);
                 const { friends } = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName, email: friend.email })));
             } catch (e) {
                 console.error('Error fetching friends:', e);
             }
@@ -43,8 +42,8 @@ function Activities({ route, navigation }) {
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
-        const numericPeople = Number(people); // Convert people to number
-        const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
+        const numericPeople = Number(people);
+        const locQuery = location ? location.toLowerCase() : null;
         const q = query(
             collection(db, "Activities"),
             where("MinP", "<=", numericPeople),
@@ -165,7 +164,6 @@ function Activities({ route, navigation }) {
                                     >
                                         <Text style={styles.addButtonText}>Legg til</Text>
                                     </TouchableOpacity>
-
                                 </View>
                             )}
                         </TouchableOpacity>
@@ -193,20 +191,13 @@ function Activities({ route, navigation }) {
                                     onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                     onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                                 />
-                                {Constants.platform?.ios ? (
+                                <Button title="Select Date" onPress={showDatePicker} />
+                                {Platform.OS === 'ios' && show && (
                                     <DateTimePicker
                                         value={selectedDate}
                                         mode="date"
                                         display="default"
-                                        onChange={(event, date) => date && setSelectedDate(date)}
-                                        style={styles.date}
-                                    />
-                                ) : (
-                                    <DateTimePickerAndroid
-                                        value={selectedDate}
-                                        mode="date"
-                                        display="default"
-                                        onChange={(event, date) => date && setSelectedDate(date)}
+                                        onChange={handleDateChange}
                                         style={styles.date}
                                     />
                                 )}
@@ -227,6 +218,17 @@ function Activities({ route, navigation }) {
                                     <Text style={styles.buttonText}>Avbryt</Text>
                                 </TouchableOpacity>
                             </View>
+                            {Platform.OS === 'android' && show && (
+                                <DateTimePicker
+                                    value={selectedDate}
+                                    mode="date"
+                                    display="default"
+                                    onChange={(event, date) => {
+                                        setShow(false);
+                                        date && handleDateChange(event, date);
+                                    }}
+                                />
+                            )}
                         </View>
                     </View>
                 </Modal>

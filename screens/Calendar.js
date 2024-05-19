@@ -25,7 +25,7 @@ export default function CalendarScreen({ navigation, route }) {
     const fetchActivities = async () => {
         const email = auth.currentUser.email;
         const activitiesCollection = collection(db, 'calendar');
-        const q = query(activitiesCollection, where("email", "==", email)); // Filter by current user's email
+        const q = query(activitiesCollection, where("email", "==", email));
         const activitiesSnapshot = await getDocs(q);
         const activitiesData = activitiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -76,7 +76,7 @@ export default function CalendarScreen({ navigation, route }) {
                                     <View key={index}>
                                         <Text style={styles.modalTextCalendar}>Activity: {activity.activityName}</Text>
                                         <Text style={styles.modalTextCalendar}>Description: {activity.description}</Text>
-                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.join(', ')}</Text>
+                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.map(friend => friend.fullName).join(', ')}</Text>
                                     </View>
                                 ))
                             ) : (
