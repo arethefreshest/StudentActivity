@@ -107,6 +107,10 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
+                    </View>
+                    <View style={styles.buttonAdd}>
+                        <TouchableOpacity style={styles.buttonAdd} onPress={RNDateTimePicker}>
+                            <Text style={styles.buttonTextAdd}>Velg dato</Text>
                         <RNDateTimePicker
                             value={selectedDate}
                             mode="date"
@@ -115,6 +119,7 @@ const Add = () => {
                             onChange={this.setDate}
                             style={styles.dateAdd}
                         />
+                    </TouchableOpacity>
                     </View>
 
                     <TextInput
