@@ -1,6 +1,6 @@
 import React from "react";
 import {TouchableOpacity, Text, StyleSheet, View} from "react-native";
-import { styles } from "../styles";
+import { styles } from "../../styles";
 
 const Button = ({ text, onPress, style, textStyle, icon }) => {
     console.log("Button.js: Button -> icon", icon);

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
 import {collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc} from "firebase/firestore";
-import { db, auth } from '../FirebaseConfig';
-import GradientScreen from "./GradientScreen";
+import { db, auth } from '../../firebase/FirebaseConfig';
+import GradientScreen from "../ui/GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
-import CustomPicker from "./CustomPicker";
-import { styles } from '../styles';
-import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
+import CustomPicker from "../ui/CustomPicker";
+import { styles } from '../../styles';
+import { fetchFriendsAndRequests } from "../../firebase/FirebaseFunksjoner";
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;

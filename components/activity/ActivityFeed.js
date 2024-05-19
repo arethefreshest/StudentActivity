@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {View, Text, FlatList, TouchableOpacity} from "react-native";
-import { styles } from "../styles";
+import { styles } from "../../styles";
 import ActivityItem from "./ActivityItem";
-import {fetchUserActivities} from "../FirebaseFunksjoner";
-import { auth } from "../FirebaseConfig";
+import { fetchUserActivities } from "../../firebase/FirebaseFunksjoner";
+import { auth } from "../../firebase/FirebaseConfig";
 
 
 const ActivityFeed = () => {

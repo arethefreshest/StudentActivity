@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import GradientScreen from '../components/GradientScreen';
-import {auth, db} from '../FirebaseConfig';
+import GradientScreen from '../components/ui/GradientScreen';
+import {auth, db} from '../firebase/FirebaseConfig';
 import {collection, doc, getDoc, getDocs, onSnapshot} from 'firebase/firestore';
 import { styles } from '../styles';
 

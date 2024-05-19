@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import GradientScreen from "../components/GradientScreen";
-import CustomPicker from '../components/CustomPicker';
+import GradientScreen from "../components/ui/GradientScreen";
+import CustomPicker from '../components/ui/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {auth, db} from '../FirebaseConfig';
+import {auth, db} from '../firebase/FirebaseConfig';
 import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
-import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
+import { fetchFriendsAndRequests } from "../firebase/FirebaseFunksjoner";
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');

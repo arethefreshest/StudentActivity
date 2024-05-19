@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { styles } from "../styles";
+import { styles } from "../../styles";
 
 const ActivityItem = ({ item }) => {
     const date = item.selectedDate ? new Date(item.selectedDate.seconds * 1000) : null;

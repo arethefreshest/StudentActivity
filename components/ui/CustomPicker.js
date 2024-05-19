@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { styles } from '../styles'; // Assuming you have a separate styles.js file
+import { styles } from '../../styles'; // Assuming you have a separate styles.js file
 
 const CustomPicker = ({ items, selectedItems, onSelect, onRemove }) => {
     const [isOpen, setIsOpen] = useState(false);

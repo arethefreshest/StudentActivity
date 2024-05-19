@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {View, Text, Button, Image, FlatList, TouchableOpacity, Alert} from "react-native";
-import { styles } from "../styles";
+import { styles } from "../../styles";
 import FriendRequestItem from "./FriendRequestItem";
 
 const FriendRequests = ({ friendRequests, acceptFriend, onFriendAccepted }) => {

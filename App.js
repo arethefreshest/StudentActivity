@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import AppNavigator from "./AppNavigator";
-import GradientScreen from "./components/GradientScreen";
+import GradientScreen from "./components/ui/GradientScreen";
 import FontLoader from "./FontLoader";
-import { auth } from "./FirebaseConfig";
+import { auth } from "./firebase/FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -15,8 +15,6 @@ export default function App() {
             setIsAuthenticated(!!user);
             setLoggedInUserId(user ? user.uid : null);
         });
-
-        return unsubscribe;
     }, []);
 
     return (
@@ -27,5 +25,5 @@ export default function App() {
                 </NavigationContainer>
             </GradientScreen>
         </FontLoader>
-  );
+    );
 }

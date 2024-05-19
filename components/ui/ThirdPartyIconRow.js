@@ -1,10 +1,10 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { styles as globalStyles } from "../styles";
-import GoogleLogo from "../assets/GoogleLogo";
-import AppleLogo from "../assets/AppleLogo";
-import OutlookLogo from "../assets/OutlookLogo";
-import FacebookLogo from "../assets/FacebookLogo";
+import { styles as globalStyles } from "../../styles";
+import GoogleLogo from "../../assets/icons/GoogleLogo";
+import AppleLogo from "../../assets/icons/AppleLogo";
+import OutlookLogo from "../../assets/icons/OutlookLogo";
+import FacebookLogo from "../../assets/icons/FacebookLogo";
 
 const ThirdPartyIconRow = ({ onPressGoogle, onPressApple, onPressOutlook, onPressFacebook, style }) => {
     const mergedStyles = StyleSheet.flatten([globalStyles.thirdPartyRow, style]);
