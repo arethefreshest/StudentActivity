@@ -8,10 +8,12 @@ import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setIsAuthenticated(!!user);
+            setLoggedInUserId(user ? user.uid : null);
         });
 
         return unsubscribe;
@@ -21,7 +23,7 @@ export default function App() {
         <FontLoader>
             <GradientScreen>
                 <NavigationContainer>
-                    <AppNavigator isAuthenticated={isAuthenticated} />
+                    <AppNavigator isAuthenticated={isAuthenticated} loggedInUserId={loggedInUserId} />
                 </NavigationContainer>
             </GradientScreen>
         </FontLoader>

@@ -1,11 +1,28 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import {View, Text, FlatList, TouchableOpacity} from "react-native";
 import { styles } from "../styles";
 import ActivityItem from "./ActivityItem";
+import {fetchUserActivities} from "../FirebaseFunksjoner";
+import { auth } from "../FirebaseConfig";
 
 
-const ActivityFeed = ({ activities }) => {
+const ActivityFeed = () => {
+    const [activities, setActivities] = useState([]);
     const [showActivities, setShowActivities] = useState(true);
+
+    useEffect(() => {
+        const fetchActivities = async () => {
+            try {
+                const userId = auth.currentUser.uid;
+                const userActivities = await fetchUserActivities(userId);
+                setActivities(userActivities);
+            } catch (e) {
+                console.error('Error fetching activities:', e);
+            }
+        };
+
+        fetchActivities();
+    }, []);
     return (
         <View style={styles.feedContainer}>
             <TouchableOpacity onPress={() => setShowActivities(!showActivities)}>

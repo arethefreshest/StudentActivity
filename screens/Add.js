@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { db } from '../FirebaseConfig';
-import { addDoc, collection } from "firebase/firestore";
+import {auth, db} from '../FirebaseConfig';
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
+import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
+import { addActivity } from '../addActivity';
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [friendsList, setFriendsList] = useState([]);
+    const [isAdded, setIsAdded] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
 
-    const friendsList = [
+    /*const friendsList = [
         "Are Berntsen",
         "Storm Selvig",
         "Eivind Solberg",
         "Ole Sveinung Berget",
         "Tore Knudsen",
         "David Holt"
-    ];
+    ];*/
+
+    useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                const userId = auth.currentUser.uid;
+                console.log("Fetching friends for user ID:", userId);
+                const { friends } = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
+            } catch (e) {
+                console.error('Error fetching friends:', e);
+            }
+        };
+        fetchFriends();
+    }, []);
+
 
     useEffect(() => {
         console.log('Received route params:', route.params); // Debugging
@@ -41,19 +60,30 @@ const Add = () => {
         date && setSelectedDate(date);
     };
 
-    const addActivity = async () => {
+    const handleAddActivity = async () => {
+        const email = auth.currentUser.email;
         const activityData = {
             activityName,
-            selectedDate,
+            selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends,
             description,
+            email, // Add the user's email to the activity data
         };
-        try {
-            await addDoc(collection(db, "Activities"), activityData);
-            console.log("Activity added successfully");
-            navigation.navigate('Activities', { activityName, selectedDate, selectedFriends, description });
-        } catch (error) {
-            console.error("Error adding activity: ", error);
+        const success = await addActivity(activityData);
+
+        if (success) {
+            Alert.alert("Success", "Activity added successfully");
+
+            // Clear the fields
+            setActivityName('');
+            setSelectedDate(new Date());
+            setDescription('');
+            setSelectedFriends([]);
+
+            // Navigate back to the calendar screen and pass the parameter
+            navigation.navigate('Calendar', { newActivityAdded: true });
+        } else {
+            Alert.alert("Error", "There was an error adding the activity");
         }
     };
 
@@ -94,7 +124,7 @@ const Add = () => {
                         onChangeText={setDescription}
                     />
 
-                    <TouchableOpacity style={styles.buttonAdd} onPress={addActivity}>
+                    <TouchableOpacity style={styles.buttonAdd} onPress={handleAddActivity}>
                         <Text style={styles.buttonTextAdd}>Legg til</Text>
                     </TouchableOpacity>
                 </View>

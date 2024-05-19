@@ -1,82 +1,97 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import GradientScreen from '../components/GradientScreen';
-import { db, auth } from '../FirebaseConfig';
-import {collection, addDoc, query, where} from "firebase/firestore";
-import { useRoute } from '@react-navigation/native';
-import {styles} from "../styles"
-import DatePicker from "../screens/DatePicker";
+import { db, auth } from '../FirebaseConfig'; // Ensure auth is imported
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { styles } from '../styles';
 
-export default function CalendarScreen({navigation}) {
+export default function CalendarScreen({ navigation, route }) {
     const [markedDates, setMarkedDates] = useState({});
-    const route = useRoute();
-    const selectedActivity = route.params?.selectedActivity;
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [activityDetails, setActivityDetails] = useState([]);
 
-/*
     useEffect(() => {
-        if (selectedActivity) {
-            console.log(selectedActivity.Name);
-            let activity = selectedActivity.Name;
-            let date = selectedDate;
+        fetchActivities();
+    }, []);
 
-            const newMarkedDates = {
-                ...markedDates,
-                [date]: {selected: true, marked: true, selectedColor: 'blue'}
-            };
-            setMarkedDates(newMarkedDates);
-
-            let email = auth.currentUser.email;
-
-            addActivityToCalendar(activity, date, email);
+    useEffect(() => {
+        if (route.params?.newActivityAdded) {
+            fetchActivities();
         }
-    }, [selectedActivity, selectedDate]);
+    }, [route.params?.newActivityAdded]);
 
+    const fetchActivities = async () => {
+        const email = auth.currentUser.email;
+        const activitiesCollection = collection(db, 'calendar');
+        const q = query(activitiesCollection, where("email", "==", email)); // Filter by current user's email
+        const activitiesSnapshot = await getDocs(q);
+        const activitiesData = activitiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+        const datesWithActivities = {};
+        activitiesData.forEach(activity => {
+            const date = activity.selectedDate.toDate().toISOString().split('T')[0];
+            if (!datesWithActivities[date]) {
+                datesWithActivities[date] = { marked: true, dotColor: 'red', activities: [] };
+            }
+            datesWithActivities[date].activities.push(activity);
+        });
 
-    const handleDayPress = (day) => {
-        if (selectedActivity) {
-            addActivityToCalendar(activity, day.dateString, "current_user_id"); // Replace "current_user_id" with actual user ID
-        } else {
-            Alert.alert('No activity selected', 'Please select an activity before choosing a date.');
-        }
+        setMarkedDates(datesWithActivities);
     };
 
- */
+    const handleDayPress = (day) => {
+        setSelectedDate(day.dateString);
+        const activities = markedDates[day.dateString]?.activities || [];
+        setActivityDetails(activities);
+        setModalVisible(true);
+    };
 
-    if (!selectedActivity) {
-        return (
-            <GradientScreen>
-                <View style={styles.container}>
-                    <Text style={styles.title}>My Calendar</Text>
-                    <Calendar
-                        markedDates={markedDates}
-                        onDayPress={({ dateString }) => Alert.alert('Day Selected', dateString)}
-                        monthFormat={'yyyy MM'}
-                        hideExtraDays={true}
-                        firstDay={1}
-                        hideDayNames={false}
-                        showWeekNumbers={true}
-                    />
-                </View>
-            </GradientScreen>
-        );
-    }
-
-   // return <DatePicker onDateSelected={setSelectedDate} />;
-}
-
-
-async function addActivityToCalendar(activity, date, email) {
-    try {
-        await addDoc(collection(db, "calendar"), {
-            email: email,
-            activity: activity,
-            date: date,
-        });
-        Alert.alert('Activity Added', `Activity added on ${date}`);
-    } catch (error) {
-        Alert.alert('Error', `Failed to add activity: ${error.message}`);
-    }
+    return (
+        <GradientScreen>
+            <View style={styles.containerCalendar}>
+                <Text style={styles.titleCalendar}>My Calendar</Text>
+                <Calendar
+                    markedDates={markedDates}
+                    onDayPress={handleDayPress}
+                    monthFormat={'yyyy MM'}
+                    hideExtraDays={true}
+                    firstDay={1}
+                    hideDayNames={false}
+                    showWeekNumbers={true}
+                    style={styles.CalendarStyle}
+                />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={styles.modalOverlayCalendar}>
+                        <View style={styles.modalContainerCalendar}>
+                            <Text style={styles.modalTitleCalendar}>{selectedDate}</Text>
+                            {activityDetails && activityDetails.length > 0 ? (
+                                activityDetails.map((activity, index) => (
+                                    <View key={index}>
+                                        <Text style={styles.modalTextCalendar}>Activity: {activity.activityName}</Text>
+                                        <Text style={styles.modalTextCalendar}>Description: {activity.description}</Text>
+                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.join(', ')}</Text>
+                                    </View>
+                                ))
+                            ) : (
+                                <Text style={styles.modalTextCalendar}>No activities planned</Text>
+                            )}
+                            <TouchableOpacity
+                                style={styles.modalCloseButtonCalendar}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Text style={styles.modalTextCalendar}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        </GradientScreen>
+    );
 }

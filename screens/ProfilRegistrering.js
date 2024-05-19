@@ -111,9 +111,8 @@ const ProfilRegistrering = () => {
                     text="Har bruker allerede"
                     onPress={() => navigation.navigate('ProfilLoggInn')}
                     style={{ left: 126, top: 572 }}
-                    style={{ left: 126, top: 510}}
                 />
-                <Text style={[styles.italicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
+                <Text style={[styles.profilItalicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
                 <ThirdPartyIconRow
                     onPressGoogle={() => console.log('Google Login')}
                     onPressApple={() => console.log('Apple Login')}
@@ -121,7 +120,6 @@ const ProfilRegistrering = () => {
                     onPressFacebook={() => console.log('Facebook Login')}
                     style={{top: 689}}
                 />
-                <Button text="Om du alt har bruker? Logg inn!" onPress={() => navigation.navigate('ProfilLoggInn')} style={{width: 310, left: 60 , top: 580}}/>
             </GradientScreen>
         </View>
     );
