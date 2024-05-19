@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {View, Text, Alert, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform} from "react-native";
 import { styles } from "../styles";
-import { auth, db } from "../FirebaseConfig";
+import { auth, db } from "../firebase/FirebaseConfig";
 import {doc, updateDoc, deleteDoc, getDoc} from "firebase/firestore";
-import InputField from "./InputField";
-import Button from "./Button";
+import InputField from "../components/ui/InputField";
+import Button from "../components/ui/Button";
 import { EmailAuthProvider, reauthenticateWithCredential} from "@firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 

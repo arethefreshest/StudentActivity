@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal, Platform, Button } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
+import {collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc} from "firebase/firestore";
+import { db, auth } from '../../firebase/FirebaseConfig';
+import GradientScreen from "../ui/GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from '../FirebaseConfig';
-import GradientScreen from "./GradientScreen";
-import CustomPicker from "./CustomPicker";
-import { styles } from '../styles';
-import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
-import { addActivity } from '../addActivity';
+import Modal from 'react-native-modal';
+import CustomPicker from "../ui/CustomPicker";
+import { styles } from '../../styles';
+import { fetchFriendsAndRequests } from "../../firebase/FirebaseFunksjoner";
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -27,8 +27,9 @@ function Activities({ route, navigation }) {
         const fetchFriends = async () => {
             try {
                 const userId = auth.currentUser.uid;
-                const { friends } = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName, email: friend.email })));
+                console.log("Fetching friends for user ID:", userId);
+                const {friends} = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({id: friend.id, fullName: friend.fullName})));
             } catch (e) {
                 console.error('Error fetching friends:', e);
             }
@@ -41,6 +42,8 @@ function Activities({ route, navigation }) {
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
+        const numericPeople = Number(people); // Convert people to number
+        const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
         const q = query(
             collection(db, "Activities"),
             where("MinP", "<=", numericPeople),
@@ -99,23 +102,49 @@ function Activities({ route, navigation }) {
         const email = auth.currentUser.email;
         const activityData = {
             activityName,
-            selectedDate,
-            selectedFriends,
+            selectedDate: Timestamp.fromDate(selectedDate),
+            selectedFriends: selectedFriends.map(friend => ({ id: friend.id, fullName: friend.fullName })),
             description,
+            email: auth.currentUser.email,
             email,
         };
-        const success = await addActivity(activityData);
 
-        if (success) {
-            Alert.alert("Success", "Activity added successfully");
+        // Remove any undefined fields from activityData
+        Object.keys(activityData).forEach(key => {
+            if (activityData[key] === undefined) {
+                delete activityData[key];
+            }
+        });
+
+        try {
+            // Save to calendar collection
+            const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
+
+            // Save to user's subcollection with linkedActivityId
+            const userId = auth.currentUser.uid;
+            const userActivityRef = doc(collection(db, `users/${userId}/activities`));
+            await setDoc(userActivityRef, {
+                ...activityData,
+                linkedActivityId: calendarDocRef.id
+            });
+
+            // Save to each friend's subcollection
+            for (const friend of selectedFriends) {
+                const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
+                await setDoc(friendActivityRef, {
+                    ...activityData,
+                    linkedActivityId: calendarDocRef.id
+                });
+            }
+
+            console.log("Activity added successfully");
             setModalVisible(false);
             setActivityName('');
             setSelectedDate(new Date());
             setDescription('');
             setSelectedFriends([]);
-            navigation.navigate('Calendar', { newActivityAdded: true });
-        } else {
-            Alert.alert("Error", "There was an error adding the activity");
+        } catch (error) {
+            console.error("Error adding activity: ", error);
         }
     };
 
@@ -124,6 +153,14 @@ function Activities({ route, navigation }) {
         setDescription(activity.WhatYouNeed);
         setModalVisible(true);
     };
+
+    if (loading) {
+        return (
+            <GradientScreen>
+                <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />
+            </GradientScreen>
+        );
+    }
 
     if (error) {
         return (
@@ -177,54 +214,47 @@ function Activities({ route, navigation }) {
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={isModalVisible}
-                    onRequestClose={() => setModalVisible(false)}
-                >
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.modalContainer}>
-                            <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Aktivitetsnavn"
-                                value={activityName}
-                                onChangeText={setActivityName}
+                <Modal isVisible={isModalVisible}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Aktivitetsnavn"
+                            value={activityName}
+                            onChangeText={setActivityName}
+                        />
+                        <View style={styles.rowContainer}>
+                            <CustomPicker
+                                items={friendsList}
+                                selectedItems={selectedFriends}
+                                onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
+                                onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                             />
-                            <View style={styles.rowContainer}>
-                                <CustomPicker
-                                    items={friendsList}
-                                    selectedItems={selectedFriends}
-                                    onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
-                                    onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
-                                />
-                                <Button title="Select Date" onPress={showDatePickerHandler} />
-                                {showDatePicker && (
-                                    <DateTimePicker
-                                        value={selectedDate}
-                                        mode="date"
-                                        display="default"
-                                        onChange={handleDateChange}
-                                    />
-                                )}
-                            </View>
-                            <TextInput
-                                style={styles.textArea}
-                                placeholder="Beskrivelse"
-                                multiline
-                                numberOfLines={4}
-                                value={description}
-                                onChangeText={setDescription}
+                            <DateTimePicker
+                                value={selectedDate}
+                                mode="date"
+                                display="default"
+                                onChange={(event, date) => date && setSelectedDate(date)}
+                                style={styles.date}
                             />
-                            <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
-                                    <Text style={styles.buttonText}>Legg til</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                                    <Text style={styles.buttonText}>Avbryt</Text>
-                                </TouchableOpacity>
-                            </View>
+
+                        </View>
+
+                        <TextInput
+                            style={styles.textArea}
+                            placeholder="Beskrivelse"
+                            multiline
+                            numberOfLines={4}
+                            value={description}
+                            onChangeText={setDescription}
+                        />
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
+                                <Text style={styles.buttonText}>Legg til</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.buttonText}>Avbryt</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>

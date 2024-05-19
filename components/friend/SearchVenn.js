@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
-import GradientScreen from "./GradientScreen";
-import InputField from "./InputField";
-import { searchUsers } from "../FirebaseFunksjoner";
-import { styles } from "../styles";
+import GradientScreen from "../ui/GradientScreen";
+import InputField from "../ui/InputField";
+import { searchUsers } from "../../firebase/FirebaseFunksjoner";
+import { styles } from "../../styles";
 
 function SearchVenn({ navigation }) {
     const [searchParam, setSearchParam] = useState("Bruker@example.com");

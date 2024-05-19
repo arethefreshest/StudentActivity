@@ -11,10 +11,10 @@ import {
     Image
 } from 'react-native';
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from '../FirebaseConfig';
-import GradientScreen from "./GradientScreen";
-import { sendFriendRequest, searchUsers } from "../FirebaseFunksjoner";
-import {styles} from "../styles";
+import { db } from '../../firebase/FirebaseConfig';
+import GradientScreen from "../ui/GradientScreen";
+import { sendFriendRequest, searchUsers } from "../../firebase/FirebaseFunksjoner";
+import {styles} from "../../styles";
 
 function AddVenn({ route }) {
     const { searchParam, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params

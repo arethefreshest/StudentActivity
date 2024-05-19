@@ -1,6 +1,6 @@
 import React from "react";
 import {View, Text, Button, TouchableOpacity, Image} from "react-native";
-import { styles } from "../styles";
+import { styles } from "../../styles";
 import {FontAwesome} from "@expo/vector-icons";
 
 const FriendRequestItem = ({ item, acceptFriend }) => (
