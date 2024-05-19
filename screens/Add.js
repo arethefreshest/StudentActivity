@@ -5,7 +5,7 @@ import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {auth, db} from '../FirebaseConfig';
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 
@@ -42,7 +42,6 @@ const Add = () => {
         fetchFriends();
     }, []);
 
-
     useEffect(() => {
         if (route.params) {
             if (route.params.activityName) {
@@ -64,9 +63,29 @@ const Add = () => {
             selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends,
             description,
+            email: auth.currentUser.email,
         };
         try {
-            await addDoc(collection(db, "calendar"), activityData);
+            // Save to calendar collection
+            const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
+
+            // Save to user's subcollection with linkedActivityId
+            const userId = auth.currentUser.uid;
+            const userActivityRef = doc(collection(db, `users/${userId}/activities`));
+            await setDoc(userActivityRef, {
+                ...activityData,
+                linkedActivityId: calendarDocRef.id
+            });
+
+            // Save to each friend's subcollection
+            for (const friend of selectedFriends) {
+                const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
+                await setDoc(friendActivityRef, {
+                    ...activityData,
+                    linkedActivityId: calendarDocRef.id
+                });
+            }
+
             setIsAdded(true);
 
             // Clear the fields
@@ -75,7 +94,7 @@ const Add = () => {
             setDescription('');
             setSelectedFriends([]);
 
-            // Show a success message
+            // Show success message
             Alert.alert("Success", "Activity added successfully");
 
         } catch (error) {

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import GradientScreen from '../components/GradientScreen';
-import { db } from '../FirebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import {auth, db} from '../FirebaseConfig';
+import {collection, doc, getDoc, getDocs, onSnapshot} from 'firebase/firestore';
 import { styles } from '../styles';
 
 export default function CalendarScreen({ navigation, route }) {
@@ -13,7 +13,8 @@ export default function CalendarScreen({ navigation, route }) {
     const [activityDetails, setActivityDetails] = useState([]);
 
     useEffect(() => {
-        fetchActivities();
+        const unsubscribe = fetchActivities();
+        return () => unsubscribe && unsubscribe();
     }, []);
 
     useEffect(() => {
@@ -22,21 +23,49 @@ export default function CalendarScreen({ navigation, route }) {
         }
     }, [route.params?.newActivity]);
 
-    const fetchActivities = async () => {
-        const activitiesCollection = collection(db, 'calendar');
-        const activitiesSnapshot = await getDocs(activitiesCollection);
-        const activitiesData = activitiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const fetchActivities = () => {
+        const userId = auth.currentUser.uid;
+        const userActivitiesRef = collection(db, `users/${userId}/activities`);
 
-        const datesWithActivities = {};
-        activitiesData.forEach(activity => {
-            const date = activity.selectedDate.toDate().toISOString().split('T')[0];
-            if (!datesWithActivities[date]) {
-                datesWithActivities[date] = { marked: true, dotColor: 'red', activities: [] };
+        const unsubscribe = onSnapshot(userActivitiesRef, async (querySnapshot) => {
+            const userActivities = [];
+
+            for (const docSnap of querySnapshot.docs) {
+                const activityData = docSnap.data();
+                if (activityData.linkedActivityId) {
+                    const activityRef = doc(db, `calendar/${activityData.linkedActivityId}`);
+                    const activityDoc = await getDoc(activityRef);
+                    if (activityDoc.exists()) {
+                        const activity = activityDoc.data();
+                        if (activity.selectedDate) {
+                            userActivities.push({
+                                ...activity,
+                                data: activityData.data,
+                                time: activityData.time,
+                                participants: activityData.participants
+                            });
+                        }
+                    }
+                } else {
+                    if (activityData.selectedDate) {
+                        userActivities.push(activityData); // Push activity data even if there's no linkedActivityId
+                    }
+                }
             }
-            datesWithActivities[date].activities.push(activity);
+
+            const datesWithActivities = {};
+            userActivities.forEach(activity => {
+                const date = activity.selectedDate.toDate().toISOString().split('T')[0];
+                if (!datesWithActivities[date]) {
+                    datesWithActivities[date] = { marked: true, dotColor: 'red', activities: [] };
+                }
+                datesWithActivities[date].activities.push(activity);
+            });
+
+            setMarkedDates(datesWithActivities);
         });
 
-        setMarkedDates(datesWithActivities);
+        return unsubscribe;
     };
 
     const handleDayPress = (day) => {
@@ -74,7 +103,7 @@ export default function CalendarScreen({ navigation, route }) {
                                     <View key={index}>
                                         <Text style={styles.modalTextCalendar}>Activity: {activity.activityName}</Text>
                                         <Text style={styles.modalTextCalendar}>Description: {activity.description}</Text>
-                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.join(', ')}</Text>
+                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.map(friend => friend.fullName).join(', ')}</Text>
                                     </View>
                                 ))
                             ) : (

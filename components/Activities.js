@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc} from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -92,12 +92,39 @@ function Activities({ route, navigation }) {
     const handleAddActivity = async () => {
         const activityData = {
             activityName,
-            selectedDate,
-            selectedFriends,
+            selectedDate: Timestamp.fromDate(selectedDate),
+            selectedFriends: selectedFriends.map(friend => ({ id: friend.id, fullName: friend.fullName })),
             description,
+            email: auth.currentUser.email,
         };
+
+        // Remove any undefined fields from activityData
+        Object.keys(activityData).forEach(key => {
+            if (activityData[key] === undefined) {
+                delete activityData[key];
+            }
+        });
+
         try {
-            await addDoc(collection(db, "calendar"), activityData);
+            // Save to calendar collection
+            const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
+
+            // Save to user's subcollection with linkedActivityId
+            const userId = auth.currentUser.uid;
+            const userActivityRef = doc(collection(db, `users/${userId}/activities`));
+            await setDoc(userActivityRef, {
+                ...activityData,
+                linkedActivityId: calendarDocRef.id
+            });
+
+            // Save to each friend's subcollection
+            for (const friend of selectedFriends) {
+                const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
+                await setDoc(friendActivityRef, {
+                    ...activityData,
+                    linkedActivityId: calendarDocRef.id
+                });
+            }
 
             console.log("Activity added successfully");
             setModalVisible(false);

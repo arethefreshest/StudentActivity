@@ -138,7 +138,7 @@ export const fetchUserActivities = async (userId) => {
     for (const docSnap of querySnapshot.docs) {
         const activityData = docSnap.data();
         if (activityData.linkedActivityId) {
-            const activityRef = doc(db, `Activities/${activityData.linkedActivityId}`);
+            const activityRef = doc(db, `calendar/${activityData.linkedActivityId}`);
             const activityDoc = await getDoc(activityRef);
             if (activityDoc.exists()) {
                 userActivities.push({
