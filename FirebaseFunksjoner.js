@@ -14,13 +14,26 @@ import { auth, db, storage} from "./FirebaseConfig";
 import {createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+// Helper function to remove undefined keys from an object
+const removeUndefinedKeys = (obj) => {
+    let newObj = {};
+    for (let key in obj) {
+        if (obj[key] !== undefined) {
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+};
+
 export const registerUser = async (email, password, fullName) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const userRef = doc(db, "users", userCredential.user.uid);
 
     await setDoc(userRef, {
         fullName,
-        email
+        email,
+        friends: [], // Ensure friends array is initialized
+        friendRequests: [] // Ensure friendRequests array is initialized
     });
 
     await updateProfile(userCredential.user, {
@@ -87,7 +100,7 @@ export const fetchUserActivities = async (userId) => {
     const userActivitiesRef = collection(db, `users/${userId}/activities`);
     const querySnapshot = await getDocs(userActivitiesRef);
     const userActivities = [];
-    
+
     for (const docSnap of querySnapshot.docs) {
         const activityData = docSnap.data();
         if (activityData.linkedActivityId) {
@@ -101,14 +114,21 @@ export const fetchUserActivities = async (userId) => {
                     participants: activityData.participants
                 });
             }
+        } else {
+            userActivities.push(activityData); // Push activity data even if there's no linkedActivityId
         }
     }
+    console.log("Fetched user activities:", userActivities); // Log fetched activities
     return userActivities;
 };
 
 export const fetchFriendsAndRequests = async (userId) => {
     const userDoc = await getDoc(doc(db, `users/${userId}`));
-    const data = userDoc.data();
+    if (!userDoc.exists()) {
+        console.error("User document does not exist");
+        return { friends: [], friendRequests: [] };
+    }
+    const data = userDoc.data() || {};
 
     const friends = data.friends || [];
     const friendRequests = data.friendRequests || [];
@@ -134,16 +154,27 @@ export const fetchFriendsAndRequests = async (userId) => {
 export const uploadProfileImage = async (uri, userId) => {
     if (!uri) return null;
 
-    const response = await fetch(uri);
-    const blob = await response.blob();
+    try {
+        console.log('Fetching image from URI...');
+        const response = await fetch(uri);
+        const blob = await response.blob();
 
-    const storageRef = ref(storage, `profileImages/${userId}`);
-    await uploadBytes(storageRef, blob);
+        console.log('Uploading image to Firebase Storage...');
+        const storageRef = ref(storage, `profileImages/${userId}`);
+        await uploadBytes(storageRef, blob);
 
-    const downloadURL = await getDownloadURL(storageRef);
+        console.log('Getting download URL...');
+        const downloadURL = await getDownloadURL(storageRef);
 
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-        profileImageUrl: downloadURL
-    });
+        console.log('Updating Firestore document...');
+        const userRef = doc(db, 'users', userId);
+        await updateDoc(userRef, removeUndefinedKeys({
+            profileImageUrl: downloadURL
+        }));
+
+        return downloadURL;
+    } catch (error) {
+        console.error('Error uploading profile image:', error);
+        throw error; // Re-throw the error to handle it in the calling function
+    }
 };

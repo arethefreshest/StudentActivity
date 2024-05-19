@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
+import {
+    View,
+    Text,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator,
+    SafeAreaView,
+    Alert,
+    Image
+} from 'react-native';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 import { sendFriendRequest } from "../FirebaseFunksjoner";
+import {styles} from "../styles";
 
 function AddVenn({ route }) {
     const { email, users: initialUsers } = route.params || {}; // Ensure email is destructured from route.params
@@ -26,8 +37,6 @@ function AddVenn({ route }) {
             setLoading(false);
             return;
         }
-
-
 
         const q = query(
             collection(db, "users"),
@@ -97,13 +106,16 @@ function AddVenn({ route }) {
     return (
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.safeArea}>
-                <ScrollView style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     {users.map((user) => (
                         <TouchableOpacity
                             key={user.id}
                             style={styles.activityContainer}
                             onPress={() => toggleExpand(user.id)}
                         >
+                            {user.profileImageUrl && (
+                            <Image source={{ uri: user.profileImageUrl }} style={styles.profileImage} />
+                            )}
                             <Text style={styles.title}>{user.Name}</Text>
                             <Text style={styles.textTop}>Email: {user.email}</Text>
                             {expandedId === user.id && (
@@ -124,84 +136,5 @@ function AddVenn({ route }) {
         </GradientScreen>
     );
 }
-
-const styles = StyleSheet.create({
-    gradientScreen: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    safeArea: {
-        flex: 1,
-        marginTop: 140,
-        marginBottom: 100,
-    },
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    activityContainer: {
-        margin: 10,
-        padding: 20,
-        backgroundColor: 'rgba(255,255,255,0.63)',
-        borderRadius: 15,
-        borderWidth: 1,
-        borderColor: '#1e1d1d',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    details: {
-        marginTop: 10,
-    },
-    activityIndicator: {
-        top: 300,
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 16,
-    },
-    noResultsContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    noResultsText: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    addButton: {
-        marginTop: 40,
-        backgroundColor: '#008080',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '50%',
-        marginLeft: '25%',
-    },
-    addButtonText: {
-        color: 'white',
-        fontSize: 16,
-    },
-    textTop: {
-        fontSize: 18,
-        marginLeft: 40,
-        marginTop: 10,
-    },
-    textCont: {
-        fontStyle: "italic",
-        fontSize: 14,
-        marginTop: 10,
-        marginLeft: 60,
-    },
-});
 
 export default AddVenn;

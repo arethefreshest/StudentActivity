@@ -112,7 +112,7 @@ const ProfilRegistrering = () => {
                     onPress={() => navigation.navigate('ProfilLoggInn')}
                     style={{ left: 126, top: 572 }}
                 />
-                <Text style={[styles.italicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
+                <Text style={[styles.profilItalicText, { left: 126, top: 658 }]}>Eller registrer deg med</Text>
                 <ThirdPartyIconRow
                     onPressGoogle={() => console.log('Google Login')}
                     onPressApple={() => console.log('Apple Login')}

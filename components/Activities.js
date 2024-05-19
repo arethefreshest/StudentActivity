@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal } from 'react-native';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
+import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 import { addActivity } from '../addActivity';
 
 function Activities({ route, navigation }) {
@@ -19,15 +23,32 @@ function Activities({ route, navigation }) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [friendsList, setFriendsList] = useState([]);
 
-    const friendsList = [
+
+   /* const friendsList = [
         "Are Berntsen",
         "Storm Selvig",
         "Eivind Solberg",
         "Ole Sveinung Berget",
         "Tore Knudsen",
         "David Holt"
-    ];
+    ];*/
+
+    useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                const userId = auth.currentUser.uid;
+                console.log("Fetching friends for user ID:", userId);
+                const {friends} = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({id: friend.id, fullName: friend.fullName})));
+            } catch (e) {
+                console.error('Error fetching friends:', e);
+            }
+        };
+
+        fetchFriends();
+    }, []);
 
     const numericPeople = Number(people);
     const locQuery = location ? location.toLowerCase() : null;
@@ -77,6 +98,7 @@ function Activities({ route, navigation }) {
             </GradientScreen>
         );
     }
+
 
     const handleAddActivity = async () => {
         const activityData = {
@@ -129,7 +151,7 @@ function Activities({ route, navigation }) {
     return (
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.safeArea}>
-                <ScrollView style={styles.container}>
+                <ScrollView contentContainerStyle={styles.container}>
                     {activities.map((activity) => (
                         <TouchableOpacity
                             key={activity.id}

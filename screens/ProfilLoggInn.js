@@ -61,14 +61,14 @@ const ProfilLoggInn = () => {
                         onPress={handleLogin}
                         style={{ left: 126, top: 368}}
                     />
-                    <Text style={[styles.italicText, { left: 127, top: 443 }]}>Eller logg deg inn med</Text>
+                    <Text style={[styles.profilItalicText, { left: 127, top: 443 }]}>Eller logg deg inn med</Text>
                     <ThirdPartyIconRow
                         onPressGoogle={() => console.log('Google Login')}
                         onPressApple={() => console.log('Apple Login')}
                         onPressOutlook={() => console.log('Outlook Login')}
                         onPressFacebook={() => console.log('Facebook Login')}
                     />
-                    <Text style={[styles.italicText, { left: 184, top: 564 }]}>Ny her?</Text>
+                    <Text style={[styles.profilItalicText, { left: 184, top: 564 }]}>Ny her?</Text>
                     <Button
                         text="Registrer deg"
                         onPress={() => {

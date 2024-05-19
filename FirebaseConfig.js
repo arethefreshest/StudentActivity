@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { initializeServerApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
-import { getAuth, initializeAuth, browserLocalPersistence, getReactNativePersistence } from "firebase/auth";
+import { getAuth, initializeAuth, browserLocalPersistence, getReactNativePersistence, onAuthStateChanged } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import Constants from "expo-constants";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
