@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 import { addActivity } from '../addActivity';
+import Constants from "expo-constants";
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
@@ -19,15 +20,6 @@ const Add = () => {
     const [isAdded, setIsAdded] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
-
-    /*const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -106,13 +98,23 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
-                        <DateTimePicker
-                            value={selectedDate}
-                            mode="date"
-                            display="default"
-                            onChange={handleDateChange}
-                            style={styles.dateAdd}
-                        />
+                        {Constants.platform?.ios ? (
+                            <DateTimePicker
+                                value={selectedDate}
+                                mode="date"
+                                display="default"
+                                onChange={(event, date) => date && setSelectedDate(date)}
+                                style={styles.date}
+                            />
+                        ) : (
+                            <DateTimePickerAndroid
+                                value={selectedDate}
+                                mode="date"
+                                display="default"
+                                onChange={(event, date) => date && setSelectedDate(date)}
+                                style={styles.date}
+                            />
+                        )}
                     </View>
 
                     <TextInput

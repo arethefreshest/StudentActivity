@@ -4,10 +4,12 @@ import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 import { addActivity } from '../addActivity';
+import Constants from "expo-constants";
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -22,23 +24,13 @@ function Activities({ route, navigation }) {
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
 
-
-   /* const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
-
     useEffect(() => {
         const fetchFriends = async () => {
             try {
                 const userId = auth.currentUser.uid;
                 console.log("Fetching friends for user ID:", userId);
-                const {friends} = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({id: friend.id, fullName: friend.fullName})));
+                const { friends } = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
             } catch (e) {
                 console.error('Error fetching friends:', e);
             }
@@ -91,38 +83,36 @@ function Activities({ route, navigation }) {
     if (loading) {
         return (
             <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300}} />
+                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300 }} />
             </GradientScreen>
         );
     }
 
-
-        const handleAddActivity = async () => {
-            const email = auth.currentUser.email;
-            const activityData = {
-                activityName,
-                selectedDate,
-                selectedFriends,
-                description,
-                email,
-            };
-            const success = await addActivity(activityData);
-
-            if (success) {
-                Alert.alert("Success", "Activity added successfully");
-                setModalVisible(false);
-                setActivityName('');
-                setSelectedDate(new Date());
-                setDescription('');
-                setSelectedFriends([]);
-                navigation.navigate('Calendar', { newActivityAdded: true });
-            } else {
-                Alert.alert("Error", "There was an error adding the activity");
-            }
+    const handleAddActivity = async () => {
+        const email = auth.currentUser.email;
+        const activityData = {
+            activityName,
+            selectedDate,
+            selectedFriends,
+            description,
+            email,
         };
+        const success = await addActivity(activityData);
 
+        if (success) {
+            Alert.alert("Success", "Activity added successfully");
+            setModalVisible(false);
+            setActivityName('');
+            setSelectedDate(new Date());
+            setDescription('');
+            setSelectedFriends([]);
+            navigation.navigate('Calendar', { newActivityAdded: true });
+        } else {
+            Alert.alert("Error", "There was an error adding the activity");
+        }
+    };
 
-        const openModalWithActivityDetails = (activity) => {
+    const openModalWithActivityDetails = (activity) => {
         setActivityName(activity.Name);
         setDescription(activity.WhatYouNeed);
         setModalVisible(true);
@@ -169,12 +159,12 @@ function Activities({ route, navigation }) {
                                     <Text style={styles.textCont2}>{activity.Description}</Text>
                                     <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
 
-                                        <TouchableOpacity
-                                            style={styles.addButton}
-                                            onPress={() => openModalWithActivityDetails(activity)}
-                                        >
-                                            <Text style={styles.addButtonText}>Legg til</Text>
-                                        </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.addButton}
+                                        onPress={() => openModalWithActivityDetails(activity)}
+                                    >
+                                        <Text style={styles.addButtonText}>Legg til</Text>
+                                    </TouchableOpacity>
 
                                 </View>
                             )}
@@ -203,13 +193,23 @@ function Activities({ route, navigation }) {
                                     onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                     onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                                 />
-                                <DateTimePicker
-                                    value={selectedDate}
-                                    mode="date"
-                                    display="default"
-                                    onChange={(event, date) => date && setSelectedDate(date)}
-                                    style={styles.date}
-                                />
+                                {Constants.platform?.ios ? (
+                                    <DateTimePicker
+                                        value={selectedDate}
+                                        mode="date"
+                                        display="default"
+                                        onChange={(event, date) => date && setSelectedDate(date)}
+                                        style={styles.date}
+                                    />
+                                ) : (
+                                    <DateTimePickerAndroid
+                                        value={selectedDate}
+                                        mode="date"
+                                        display="default"
+                                        onChange={(event, date) => date && setSelectedDate(date)}
+                                        style={styles.date}
+                                    />
+                                )}
                             </View>
                             <TextInput
                                 style={styles.textArea}

@@ -46,7 +46,7 @@ function AppNavigator({ isAuthenticated, loggedInUserId }) {
         );
     }
 
-    function Calendar() {
+    function CalendarStack() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 {isAuthenticated ? (
@@ -169,7 +169,7 @@ return (
                 />
                 <MaterialBottomTabs.Screen
                     name="calendar"
-                    component={Calendar}
+                    component={CalendarStack}
                     options={{tabBarLabel: 'Kalender'}}
                 />
             </MaterialBottomTabs.Navigator>
