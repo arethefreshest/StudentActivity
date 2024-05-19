@@ -7,17 +7,19 @@ const InputField = ({
     placeholder,
     onChangeText,
     secureTextEntry = false,
+    customStyle,
+    customStyleInner
 }) => {
     return (
-            <View style={styles.inputOuter}>
-                <View style={styles.inputInner}>
+            <View style={[styles.inputOuter, customStyle]}>
+                <View style={[styles.inputInner, customStyleInner]}>
                     {Icon && (
                         <View style={styles.iconContainer}>
                             <Icon style={styles.inputIcon} />
                         </View>
                     )}
                     <TextInput
-                        style={styles.textInput}
+                        style={[styles.textInput, customStyle]}
                         placeholder={placeholder}
                         placeholderTextColor="#00000080"
                         onChangeText={onChangeText}

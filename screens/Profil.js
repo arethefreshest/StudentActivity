@@ -146,6 +146,11 @@ const Profil = ({ loggedInUserId }) => {
                                             onFriendAccepted={handleFriendAccepted}
                             />
                         )}
+                        {isCurrentUser && (
+                            <View style={{ marginTop: '50%', alignItems: 'center' }}>
+                                <Button text="Logg ut" onPress={handleLogout} />
+                            </View>
+                        )}
                     </>
                 );
             default:
@@ -193,11 +198,6 @@ const Profil = ({ loggedInUserId }) => {
                     <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
                 </View>
                 {renderContent()}
-                {isCurrentUser && (
-                    <View style={{ marginTop: 0, alignItems: 'center' }}>
-                        <Button text="Logg ut" onPress={handleLogout} />
-                    </View>
-                )}
             </GradientScreen>
         </View>
     );

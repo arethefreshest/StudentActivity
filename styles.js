@@ -107,9 +107,61 @@ export const styles = StyleSheet.create({
       marginVertical: 8,
     },
 
+    customInputField: {
+        width: '100%', // Adjust width as needed
+    },
+
+    customInputField2: {
+        width: '95%',
+    },
+
     container: {
         flex: 1,
         padding: 10,
+    },
+
+    davidButton: {
+        marginTop: 30,
+        backgroundColor: '#008080',
+        padding: 10,
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: '#FFF',
+        alignItems: 'center',
+        height: 60,
+    },
+
+    davidButtonText: {
+        color: '#FFF',
+        fontSize: 26,
+        fontWeight: 'bold',
+    },
+
+    davidContainer: {
+        width: '80%',
+        marginLeft: '10%',
+        marginTop: '35%',
+        padding: 20,
+        backgroundColor: 'rgba(255,255,255,0.44)',
+        borderRadius: 20,
+        shadowColor: 'rgba(0,0,0,0)',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+        height: 500,
+    },
+
+    davidLabel: {
+        fontSize: 19,
+        color: '#000',
+        fontWeight: 'bold',
+        paddingVertical: 10,
+    },
+
+    davidSafeArea: {
+        flex: 1,
+        marginTop: 20,
     },
 
     deleteButton: {
@@ -128,8 +180,8 @@ export const styles = StyleSheet.create({
     feedContainer: {
         flex: 1,
         top: 0,
-        alignItems: 'left',
-        marginLeft: 20,
+        alignItems: 'center',
+        //marginLeft: 20,
     },
 
     feedListContainer: {
@@ -416,6 +468,19 @@ export const styles = StyleSheet.create({
         color: '#FFECE7',
     },
 
+    picker: {
+        marginTop: 10,
+        width: '100%',
+        height: 80,
+        borderRadius: 15,
+        backgroundColor: 'rgba(248,248,248,0.47)',
+    },
+
+    pickerItem: {
+        alignItems: "center",
+        height: 80,
+    },
+
     profileHeader: {
         alignItems: 'center',
         paddingTop: 160,
@@ -526,9 +591,25 @@ export const styles = StyleSheet.create({
         //paddingHorizontal: 20,
     },
 
+    sectionContainer: {
+        marginTop: 20,
+        paddingHorizontal: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#FFECE7',
+        width: '60%',
+        alignSelf: 'center',
+    },
+
     settingsContainer: {
         padding: 20,
         alignItems: 'center',
+    },
+
+    slider: {
+        width: '100%',
     },
 
     text: {
@@ -585,6 +666,11 @@ export const styles = StyleSheet.create({
         color: '#008080',
         marginVertical: 10,
         textAlign: 'center',
+    },
+
+    value: {
+        fontSize: 14,
+        paddingBottom: 10,
     },
 
     // styles for Calendar.js
@@ -812,7 +898,7 @@ export const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18,
-        marginBottom: 0,
+        marginBottom: 10,
         fontWeight: 'bold',
     },
     label1: {
