@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaVi
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
@@ -203,7 +203,7 @@ function Activities({ route, navigation }) {
                                     onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                     onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                                 />
-                                <DateTimePicker
+                                <DateTimePickerAndroid
                                     value={selectedDate}
                                     mode="date"
                                     display="default"

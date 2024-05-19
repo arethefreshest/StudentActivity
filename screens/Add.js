@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
 import { addActivity } from '../addActivity';
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
@@ -106,11 +107,12 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
-                        <DateTimePicker
+                        <RNDateTimePicker
                             value={selectedDate}
                             mode="date"
-                            display="default"
-                            onChange={handleDateChange}
+                            display="defult"
+                            //onChange={handleDateChange}
+                            onChange={this.setDate}
                             style={styles.dateAdd}
                         />
                     </View>
