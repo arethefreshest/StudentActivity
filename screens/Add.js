@@ -4,16 +4,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { db } from '../FirebaseConfig';
-import { addDoc, collection } from "firebase/firestore";
-import { styles } from '../styles'; // Import styles from styles.js
+import { styles } from '../styles';
+import { addActivity } from '../addActivity';
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
-    const [isAdded, setIsAdded] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
 
@@ -27,6 +25,7 @@ const Add = () => {
     ];
 
     useEffect(() => {
+        console.log('Received route params:', route.params); // Debugging
         if (route.params) {
             if (route.params.activityName) {
                 setActivityName(route.params.activityName);
@@ -41,16 +40,17 @@ const Add = () => {
         date && setSelectedDate(date);
     };
 
-    const addActivity = async () => {
+    const handleAddActivity = async () => {
         const activityData = {
             activityName,
             selectedDate,
             selectedFriends,
             description,
         };
-        try {
-            await addDoc(collection(db, "calendar"), activityData);
-            setIsAdded(true);
+        const success = await addActivity(activityData);
+
+        if (success) {
+            Alert.alert("Success", "Activity added successfully");
 
             // Clear the fields
             setActivityName('');
@@ -58,11 +58,9 @@ const Add = () => {
             setDescription('');
             setSelectedFriends([]);
 
-            // Show a success message
-            Alert.alert("Success", "Activity added successfully");
-
-        } catch (error) {
-            console.error("Error adding activity: ", error);
+            // Navigate back to the calendar screen and pass the parameter
+            navigation.navigate('Calendar', { newActivityAdded: true });
+        } else {
             Alert.alert("Error", "There was an error adding the activity");
         }
     };
@@ -104,11 +102,9 @@ const Add = () => {
                         onChangeText={setDescription}
                     />
 
-                    <TouchableOpacity style={styles.buttonAdd} onPress={addActivity}>
+                    <TouchableOpacity style={styles.buttonAdd} onPress={handleAddActivity}>
                         <Text style={styles.buttonTextAdd}>Legg til</Text>
                     </TouchableOpacity>
-
-                    {isAdded}
                 </View>
             </SafeAreaView>
         </GradientScreen>

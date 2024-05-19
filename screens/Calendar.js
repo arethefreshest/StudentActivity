@@ -17,10 +17,10 @@ export default function CalendarScreen({ navigation, route }) {
     }, []);
 
     useEffect(() => {
-        if (route.params?.newActivity) {
+        if (route.params?.newActivityAdded) {
             fetchActivities();
         }
-    }, [route.params?.newActivity]);
+    }, [route.params?.newActivityAdded]);
 
     const fetchActivities = async () => {
         const activitiesCollection = collection(db, 'calendar');

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal } from 'react-native';
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Modal from 'react-native-modal';
 import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
+import { addActivity } from '../addActivity';
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -70,7 +70,6 @@ function Activities({ route, navigation }) {
         setExpandedId(expandedId === id ? null : id);
     };
 
-
     if (loading) {
         return (
             <GradientScreen>
@@ -79,7 +78,6 @@ function Activities({ route, navigation }) {
         );
     }
 
-
     const handleAddActivity = async () => {
         const activityData = {
             activityName,
@@ -87,17 +85,18 @@ function Activities({ route, navigation }) {
             selectedFriends,
             description,
         };
-        try {
-            await addDoc(collection(db, "calendar"), activityData);
+        const success = await addActivity(activityData);
 
-            console.log("Activity added successfully");
+        if (success) {
+            Alert.alert("Success", "Activity added successfully");
             setModalVisible(false);
             setActivityName('');
             setSelectedDate(new Date());
             setDescription('');
             setSelectedFriends([]);
-        } catch (error) {
-            console.error("Error adding activity: ", error);
+            navigation.navigate('Calendar', { newActivityAdded: true });
+        } else {
+            Alert.alert("Error", "There was an error adding the activity");
         }
     };
 
@@ -106,14 +105,6 @@ function Activities({ route, navigation }) {
         setDescription(activity.WhatYouNeed);
         setModalVisible(true);
     };
-
-    if (loading) {
-        return (
-            <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />
-            </GradientScreen>
-        );
-    }
 
     if (error) {
         return (
@@ -166,47 +157,52 @@ function Activities({ route, navigation }) {
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
-                <Modal isVisible={isModalVisible}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Aktivitetsnavn"
-                            value={activityName}
-                            onChangeText={setActivityName}
-                        />
-                        <View style={styles.rowContainer}>
-                            <CustomPicker
-                                items={friendsList}
-                                selectedItems={selectedFriends}
-                                onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
-                                onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isModalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={styles.modalOverlayCalendar}>
+                        <View style={styles.modalContainerCalendar}>
+                            <Text style={styles.modalTitleCalendar}>Legg til Aktivitet</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Aktivitetsnavn"
+                                value={activityName}
+                                onChangeText={setActivityName}
                             />
-                            <DateTimePicker
-                                value={selectedDate}
-                                mode="date"
-                                display="default"
-                                onChange={(event, date) => date && setSelectedDate(date)}
-                                style={styles.date}
+                            <View style={styles.rowContainer}>
+                                <CustomPicker
+                                    items={friendsList}
+                                    selectedItems={selectedFriends}
+                                    onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
+                                    onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
+                                />
+                                <DateTimePicker
+                                    value={selectedDate}
+                                    mode="date"
+                                    display="default"
+                                    onChange={(event, date) => date && setSelectedDate(date)}
+                                    style={styles.date}
+                                />
+                            </View>
+                            <TextInput
+                                style={styles.textArea}
+                                placeholder="Beskrivelse"
+                                multiline
+                                numberOfLines={4}
+                                value={description}
+                                onChangeText={setDescription}
                             />
-
-                        </View>
-
-                        <TextInput
-                            style={styles.textArea}
-                            placeholder="Beskrivelse"
-                            multiline
-                            numberOfLines={4}
-                            value={description}
-                            onChangeText={setDescription}
-                        />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
-                                <Text style={styles.buttonText}>Legg til</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                                <Text style={styles.buttonText}>Avbryt</Text>
-                            </TouchableOpacity>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
+                                    <Text style={styles.buttonText}>Legg til</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
+                                    <Text style={styles.buttonText}>Avbryt</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>
