@@ -128,8 +128,8 @@ export const styles = StyleSheet.create({
     feedContainer: {
         flex: 1,
         top: 0,
-        alignItems: 'left',
-        marginLeft: 20,
+        alignItems: 'center',
+        //marginLeft: 20,
     },
 
     feedListContainer: {
@@ -524,6 +524,18 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         //paddingHorizontal: 20,
+    },
+
+    sectionContainer: {
+        marginTop: 20,
+        paddingHorizontal: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#FFECE7',
+        width: '60%',
+        alignSelf: 'center',
     },
 
     settingsContainer: {

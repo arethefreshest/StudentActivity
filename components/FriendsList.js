@@ -12,7 +12,7 @@ const FriendsList = ({ friends }) => {
     };
 
     return (
-        <View style={styles.feedContainer}>
+        <View style={styles.sectionContainer}>
             <TouchableOpacity onPress={() => setShowFriends(!showFriends)}>
                 <Text style={styles.sectionTitle}>Venner</Text>
             </TouchableOpacity>
