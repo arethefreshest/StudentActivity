@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import GradientScreen from '../components/GradientScreen';
-import { db } from '../FirebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, auth } from '../FirebaseConfig'; // Ensure auth is imported
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { styles } from '../styles';
 
 export default function CalendarScreen({ navigation, route }) {
@@ -23,8 +23,10 @@ export default function CalendarScreen({ navigation, route }) {
     }, [route.params?.newActivityAdded]);
 
     const fetchActivities = async () => {
+        const email = auth.currentUser.email;
         const activitiesCollection = collection(db, 'calendar');
-        const activitiesSnapshot = await getDocs(activitiesCollection);
+        const q = query(activitiesCollection, where("email", "==", email)); // Filter by current user's email
+        const activitiesSnapshot = await getDocs(q);
         const activitiesData = activitiesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         const datesWithActivities = {};

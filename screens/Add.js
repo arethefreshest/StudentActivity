@@ -8,7 +8,6 @@ import {auth, db} from '../FirebaseConfig';
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
-import { styles } from '../styles';
 import { addActivity } from '../addActivity';
 
 const Add = () => {
@@ -62,11 +61,13 @@ const Add = () => {
     };
 
     const handleAddActivity = async () => {
+        const email = auth.currentUser.email;
         const activityData = {
             activityName,
             selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends,
             description,
+            email, // Add the user's email to the activity data
         };
         const success = await addActivity(activityData);
 

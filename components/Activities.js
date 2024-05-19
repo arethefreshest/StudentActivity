@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal } from 'react-native';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from '../FirebaseConfig';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
@@ -100,29 +97,32 @@ function Activities({ route, navigation }) {
     }
 
 
-    const handleAddActivity = async () => {
-        const activityData = {
-            activityName,
-            selectedDate,
-            selectedFriends,
-            description,
+        const handleAddActivity = async () => {
+            const email = auth.currentUser.email;
+            const activityData = {
+                activityName,
+                selectedDate,
+                selectedFriends,
+                description,
+                email,
+            };
+            const success = await addActivity(activityData);
+
+            if (success) {
+                Alert.alert("Success", "Activity added successfully");
+                setModalVisible(false);
+                setActivityName('');
+                setSelectedDate(new Date());
+                setDescription('');
+                setSelectedFriends([]);
+                navigation.navigate('Calendar', { newActivityAdded: true });
+            } else {
+                Alert.alert("Error", "There was an error adding the activity");
+            }
         };
-        const success = await addActivity(activityData);
 
-        if (success) {
-            Alert.alert("Success", "Activity added successfully");
-            setModalVisible(false);
-            setActivityName('');
-            setSelectedDate(new Date());
-            setDescription('');
-            setSelectedFriends([]);
-            navigation.navigate('Calendar', { newActivityAdded: true });
-        } else {
-            Alert.alert("Error", "There was an error adding the activity");
-        }
-    };
 
-    const openModalWithActivityDetails = (activity) => {
+        const openModalWithActivityDetails = (activity) => {
         setActivityName(activity.Name);
         setDescription(activity.WhatYouNeed);
         setModalVisible(true);
@@ -168,12 +168,14 @@ function Activities({ route, navigation }) {
                                     <Text style={styles.textCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
                                     <Text style={styles.textCont2}>{activity.Description}</Text>
                                     <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
-                                    <TouchableOpacity
-                                        style={styles.addButton}
-                                        onPress={() => openModalWithActivityDetails(activity)}
-                                    >
-                                        <Text style={styles.addButtonText}>Legg til</Text>
-                                    </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            style={styles.addButton}
+                                            onPress={() => openModalWithActivityDetails(activity)}
+                                        >
+                                            <Text style={styles.addButtonText}>Legg til</Text>
+                                        </TouchableOpacity>
+
                                 </View>
                             )}
                         </TouchableOpacity>

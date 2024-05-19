@@ -42,26 +42,53 @@ function AppNavigator({ isAuthenticated, loggedInUserId }) {
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="ActivityFilter" component={ActivityFilter}/>
                 <Stack.Screen name="Activities" component={Activities}/>
-                <Stack.Screen name="Calendar" component={Calendar}/>
             </Stack.Navigator>
         );
     }
 
-
+    function Calendar() {
+        return (
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                {isAuthenticated ? (
+                    <Stack.Screen name="Calendar" component={Calendar}/>
+                ) : (
+                    <>
+                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
+                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
+                    </>)}
+            </Stack.Navigator>
+        );
+    }
 
 
     function Social() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SearchVenn" component={SearchVenn} />
-                <Stack.Screen name="AddVenn" component={AddVenn} />
+                {isAuthenticated ? (
+                    <>
+                        <Stack.Screen name="SearchVenn" component={SearchVenn} />
+                        <Stack.Screen name="AddVenn" component={AddVenn} />
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
+                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
+                    </>
+                )}
             </Stack.Navigator>
         );
     }
+
     function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name="AddAktivitet" component={Add}/>
+                {isAuthenticated ? (
+                    <Stack.Screen name="AddAktivitet" component={Add}/>
+                ) : (
+                    <>
+                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
+                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
+                    </>)}
             </Stack.Navigator>
         );
     }
