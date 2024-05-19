@@ -433,7 +433,7 @@ export const styles = StyleSheet.create({
     modalContainer: {
         width: '80%',
         padding: 20,
-        backgroundColor: '#FFECE7',
+        backgroundColor: 'rgba(255,255,255,0.98)',
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -959,7 +959,7 @@ modalOverlayCalendar: {
 modalContainerCalendar: {
     width: '80%',
         padding: 20,
-        backgroundColor: '#FFECE7',
+        backgroundColor: '#fbf0f0',
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -987,6 +987,6 @@ modalCloseButtonCalendar: {
 userName: {
         fontSize: 24,
         fontFamily: 'Roboto-Bold',
-        color: '#FFECE7',
+        color: '#faf3f2',
     },
 });

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Alert, Modal, Platform, Button } from 'react-native';
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from '../FirebaseConfig';
 import GradientScreen from "./GradientScreen";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import CustomPicker from "./CustomPicker";
 import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
@@ -22,7 +21,7 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
-    const [show, setShow] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -42,8 +41,6 @@ function Activities({ route, navigation }) {
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
-        const numericPeople = Number(people);
-        const locQuery = location ? location.toLowerCase() : null;
         const q = query(
             collection(db, "Activities"),
             where("MinP", "<=", numericPeople),
@@ -77,6 +74,17 @@ function Activities({ route, navigation }) {
 
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
+    };
+
+    const handleDateChange = (event, date) => {
+        if (date) {
+            setSelectedDate(date);
+        }
+        setShowDatePicker(false);
+    };
+
+    const showDatePickerHandler = () => {
+        setShowDatePicker(true);
     };
 
     if (loading) {
@@ -175,9 +183,9 @@ function Activities({ route, navigation }) {
                     visible={isModalVisible}
                     onRequestClose={() => setModalVisible(false)}
                 >
-                    <View style={styles.modalOverlayCalendar}>
-                        <View style={styles.modalContainerCalendar}>
-                            <Text style={styles.modalTitleCalendar}>Legg til Aktivitet</Text>
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Aktivitetsnavn"
@@ -191,14 +199,13 @@ function Activities({ route, navigation }) {
                                     onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                     onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                                 />
-                                <Button title="Select Date" onPress={showDatePicker} />
-                                {Platform.OS === 'ios' && show && (
+                                <Button title="Select Date" onPress={showDatePickerHandler} />
+                                {showDatePicker && (
                                     <DateTimePicker
                                         value={selectedDate}
                                         mode="date"
                                         display="default"
                                         onChange={handleDateChange}
-                                        style={styles.date}
                                     />
                                 )}
                             </View>
@@ -218,17 +225,6 @@ function Activities({ route, navigation }) {
                                     <Text style={styles.buttonText}>Avbryt</Text>
                                 </TouchableOpacity>
                             </View>
-                            {Platform.OS === 'android' && show && (
-                                <DateTimePicker
-                                    value={selectedDate}
-                                    mode="date"
-                                    display="default"
-                                    onChange={(event, date) => {
-                                        setShow(false);
-                                        date && handleDateChange(event, date);
-                                    }}
-                                />
-                            )}
                         </View>
                     </View>
                 </Modal>

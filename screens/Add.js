@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert, Platform, Button } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { auth, db } from '../FirebaseConfig';
 import GradientScreen from "../components/GradientScreen";
 import CustomPicker from '../components/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { auth, db } from '../FirebaseConfig';
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
@@ -17,8 +16,7 @@ const Add = () => {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
-    const [isAdded, setIsAdded] = useState(false);
-    const [show, setShow] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
 
@@ -47,21 +45,14 @@ const Add = () => {
     }, [route.params]);
 
     const handleDateChange = (event, date) => {
-        setShow(false);
-        date && setSelectedDate(date);
+        if (date) {
+            setSelectedDate(date);
+        }
+        setShowDatePicker(false);
     };
 
-    const showDatePicker = () => {
-        if (Platform.OS === 'android') {
-            DateTimePickerAndroid.open({
-                value: selectedDate,
-                onChange: handleDateChange,
-                mode: 'date',
-                is24Hour: true,
-            });
-        } else {
-            setShow(true);
-        }
+    const showDatePickerHandler = () => {
+        setShowDatePicker(true);
     };
 
     const handleAddActivity = async () => {
@@ -105,14 +96,13 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
-                        <Button title="Select Date" onPress={showDatePicker} />
-                        {Platform.OS === 'ios' && show && (
+                        <Button title="Select Date" onPress={showDatePickerHandler} />
+                        {showDatePicker && (
                             <DateTimePicker
                                 value={selectedDate}
                                 mode="date"
                                 display="default"
                                 onChange={handleDateChange}
-                                style={styles.dateAdd}
                             />
                         )}
                     </View>
