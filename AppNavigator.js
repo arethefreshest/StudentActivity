@@ -42,11 +42,17 @@ function AppNavigator({ isAuthenticated, loggedInUserId }) {
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="ActivityFilter" component={ActivityFilter}/>
                 <Stack.Screen name="Activities" component={Activities}/>
-                <Stack.Screen name="Calendar" component={Calendar}/>
             </Stack.Navigator>
         );
     }
 
+    function CalendarStack() {
+        return (
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Calendar" component={Calendar}/>
+            </Stack.Navigator>
+        );
+    }
 
 
 
@@ -124,12 +130,12 @@ return (
                 />
                 <MaterialBottomTabs.Screen
                     name="Add"
-                    component={AddActivity}
+                    component={isAuthenticated ? AddActivity : ProfilLoggInn}
                     options={{tabBarLabel: 'Legg til'}}
                 />
                 <MaterialBottomTabs.Screen
                     name="Social"
-                    component={Social}
+                    component={isAuthenticated ? Social : ProfilLoggInn}
                     options={{tabBarLabel: 'Sosialt'}}
                 />
                 <MaterialBottomTabs.Screen
@@ -142,7 +148,7 @@ return (
                 />
                 <MaterialBottomTabs.Screen
                     name="calendar"
-                    component={Calendar}
+                    component={isAuthenticated ? CalendarStack : ProfilLoggInn}
                     options={{tabBarLabel: 'Kalender'}}
                 />
             </MaterialBottomTabs.Navigator>
