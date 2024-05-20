@@ -23,6 +23,7 @@ const Profil = ({ loggedInUserId }) => {
     const [activities, setActivities] = useState([]);
     const [friends, setFriends] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
+    const [profileSettings, setProfileSettings] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Feed');
     const navigation = useNavigation();
@@ -30,11 +31,27 @@ const Profil = ({ loggedInUserId }) => {
     const friend = route.params?.friend || null;
     const isCurrentUser = !friend || friend.id === loggedInUserId;
 
+    const calculateSemester = (startDate) => {
+        if (!startDate) return '';
+        const [day, month, year] = startDate.match(/\d{1,2}/g)
+        const start = new Date(`20${year}`, month - 1, day);
+        const now = new Date();
+        const diffInMonths = (now.getFullYear() - start.getFullYear()) * 12 + now.getMonth() - start.getMonth();
+        return Math.ceil(diffInMonths / 6);
+    }
+
     const fetchData = async (userId) => {
         const userDoc = await getDoc(doc(db, 'users', userId));
         if (userDoc.exists()) {
             const data = userDoc.data();
             setImage(data.profileImageUrl || null);
+            setProfileSettings({
+                university: data.university || "",
+                degree: data.degree || "",
+                startDate: data.startDate || "",
+                endDate: data.endDate || "",
+                semester: calculateSemester(data.startDate)
+            });
         }
         fetchUserActivities(userId).then(setActivities);
         fetchFriendsAndRequests(userId).then(({ friends, friendRequests }) => {
@@ -51,7 +68,7 @@ const Profil = ({ loggedInUserId }) => {
             if (userId) {
                 fetchData(userId);
             }
-        }, [friend, loggedInUserId])
+        }, [friend, loggedInUserId, route.params?.profileUpdated])
     );
 
     const openModal = () => {
@@ -196,6 +213,13 @@ const Profil = ({ loggedInUserId }) => {
                         <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
                     )}
                     <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
+                    {isCurrentUser && (
+                        <View style={styles.profileSettingsDetails}>
+                            {profileSettings.university && <Text style={styles.profileSettingText}>Student ved {profileSettings.university}</Text>}
+                            {profileSettings.degree && <Text style={styles.profileSettingText}>{profileSettings.degree}</Text>}
+                            {profileSettings.semester && <Text style={styles.profileSettingText}>{profileSettings.semester}. semester</Text>}
+                        </View>
+                    )}
                 </View>
                 {renderContent()}
             </GradientScreen>
