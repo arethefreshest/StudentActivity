@@ -12,25 +12,25 @@ const FriendsList = ({ friends }) => {
     };
 
     return (
-        <View style={styles.sectionContainer}>
+        <View style={styles.friendsListContainer}>
             <TouchableOpacity onPress={() => setShowFriends(!showFriends)}>
-                <Text style={styles.sectionTitle}>Venner</Text>
+                <Text style={styles.friendsListSectionTitle}>Venner</Text>
             </TouchableOpacity>
             {showFriends && (
                 <FlatList
                     data={friends}
                     renderItem={({ item }) => (
                         item ? (
-                            <TouchableOpacity onPress={() => handleFriendClick(item)} style={styles.friendItem}>
+                            <TouchableOpacity onPress={() => handleFriendClick(item)} style={styles.friendsListItem}>
                                 {item.profileImageUrl && (
-                                    <Image source={{ uri: item.profileImageUrl }} style={styles.profileImageFriend} />
+                                    <Image source={{ uri: item.profileImageUrl }} style={styles.friendsListItemProfileImage} />
                                 )}
-                                <Text style={styles.feedText}>{item.fullName}</Text>
+                                <Text style={styles.friendsListItemText}>{item.fullName}</Text>
                             </TouchableOpacity>
-                            ) : null
+                        ) : null
                     )}
                     keyExtractor={(item) => item.id.toString()}
-                    contentContainerStyle={styles.feedListContainer}
+                    contentContainerStyle={styles.friendsListFeedListContainer}
                 />
             )}
         </View>

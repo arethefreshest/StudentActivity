@@ -21,7 +21,6 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
-    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -79,16 +78,6 @@ function Activities({ route, navigation }) {
         setExpandedId(expandedId === id ? null : id);
     };
 
-    const handleDateChange = (event, date) => {
-        if (date) {
-            setSelectedDate(date);
-        }
-        setShowDatePicker(false);
-    };
-
-    const showDatePickerHandler = () => {
-        setShowDatePicker(true);
-    };
 
     if (loading) {
         return (
@@ -107,7 +96,6 @@ function Activities({ route, navigation }) {
             email: auth.currentUser.email,
         };
 
-        // Remove any undefined fields from activityData
         Object.keys(activityData).forEach(key => {
             if (activityData[key] === undefined) {
                 delete activityData[key];
@@ -115,10 +103,8 @@ function Activities({ route, navigation }) {
         });
 
         try {
-            // Save to calendar collection
             const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
 
-            // Save to user's subcollection with linkedActivityId
             const userId = auth.currentUser.uid;
             const userActivityRef = doc(collection(db, `users/${userId}/activities`));
             await setDoc(userActivityRef, {
@@ -126,7 +112,6 @@ function Activities({ route, navigation }) {
                 linkedActivityId: calendarDocRef.id
             });
 
-            // Save to each friend's subcollection
             for (const friend of selectedFriends) {
                 const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
                 await setDoc(friendActivityRef, {
@@ -155,7 +140,7 @@ function Activities({ route, navigation }) {
     if (loading) {
         return (
             <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />
+                <ActivityIndicator size="large" color="#0000ff" style={styles.activitiesActivityIndicator} />
             </GradientScreen>
         );
     }
@@ -163,8 +148,8 @@ function Activities({ route, navigation }) {
     if (error) {
         return (
             <GradientScreen>
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>Error: {error.message}</Text>
+                <View style={styles.activitiesErrorContainer}>
+                    <Text style={styles.activitiesErrorText}>Error: {error.message}</Text>
                 </View>
             </GradientScreen>
         );
@@ -173,39 +158,39 @@ function Activities({ route, navigation }) {
     if (activities.length === 0 && !loading) {
         return (
             <GradientScreen>
-                <View style={styles.noResultsContainer}>
-                    <Text style={styles.noResultsText}>No activities found with the selected filters.</Text>
+                <View style={styles.activitiesNoResultsContainer}>
+                    <Text style={styles.activitiesNoResultsText}>No activities found with the selected filters.</Text>
                 </View>
             </GradientScreen>
         );
     }
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.safeArea}>
-                <ScrollView contentContainerStyle={styles.container}>
+        <GradientScreen style={styles.activitiesGradientScreen}>
+            <SafeAreaView style={styles.activitiesSafeArea}>
+                <ScrollView contentContainerStyle={styles.activitiesContainer}>
                     {activities.map((activity) => (
                         <TouchableOpacity
                             key={activity.id}
-                            style={styles.activityContainer}
+                            style={styles.activitiesActivityContainer}
                             onPress={() => toggleExpand(activity.id)}
                         >
-                            <Text style={styles.title}>{activity.Name}</Text>
-                            <Text style={styles.textTop}>Sted: {activity.Location}</Text>
-                            <Text style={styles.textTop}>Deltager: {numericPeople} people</Text>
-                            <Text style={styles.textTop}>Pris: {activity.totalPrice} kr</Text>
+                            <Text style={styles.activitiesTitle}>{activity.Name}</Text>
+                            <Text style={styles.activitiesTextTop}>Sted: {activity.Location}</Text>
+                            <Text style={styles.activitiesTextTop}>Deltager: {numericPeople} people</Text>
+                            <Text style={styles.activitiesTextTop}>Pris: {activity.totalPrice} kr</Text>
                             {expandedId === activity.id && (
-                                <View style={styles.details}>
-                                    <Text style={styles.textCont}>Price per Person: {activity.Price} kr</Text>
-                                    <Text style={styles.textCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
-                                    <Text style={styles.textCont2}>{activity.Description}</Text>
-                                    <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
+                                <View style={styles.activitiesDetails}>
+                                    <Text style={styles.activitiesTextCont}>Price per Person: {activity.Price} kr</Text>
+                                    <Text style={styles.activitiesTextCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
+                                    <Text style={styles.activitiesTextCont2}>{activity.Description}</Text>
+                                    <Text style={styles.activitiesTextLink}>{activity.WhatYouNeed}</Text>
 
                                     <TouchableOpacity
-                                        style={styles.addButton}
+                                        style={styles.activitiesAddButton}
                                         onPress={() => openModalWithActivityDetails(activity)}
                                     >
-                                        <Text style={styles.addButtonText}>Legg til</Text>
+                                        <Text style={styles.activitiesAddButtonText}>Legg til</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -213,15 +198,15 @@ function Activities({ route, navigation }) {
                     ))}
                 </ScrollView>
                 <Modal isVisible={isModalVisible}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
+                    <View style={styles.activitiesModalContent}>
+                        <Text style={styles.activitiesModalTitle}>Legg til Aktivitet</Text>
                         <TextInput
-                            style={styles.input}
+                            style={styles.activitiesInput}
                             placeholder="Aktivitetsnavn"
                             value={activityName}
                             onChangeText={setActivityName}
                         />
-                        <View style={styles.rowContainer}>
+                        <View style={styles.activitiesRowContainer}>
                             <CustomPicker
                                 items={friendsList}
                                 selectedItems={selectedFriends}
@@ -233,25 +218,24 @@ function Activities({ route, navigation }) {
                                 mode="date"
                                 display="default"
                                 onChange={(event, date) => date && setSelectedDate(date)}
-                                style={styles.date}
+                                style={styles.activitiesDate}
                             />
-
                         </View>
 
                         <TextInput
-                            style={styles.textArea}
+                            style={styles.activitiesTextArea}
                             placeholder="Beskrivelse"
                             multiline
                             numberOfLines={4}
                             value={description}
                             onChangeText={setDescription}
                         />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
-                                <Text style={styles.buttonText}>Legg til</Text>
+                        <View style={styles.activitiesButtonContainer}>
+                            <TouchableOpacity style={styles.activitiesButton} onPress={handleAddActivity}>
+                                <Text style={styles.activitiesButtonText}>Legg til</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                                <Text style={styles.buttonText}>Avbryt</Text>
+                            <TouchableOpacity style={[styles.activitiesButton, styles.activitiesCancelButton]} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.activitiesButtonText}>Avbryt</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

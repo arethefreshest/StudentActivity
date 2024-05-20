@@ -71,9 +71,6 @@ const Profil = ({ loggedInUserId }) => {
         }, [friend, loggedInUserId, route.params?.profileUpdated])
     );
 
-    const openModal = () => {
-        setModalVisible(true);
-    };
 
     const pickImage = async () => {
         console.log('Requesting media library permissions...');
@@ -88,23 +85,20 @@ const Profil = ({ loggedInUserId }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 0.5, // Reduce the quality to lower memory usage
+            quality: 0.5,
         });
 
         if (!result.canceled) {
             const uri = result.assets[0].uri;
             console.log('Image selected:', uri);
 
-            // Get image details using MediaLibrary
             const asset = await MediaLibrary.createAssetAsync(uri);
             console.log('Image Details:', asset);
 
             const { width, height, fileSize } = asset;
 
-            // Log image details
             console.log(`Original width: ${width}, Original height: ${height}, File size: ${fileSize} bytes`);
 
-            // Resize the image while maintaining aspect ratio
             const newWidth = Math.min(width, 800); // Set maximum width to 800 pixels
             const newHeight = (newWidth / width) * height; // Maintain aspect ratio
 
@@ -176,18 +170,11 @@ const Profil = ({ loggedInUserId }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.profilContainer}>
             <GradientScreen>
                 <TouchableOpacity
                     onPress={() => setModalVisible(true)}
-                    style={[styles.menuButton, {
-                        position: 'absolute',
-                        top: '24%',
-                        right: '5%',
-                        zIndex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }]}
+                    style={styles.profilMenuButton}
                 >
                     <FontAwesome name="angle-down" size={24} color="white" />
                 </TouchableOpacity>
@@ -197,27 +184,27 @@ const Profil = ({ loggedInUserId }) => {
                     onSelectOption={setSelectedOption}
                     onLogOut={handleLogout}
                 />
-                <View style={[styles.profileHeader, { alignItems: 'center'}]}>
+                <View style={styles.profilHeader}>
                     {isCurrentUser && (
                         <TouchableOpacity onPress={pickImage}>
                             {image ? (
-                                <Image source={{ uri: image }} style={styles.profileImage} />
+                                <Image source={{ uri: image }} style={styles.profilImage} />
                             ) : (
-                                <View style={styles.profileImagePlaceholder}>
-                                    <Text style={styles.addPictureIcon}>+</Text>
+                                <View style={styles.profilImagePlaceholder}>
+                                    <Text style={styles.profilAddPictureIcon}>+</Text>
                                 </View>
                             )}
                         </TouchableOpacity>
                     )}
                     {!isCurrentUser && friend.profileImageUrl && (
-                        <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
+                        <Image source={{ uri: friend.profileImageUrl }} style={styles.profilImage} />
                     )}
-                    <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
+                    <Text style={styles.profilUserName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
                     {isCurrentUser && (
-                        <View style={styles.profileSettingsDetails}>
-                            {profileSettings.university && <Text style={styles.profileSettingText}>Student ved {profileSettings.university}</Text>}
-                            {profileSettings.degree && <Text style={styles.profileSettingText}>{profileSettings.degree}</Text>}
-                            {profileSettings.semester && <Text style={styles.profileSettingText}>{profileSettings.semester}. semester</Text>}
+                        <View style={styles.profilSettingsDetails}>
+                            {profileSettings.university && <Text style={styles.profilSettingText}>Student ved {profileSettings.university}</Text>}
+                            {profileSettings.degree && <Text style={styles.profilSettingText}>{profileSettings.degree}</Text>}
+                            {profileSettings.semester && <Text style={styles.profilSettingText}>{profileSettings.semester}. semester</Text>}
                         </View>
                     )}
                 </View>

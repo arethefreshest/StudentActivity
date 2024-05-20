@@ -3,15 +3,12 @@ import {
     View,
     Text,
     ScrollView,
-    StyleSheet,
     TouchableOpacity,
     ActivityIndicator,
     SafeAreaView,
     Alert,
     Image
 } from 'react-native';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from '../../firebase/FirebaseConfig';
 import GradientScreen from "../ui/GradientScreen";
 import { sendFriendRequest, searchUsers } from "../../firebase/FirebaseFunksjoner";
 import {styles} from "../../styles";
@@ -66,7 +63,7 @@ function AddVenn({ route }) {
     if (loading) {
         return (
             <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={{ top: 300 }} />
+                <ActivityIndicator size="large" color="#0000ff" style={styles.addVennActivityIndicator} />
             </GradientScreen>
         );
     }
@@ -74,8 +71,8 @@ function AddVenn({ route }) {
     if (error) {
         return (
             <GradientScreen>
-                <View style={styles.container}>
-                    <Text style={styles.error}>Error: {error.message}</Text>
+                <View style={styles.addVennContainer}>
+                    <Text style={styles.addVennErrorText}>Error: {error.message}</Text>
                 </View>
             </GradientScreen>
         );
@@ -84,36 +81,36 @@ function AddVenn({ route }) {
     if (users.length === 0 && !loading) {
         return (
             <GradientScreen>
-                <View style={styles.container}>
-                    <Text style={styles.noResults}>No Users with that email or name were found.</Text>
+                <View style={styles.addVennContainer}>
+                    <Text style={styles.addVennNoResultsText}>No Users with that email or name were found.</Text>
                 </View>
             </GradientScreen>
         );
     }
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.safeArea}>
-                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <GradientScreen style={styles.addVennGradientScreen}>
+            <SafeAreaView style={styles.addVennSafeArea}>
+                <ScrollView contentContainerStyle={styles.addVennScrollViewContent}>
                     {users.map((user) => (
                         <TouchableOpacity
                             key={user.id}
-                            style={styles.activityContainer}
+                            style={styles.addVennActivityContainer}
                             onPress={() => toggleExpand(user.id)}
                         >
                             {user.profileImageUrl && (
-                            <Image source={{ uri: user.profileImageUrl }} style={styles.profileImage} />
+                                <Image source={{ uri: user.profileImageUrl }} style={styles.addVennProfileImage} />
                             )}
-                            <Text style={styles.title}>{user.fullName}</Text>
-                            <Text style={styles.textTop}>Email: {user.email}</Text>
+                            <Text style={styles.addVennTitle}>{user.fullName}</Text>
+                            <Text style={styles.addVennTextTop}>Email: {user.email}</Text>
                             {expandedId === user.id && (
-                                <View style={styles.details}>
-                                    <Text style={styles.textCont}>Additional details here</Text>
+                                <View style={styles.addVennDetails}>
+                                    <Text style={styles.addVennTextCont}>Additional details here</Text>
                                     <TouchableOpacity
-                                        style={styles.addButton}
+                                        style={styles.addVennAddButton}
                                         onPress={() => addFriend(user.id)}
                                     >
-                                        <Text style={styles.addButtonText}>Legg til</Text>
+                                        <Text style={styles.addVennAddButtonText}>Legg til</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}

@@ -15,10 +15,10 @@ function SearchVenn({ navigation }) {
     };
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.davidSafeArea}>
-                <View style={styles.davidContainer}>
-                    <Text style={styles.davidLabel}>Søk etter venner:</Text>
+        <GradientScreen style={styles.searchVennGradientScreen}>
+            <SafeAreaView style={styles.searchVennSafeArea}>
+                <View style={styles.searchVennContainer}>
+                    <Text style={styles.searchVennLabel}>Søk etter venner:</Text>
                     <InputField
                         value={searchParam}
                         onChangeText={setSearchParam}
@@ -27,8 +27,8 @@ function SearchVenn({ navigation }) {
                         customStyle={styles.customInputField}
                         customStyleInner={styles.customInputField2}
                     />
-                    <TouchableOpacity style={styles.davidButton} onPress={search}>
-                        <Text style={styles.davidButtonText}>Finn Venn</Text>
+                    <TouchableOpacity style={styles.searchVennButton} onPress={search}>
+                        <Text style={styles.searchVennButtonText}>Finn Venn</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

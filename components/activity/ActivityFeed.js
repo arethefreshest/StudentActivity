@@ -24,16 +24,16 @@ const ActivityFeed = () => {
         fetchActivities();
     }, []);
     return (
-        <View style={styles.feedContainer}>
+        <View style={styles.activityFeedContainer}>
             <TouchableOpacity onPress={() => setShowActivities(!showActivities)}>
-                <Text style={styles.sectionTitle}>Aktiviteter</Text>
+                <Text style={styles.activityFeedSectionTitle}>Aktiviteter</Text>
             </TouchableOpacity>
             {showActivities && (
                 <FlatList
                     data={activities}
                     renderItem={({ item }) => <ActivityItem item={item} />}
                     keyExtractor={(item, index) => index.toString()}
-                    contentContainerStyle={styles.feedListContainer}
+                    contentContainerStyle={styles.activityFeedListContainer}
                 />
             )}
         </View>
