@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet,  TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Picker } from '@react-native-picker/picker';
 import GradientScreen from "../ui/GradientScreen";
@@ -10,6 +10,17 @@ function ActivityFilter({ navigation }) {
     const [price, setPrice] = useState(500);
     const [location, setLocation] = useState('krs');
 
+    const handlePeopleChange = (value) => {
+        setPeople(value);
+    };
+
+    const handlePriceChange = (value) => {
+        setPrice(value);
+    };
+
+    const handleTypeChange = (itemValue, itemIndex) => {
+        setLocation(itemValue.toLowerCase());
+    };
 
     const applyFilters = () => {
         console.log("Applying filters with:", {people, price, location});
@@ -64,7 +75,5 @@ function ActivityFilter({ navigation }) {
         </GradientScreen>
     );
 }
-
-
 
 export default ActivityFilter;
