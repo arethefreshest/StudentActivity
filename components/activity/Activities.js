@@ -99,14 +99,12 @@ function Activities({ route, navigation }) {
     }
 
     const handleAddActivity = async () => {
-        const email = auth.currentUser.email;
         const activityData = {
             activityName,
             selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends: selectedFriends.map(friend => ({ id: friend.id, fullName: friend.fullName })),
             description,
             email: auth.currentUser.email,
-            email,
         };
 
         // Remove any undefined fields from activityData
