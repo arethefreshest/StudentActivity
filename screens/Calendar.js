@@ -48,7 +48,7 @@ export default function CalendarScreen({ navigation, route }) {
                     }
                 } else {
                     if (activityData.selectedDate) {
-                        userActivities.push(activityData); // Push activity data even if there's no linkedActivityId
+                        userActivities.push(activityData);
                     }
                 }
             }
@@ -77,8 +77,8 @@ export default function CalendarScreen({ navigation, route }) {
 
     return (
         <GradientScreen>
-            <View style={styles.containerCalendar}>
-                <Text style={styles.titleCalendar}>My Calendar</Text>
+            <View style={styles.calendarContainer}>
+                <Text style={styles.calendarTitle}>My Calendar</Text>
                 <Calendar
                     markedDates={markedDates}
                     onDayPress={handleDayPress}
@@ -87,7 +87,7 @@ export default function CalendarScreen({ navigation, route }) {
                     firstDay={1}
                     hideDayNames={false}
                     showWeekNumbers={true}
-                    style={styles.CalendarStyle}
+                    style={styles.calendarStyle}
                 />
                 <Modal
                     animationType="slide"
@@ -95,25 +95,25 @@ export default function CalendarScreen({ navigation, route }) {
                     visible={modalVisible}
                     onRequestClose={() => setModalVisible(false)}
                 >
-                    <View style={styles.modalOverlayCalendar}>
-                        <View style={styles.modalContainerCalendar}>
-                            <Text style={styles.modalTitleCalendar}>{selectedDate}</Text>
+                    <View style={styles.calendarModalOverlay}>
+                        <View style={styles.calendarModalContainer}>
+                            <Text style={styles.calendarModalTitle}>{selectedDate}</Text>
                             {activityDetails && activityDetails.length > 0 ? (
                                 activityDetails.map((activity, index) => (
                                     <View key={index}>
-                                        <Text style={styles.modalTextCalendar}>Activity: {activity.activityName}</Text>
-                                        <Text style={styles.modalTextCalendar}>Description: {activity.description}</Text>
-                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.map(friend => friend.fullName).join(', ')}</Text>
+                                        <Text style={styles.calendarModalText}>Activity: {activity.activityName}</Text>
+                                        <Text style={styles.calendarModalText}>Description: {activity.description}</Text>
+                                        <Text style={styles.calendarModalText}>Friends: {activity.selectedFriends.map(friend => friend.fullName).join(', ')}</Text>
                                     </View>
                                 ))
                             ) : (
-                                <Text style={styles.modalTextCalendar}>No activities planned</Text>
+                                <Text style={styles.calendarModalText}>No activities planned</Text>
                             )}
                             <TouchableOpacity
-                                style={styles.modalCloseButtonCalendar}
+                                style={styles.calendarModalCloseButton}
                                 onPress={() => setModalVisible(false)}
                             >
-                                <Text style={styles.modalTextCalendar}>Close</Text>
+                                <Text style={styles.calendarModalText}>Close</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

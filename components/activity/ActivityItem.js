@@ -7,23 +7,23 @@ const ActivityItem = ({ item }) => {
     const date = item.selectedDate ? new Date(item.selectedDate.seconds * 1000) : null;
     return (
         <View style={styles.activityItemContainer}>
-            <View style={styles.activityHeader}>
+            <View style={styles.activityItemHeader}>
                 {date ? (
-                    <Text style={styles.feedText}>{`${date.toDateString()} - ${date.toLocaleTimeString()}`}</Text>
+                    <Text style={styles.activityItemFeedText}>{`${date.toDateString()} - ${date.toLocaleTimeString()}`}</Text>
                 ) : (
-                    <Text style={styles.feedText}>No Date Available</Text>
+                    <Text style={styles.activityItemFeedText}>No Date Available</Text>
                 )}
             </View>
-            <View style={styles.activityContent}>
-                {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.activityProfileImage} />}
-                <View style={styles.activityTextContainer}>
-                    <Text style={styles.feedText}>{item.activityName}</Text>
-                    <View style={styles.activityIconContainer}>
+            <View style={styles.activityItemContent}>
+                {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.activityItemProfileImage} />}
+                <View style={styles.activityItemTextContainer}>
+                    <Text style={styles.activityItemFeedText}>{item.activityName}</Text>
+                    <View style={styles.activityItemIconContainer}>
                         <MaterialCommunityIcons name="map-marker" size={18} color="#FFECE7" />
-                        <Text style={styles.feedText}>{item.location}</Text>
+                        <Text style={styles.activityItemFeedText}>{item.location}</Text>
                     </View>
                 </View>
-                <View style={styles.activityIconsContainer}>
+                <View style={styles.activityItemIconsContainer}>
                     <TouchableOpacity>
                         <FontAwesome name="heart-o" size={24} color="#FFECE7" />
                     </TouchableOpacity>

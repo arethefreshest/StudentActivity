@@ -57,7 +57,7 @@ const ProfilSettings = () => {
                 endDate
             });
             Alert.alert('Endringer lagret', 'Profilen din er oppdatert');
-            navigation.navigate('Profil', { profileUpdated: true }); // Notify Profil component to refresh
+            navigation.navigate('Profil', { profileUpdated: true });
         } catch (e) {
             console.error('Error updating user:', e);
             Alert.alert('Feil', 'Kunne ikke lagre endringer');
@@ -67,7 +67,6 @@ const ProfilSettings = () => {
         const user = auth.currentUser;
         if (!user) return;
 
-        // Prompt the user to re-enter their password
         Alert.prompt(
             'Re-authenticate',
             'Please enter your password to confirm:',
@@ -80,11 +79,10 @@ const ProfilSettings = () => {
                     text: 'OK',
                     onPress: async (password) => {
                         try {
-                            // Re-authenticate the user
                             const credential = EmailAuthProvider.credential(user.email, password);
                             await reauthenticateWithCredential(user, credential);
 
-                            // Proceed with deleting the user's Firestore document and authentication profile
+
                             const userId = user.uid;
                             const userRef = doc(db, 'users', userId);
 
@@ -105,50 +103,50 @@ const ProfilSettings = () => {
     };
 
     return (
-            <View style={styles.profileSettingsContainer}>
-                <ScrollView contentContainerStyle={styles.scrollContainer} style={{ flex: 1}}>
-                    <Text style={styles.sectionTitle}>Profile Settings</Text>
-                    <View style={styles.inputGroup2}>
-                        <InputField
-                            placeholder="Date of Birth"
-                            value={dob}
-                            onChangeText={setDob}
-                        />
-                    </View>
-                    <View style={styles.inputGroup2}>
-                        <InputField
-                            placeholder="University"
-                            value={university}
-                            onChangeText={setUniversity}
-                        />
-                    </View>
-                    <View style={styles.inputGroup2}>
-                        <InputField
-                            placeholder="Degree"
-                            value={degree}
-                            onChangeText={setDegree}
-                        />
-                    </View>
-                    <View style={styles.inputGroup2}>
-                        <InputField
-                            placeholder="Start Date (DDMMYY)"
-                            value={startDate}
-                            onChangeText={setStartDate}
-                        />
-                    </View>
-                    <View style={styles.inputGroup2}>
-                        <InputField
-                            placeholder="End Date (DDMMYY)"
-                            value={endDate}
-                            onChangeText={setEndDate}
-                        />
-                    </View>
-                    <View style={styles.buttonContainer2}>
-                        <Button text="Lagre" onPress={handleSave} style={styles.customButton} />
-                        <Button text="Slett profil" onPress={handleDeleteProfile} style={styles.customButton}/>
-                    </View>
-                </ScrollView>
-            </View>
+        <View style={styles.profilSettingsContainer}>
+            <ScrollView contentContainerStyle={styles.profilSettingsScrollContainer} style={{ flex: 1 }}>
+                <Text style={styles.sectionTitle}>Profile Settings</Text>
+                <View style={styles.profilSettingsInputGroup2}>
+                    <InputField
+                        placeholder="Date of Birth"
+                        value={dob}
+                        onChangeText={setDob}
+                    />
+                </View>
+                <View style={styles.profilSettingsInputGroup2}>
+                    <InputField
+                        placeholder="University"
+                        value={university}
+                        onChangeText={setUniversity}
+                    />
+                </View>
+                <View style={styles.profilSettingsInputGroup2}>
+                    <InputField
+                        placeholder="Degree"
+                        value={degree}
+                        onChangeText={setDegree}
+                    />
+                </View>
+                <View style={styles.profilSettingsInputGroup2}>
+                    <InputField
+                        placeholder="Start Date (DDMMYY)"
+                        value={startDate}
+                        onChangeText={setStartDate}
+                    />
+                </View>
+                <View style={styles.profilSettingsInputGroup2}>
+                    <InputField
+                        placeholder="End Date (DDMMYY)"
+                        value={endDate}
+                        onChangeText={setEndDate}
+                    />
+                </View>
+                <View style={styles.profilSettingsButtonContainer2}>
+                    <Button text="Lagre" onPress={handleSave} style={styles.customButton} />
+                    <Button text="Slett profil" onPress={handleDeleteProfile} style={styles.customButton} />
+                </View>
+            </ScrollView>
+        </View>
     );
 };
 

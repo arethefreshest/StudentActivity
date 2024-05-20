@@ -6,7 +6,7 @@ import CustomPicker from '../components/ui/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {auth, db} from '../firebase/FirebaseConfig';
 import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
-import { styles } from '../styles'; // Import styles from styles.js
+import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../firebase/FirebaseFunksjoner";
 
 const Add = () => {
@@ -16,17 +16,8 @@ const Add = () => {
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
     const [isAdded, setIsAdded] = useState(false);
-    const navigation = useNavigation();
     const route = useRoute();
 
-    /*const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -66,10 +57,8 @@ const Add = () => {
             email: auth.currentUser.email,
         };
         try {
-            // Save to calendar collection
             const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
 
-            // Save to user's subcollection with linkedActivityId
             const userId = auth.currentUser.uid;
             const userActivityRef = doc(collection(db, `users/${userId}/activities`));
             await setDoc(userActivityRef, {
@@ -77,7 +66,6 @@ const Add = () => {
                 linkedActivityId: calendarDocRef.id
             });
 
-            // Save to each friend's subcollection
             for (const friend of selectedFriends) {
                 const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
                 await setDoc(friendActivityRef, {
@@ -88,13 +76,11 @@ const Add = () => {
 
             setIsAdded(true);
 
-            // Clear the fields
             setActivityName('');
             setSelectedDate(new Date());
             setDescription('');
             setSelectedFriends([]);
 
-            // Show success message
             Alert.alert("Success", "Activity added successfully");
 
         } catch (error) {
@@ -104,18 +90,18 @@ const Add = () => {
     };
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.containerAdd}>
-                    <Text style={styles.label1}>Legg til:</Text>
+        <GradientScreen style={styles.addGradientScreen}>
+            <SafeAreaView style={styles.addSafeArea}>
+                <View style={styles.addContainer}>
+                    <Text style={styles.addLabel1}>Legg til:</Text>
                     <TextInput
-                        style={styles.inputAdd}
+                        style={styles.addInput}
                         placeholder="Aktivitetsnavn"
                         value={activityName}
                         onChangeText={setActivityName}
                     />
 
-                    <View style={styles.rowContainerAdd}>
+                    <View style={styles.addRowContainer}>
                         <CustomPicker
                             items={friendsList}
                             selectedItems={selectedFriends}
@@ -127,12 +113,12 @@ const Add = () => {
                             mode="date"
                             display="default"
                             onChange={handleDateChange}
-                            style={styles.dateAdd}
+                            style={styles.addDate}
                         />
                     </View>
 
                     <TextInput
-                        style={styles.textAreaAdd}
+                        style={styles.addTextArea}
                         placeholder="Beskrivelse"
                         multiline
                         numberOfLines={4}
@@ -140,8 +126,8 @@ const Add = () => {
                         onChangeText={setDescription}
                     />
 
-                    <TouchableOpacity style={styles.buttonAdd} onPress={addActivity}>
-                        <Text style={styles.buttonTextAdd}>Legg til</Text>
+                    <TouchableOpacity style={styles.addButton} onPress={addActivity}>
+                        <Text style={styles.addButtonText}>Legg til</Text>
                     </TouchableOpacity>
 
                     {isAdded}

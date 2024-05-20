@@ -15,16 +15,16 @@ const FriendRequests = ({ friendRequests, acceptFriend, onFriendAccepted }) => {
     };
 
     return (
-        <View style={styles.sectionContainer}>
+        <View style={styles.friendRequestsContainer}>
             <TouchableOpacity onPress={() => setShowRequests(!showRequests)}>
-                <Text style={styles.sectionTitle}>Venneforespørsler</Text>
+                <Text style={styles.friendRequestsSectionTitle}>Venneforespørsler</Text>
             </TouchableOpacity>
             {showRequests && (
                 <FlatList
                     data={friendRequests}
                     renderItem={({ item }) => <FriendRequestItem item={item} acceptFriend={handleAcceptFriend} />}
                     keyExtractor={(item) => item.id.toString()}
-                    contentContainerStyle={styles.feedListContainer}
+                    contentContainerStyle={styles.friendRequestsFeedListContainer}
                 />
             )}
         </View>
