@@ -18,7 +18,7 @@ function SearchVenn({ navigation }) {
         <GradientScreen style={styles.gradientScreen}>
             <SafeAreaView style={styles.davidSafeArea}>
                 <View style={styles.davidContainer}>
-                    <Text style={styles.label}>Søk:</Text>
+                    <Text style={styles.davidLabel}>Søk etter venner:</Text>
                     <InputField
                         value={searchParam}
                         onChangeText={setSearchParam}

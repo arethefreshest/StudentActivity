@@ -140,7 +140,8 @@ export const styles = StyleSheet.create({
     davidContainer: {
         width: '80%',
         marginLeft: '10%',
-        marginTop: '35%',
+        marginTop: '45%',
+        height: 'auto',
         padding: 20,
         backgroundColor: 'rgba(255,255,255,0.44)',
         borderRadius: 20,
@@ -149,13 +150,13 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 5,
-        height: 500,
     },
 
     davidLabel: {
-        fontSize: 19,
+        fontSize: 25,
         color: '#000',
         fontWeight: 'bold',
+        marginBottom: 50,
         paddingVertical: 10,
     },
 
@@ -578,13 +579,15 @@ export const styles = StyleSheet.create({
 
     scrollContentContainer: {
         flexGrow: 1,
+        width: '80%',
         paddingBottom: 100, // Adjust as needed to ensure scrolling area doesn't overlap with the bottom tab
     },
 
     scrollViewContainer: {
         flex: 1,
-        marginTop: 20, // Adjust as needed to ensure spacing below the header
-        paddingBottom: 100, // Adjust as needed to ensure scrolling area doesn't overlap with the bottom tab
+        width: '80%',
+        marginTop: 20,
+        paddingBottom: 100,
     },
 
     scrollView: {
@@ -592,7 +595,8 @@ export const styles = StyleSheet.create({
     },
 
     scrollViewContent: {
-        //flexGrow: 1,
+        flexGrow: 1,
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
     },
