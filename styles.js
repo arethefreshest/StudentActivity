@@ -527,6 +527,21 @@ export const styles = StyleSheet.create({
         paddingBottom: 100,
     },
 
+    profileSettingsDetails: {
+        //padding: 20,
+        //borderWidth: 2,
+        //borderColor: '#FFECE7',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+
+    profileSettingText: {
+        fontSize: 14,
+        fontFamily: 'Roboto-Regular',
+        color: '#FFECE7',
+        marginBottom: 10,
+    },
+
     registerButton: {
         justifyContent: 'center',
         alignItems: 'center',
