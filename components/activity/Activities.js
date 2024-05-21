@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
-import {collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc} from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc } from "firebase/firestore";
 import { db, auth } from '../../firebase/FirebaseConfig';
 import GradientScreen from "../ui/GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -22,23 +22,13 @@ function Activities({ route, navigation }) {
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
 
-
-   /* const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
-
     useEffect(() => {
         const fetchFriends = async () => {
             try {
                 const userId = auth.currentUser.uid;
                 console.log("Fetching friends for user ID:", userId);
-                const {friends} = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({id: friend.id, fullName: friend.fullName})));
+                const { friends } = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
             } catch (e) {
                 console.error('Error fetching friends:', e);
             }
@@ -88,7 +78,6 @@ function Activities({ route, navigation }) {
         setExpandedId(expandedId === id ? null : id);
     };
 
-
     const handleAddActivity = async () => {
         const activityData = {
             activityName,
@@ -98,7 +87,6 @@ function Activities({ route, navigation }) {
             email: auth.currentUser.email,
         };
 
-        // Remove any undefined fields from activityData
         Object.keys(activityData).forEach(key => {
             if (activityData[key] === undefined) {
                 delete activityData[key];
@@ -106,10 +94,8 @@ function Activities({ route, navigation }) {
         });
 
         try {
-            // Save to calendar collection
             const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
 
-            // Save to user's subcollection with linkedActivityId
             const userId = auth.currentUser.uid;
             const userActivityRef = doc(collection(db, `users/${userId}/activities`));
             await setDoc(userActivityRef, {
@@ -117,7 +103,6 @@ function Activities({ route, navigation }) {
                 linkedActivityId: calendarDocRef.id
             });
 
-            // Save to each friend's subcollection
             for (const friend of selectedFriends) {
                 const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
                 await setDoc(friendActivityRef, {
@@ -146,7 +131,7 @@ function Activities({ route, navigation }) {
     if (loading) {
         return (
             <GradientScreen>
-                <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />
+                <ActivityIndicator size="large" color="#0000ff" style={styles.IndicatorActivities} />
             </GradientScreen>
         );
     }
@@ -154,8 +139,8 @@ function Activities({ route, navigation }) {
     if (error) {
         return (
             <GradientScreen>
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>Error: {error.message}</Text>
+                <View style={styles.errorContainerActivities}>
+                    <Text style={styles.errorTextActivities}>Error: {error.message}</Text>
                 </View>
             </GradientScreen>
         );
@@ -164,38 +149,38 @@ function Activities({ route, navigation }) {
     if (activities.length === 0 && !loading) {
         return (
             <GradientScreen>
-                <View style={styles.noResultsContainer}>
-                    <Text style={styles.noResultsText}>No activities found with the selected filters.</Text>
+                <View style={styles.noResultsContainerActivities}>
+                    <Text style={styles.noResultsTextActivities}>No activities found with the selected filters.</Text>
                 </View>
             </GradientScreen>
         );
     }
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.safeArea}>
-                <ScrollView contentContainerStyle={styles.container}>
+        <GradientScreen>
+            <SafeAreaView style={styles.safeAreaActivities}>
+                <ScrollView contentContainerStyle={styles.containerActivities}>
                     {activities.map((activity) => (
                         <TouchableOpacity
                             key={activity.id}
-                            style={styles.activityContainer}
+                            style={styles.containerActivity}
                             onPress={() => toggleExpand(activity.id)}
                         >
-                            <Text style={styles.title}>{activity.Name}</Text>
-                            <Text style={styles.textTop}>Sted: {activity.Location}</Text>
-                            <Text style={styles.textTop}>Deltager: {numericPeople} people</Text>
-                            <Text style={styles.textTop}>Pris: {activity.totalPrice} kr</Text>
+                            <Text style={styles.titleActivities}>{activity.Name}</Text>
+                            <Text style={styles.textTopActivities}>Sted: {activity.Location}</Text>
+                            <Text style={styles.textTopActivities}>Deltager: {numericPeople} people</Text>
+                            <Text style={styles.textTopActivities}>Pris: {activity.totalPrice} kr</Text>
                             {expandedId === activity.id && (
-                                <View style={styles.details}>
-                                    <Text style={styles.textCont}>Price per Person: {activity.Price} kr</Text>
-                                    <Text style={styles.textCont}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
-                                    <Text style={styles.textCont2}>{activity.Description}</Text>
-                                    <Text style={styles.textLink}>{activity.WhatYouNeed}</Text>
+                                <View style={styles.detailsActivities}>
+                                    <Text style={styles.textContActivities}>Price per Person: {activity.Price} kr</Text>
+                                    <Text style={styles.textContActivities}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
+                                    <Text style={styles.textCont2Activities}>{activity.Description}</Text>
+                                    <Text style={styles.textLinkActivities}>{activity.WhatYouNeed}</Text>
                                     <TouchableOpacity
-                                        style={styles.addButton}
+                                        style={styles.addButtonActivities}
                                         onPress={() => openModalWithActivityDetails(activity)}
                                     >
-                                        <Text style={styles.addButtonText}>Legg til</Text>
+                                        <Text style={styles.addButtonTextActivities}>Legg til</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -203,15 +188,15 @@ function Activities({ route, navigation }) {
                     ))}
                 </ScrollView>
                 <Modal isVisible={isModalVisible}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Legg til Aktivitet</Text>
+                    <View style={styles.modalContentActivities}>
+                        <Text style={styles.modalTitleActivities}>Legg til Aktivitet</Text>
                         <TextInput
-                            style={styles.input}
+                            style={styles.inputActivities}
                             placeholder="Aktivitetsnavn"
                             value={activityName}
                             onChangeText={setActivityName}
                         />
-                        <View style={styles.rowContainer}>
+                        <View style={styles.rowContainerActivities}>
                             <CustomPicker
                                 items={friendsList}
                                 selectedItems={selectedFriends}
@@ -223,25 +208,23 @@ function Activities({ route, navigation }) {
                                 mode="date"
                                 display="default"
                                 onChange={(event, date) => date && setSelectedDate(date)}
-                                style={styles.date}
+                                style={styles.dateActivities}
                             />
-
                         </View>
-
                         <TextInput
-                            style={styles.textArea}
+                            style={styles.textAreaActivities}
                             placeholder="Beskrivelse"
                             multiline
                             numberOfLines={4}
                             value={description}
                             onChangeText={setDescription}
                         />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button} onPress={handleAddActivity}>
-                                <Text style={styles.buttonText}>Legg til</Text>
+                        <View style={styles.buttonContainerActivities}>
+                            <TouchableOpacity style={styles.buttonActivities} onPress={handleAddActivity}>
+                                <Text style={styles.buttonTextActivities}>Legg til</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                                <Text style={styles.buttonText}>Avbryt</Text>
+                            <TouchableOpacity style={[styles.buttonActivities, styles.cancelButtonActivities]} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.buttonTextActivities}>Avbryt</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

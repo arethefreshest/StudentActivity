@@ -15,20 +15,17 @@ function SearchVenn({ navigation }) {
     };
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.davidSafeArea}>
-                <View style={styles.davidContainer}>
-                    <Text style={styles.label}>Søk:</Text>
+        <GradientScreen>
+            <SafeAreaView style={styles.SafeAreaSokVenn}>
+                <View style={styles.ContainerSokVenn}>
+                    <Text style={styles.LabelSokVenn}>Søk:</Text>
                     <InputField
                         value={searchParam}
                         onChangeText={setSearchParam}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
-                        customStyle={styles.customInputField}
-                        customStyleInner={styles.customInputField2}
+                        customStyleInner={styles.InputFieldSokVenn}
                     />
-                    <TouchableOpacity style={styles.davidButton} onPress={search}>
-                        <Text style={styles.davidButtonText}>Finn Venn</Text>
+                    <TouchableOpacity style={styles.ButtonSokVenn} onPress={search}>
+                        <Text style={styles.ButtonTextSokVenn}>Finn Venn</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

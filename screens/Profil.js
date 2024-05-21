@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import {View, Text, Image, ScrollView, TouchableOpacity, Alert, SafeAreaView} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary from 'expo-media-library';
@@ -163,11 +163,6 @@ const Profil = ({ loggedInUserId }) => {
                                             onFriendAccepted={handleFriendAccepted}
                             />
                         )}
-                        {isCurrentUser && (
-                            <View style={{ marginTop: '50%', alignItems: 'center' }}>
-                                <Button text="Logg ut" onPress={handleLogout} />
-                            </View>
-                        )}
                     </>
                 );
             default:
@@ -182,7 +177,7 @@ const Profil = ({ loggedInUserId }) => {
                     onPress={() => setModalVisible(true)}
                     style={[styles.menuButton, {
                         position: 'absolute',
-                        top: '24%',
+                        top: '16.5%',
                         right: '5%',
                         zIndex: 1,
                         alignItems: 'center',
@@ -208,11 +203,19 @@ const Profil = ({ loggedInUserId }) => {
                                 </View>
                             )}
                         </TouchableOpacity>
+
                     )}
+
                     {!isCurrentUser && friend.profileImageUrl && (
                         <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
                     )}
                     <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
+
+                    {isCurrentUser && (
+                        <View style={{ marginTop: '5%', marginBottom: '5%', alignItems: 'center' }}>
+                            <Button text="Logg ut" onPress={handleLogout} />
+                        </View>
+                    )}
                     {isCurrentUser && (
                         <View style={styles.profileSettingsDetails}>
                             {profileSettings.university && <Text style={styles.profileSettingText}>Student ved {profileSettings.university}</Text>}
@@ -221,7 +224,14 @@ const Profil = ({ loggedInUserId }) => {
                         </View>
                     )}
                 </View>
+                <SafeAreaView style={styles.SafeAreaProfil}>
+                    <View style={styles.containerProfilContainer}>
+                    <ScrollView>
                 {renderContent()}
+                    </ScrollView>
+                    </View>
+                </SafeAreaView>
+
             </GradientScreen>
         </View>
     );

@@ -26,7 +26,7 @@ const ActivityFeed = () => {
     return (
         <View style={styles.feedContainer}>
             <TouchableOpacity onPress={() => setShowActivities(!showActivities)}>
-                <Text style={styles.sectionTitle}>Aktiviteter</Text>
+                <Text style={styles.titleActivityFeed}>Aktiviteter</Text>
             </TouchableOpacity>
             {showActivities && (
                 <FlatList

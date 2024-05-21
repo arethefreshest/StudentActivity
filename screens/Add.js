@@ -19,15 +19,6 @@ const Add = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    /*const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
-
     useEffect(() => {
         const fetchFriends = async () => {
             try {
@@ -66,18 +57,13 @@ const Add = () => {
             email: auth.currentUser.email,
         };
         try {
-            // Save to calendar collection
             const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
-
-            // Save to user's subcollection with linkedActivityId
             const userId = auth.currentUser.uid;
             const userActivityRef = doc(collection(db, `users/${userId}/activities`));
             await setDoc(userActivityRef, {
                 ...activityData,
                 linkedActivityId: calendarDocRef.id
             });
-
-            // Save to each friend's subcollection
             for (const friend of selectedFriends) {
                 const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
                 await setDoc(friendActivityRef, {
@@ -87,14 +73,10 @@ const Add = () => {
             }
 
             setIsAdded(true);
-
-            // Clear the fields
             setActivityName('');
             setSelectedDate(new Date());
             setDescription('');
             setSelectedFriends([]);
-
-            // Show success message
             Alert.alert("Success", "Activity added successfully");
 
         } catch (error) {
@@ -104,10 +86,10 @@ const Add = () => {
     };
 
     return (
-        <GradientScreen style={styles.gradientScreen}>
-            <SafeAreaView style={styles.safeArea}>
+        <GradientScreen>
+            <SafeAreaView style={styles.safeAreaAdd}>
                 <View style={styles.containerAdd}>
-                    <Text style={styles.label1}>Legg til:</Text>
+                    <Text style={styles.labelAdd}>Legg til:</Text>
                     <TextInput
                         style={styles.inputAdd}
                         placeholder="Aktivitetsnavn"
