@@ -792,433 +792,421 @@ export const styles = StyleSheet.create({
 
 
 
-
-
-
-
-
-
-
-    addPictureIcon: {
-        fontSize: 40,
-        color: '#FFECE7',
-    },
-
-    baseText: {
-        fontFamily: 'Roboto-Flex',
-    },
-
-    boldText: {
-        fontFamily: 'Roboto-Bold',
-        color: '#FFECE7',
-    },
-
-
-
-    AreContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    contentContainer: {
-        flex: 1,
-        paddingTop: 24,
-        position: 'relative',
-    },
-
-    customButton: {
-      position: "relative",
-      width: '90%',
-      marginVertical: 8,
-    },
-
-
-
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-
-
-
-    deleteButton: {
-        marginTop: 20,
-        backgroundColor: '#FF0000',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-
-    deleteButtonText: {
-        color: '#FFF',
-        fontSize: 16,
-    },
-
-
-
-
-    forgotPassword: {
-        color: '#FFECE7',
-        fontSize: 15,
-        fontFamily: 'Roboto-Medium',
-        //fontWeight: '600',
-        position: 'absolute'
-    },
-
-    forgotPasswordText: {
-        fontSize: 15,
-        color: '#FFECE7',
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000000',
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-            },
-            android: {
-                shadowColor: '#000000',
-                elevation: 4,
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-            },
-            web: {
-
-            }
-        }),
-        position: 'absolute',
-    },
-
-    gradientBackground: {
-        flex: 1,
-        borderTopWidth: 0,
-        borderWidth: 0,
-        borderColor: 'transparent',
-    },
-
-    iconContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 0,
-    },
-
-
-
-
-
-    italicText: {
-        fontSize: 18,
-        fontFamily: 'Roboto-Italic',
-        textAlign: 'right',
-        color: '#000000',
-        opacity: 0.5,
-        borderColor: '#000000',
-        borderRadius: 15,
-    },
-
-    keyboardAvoidingContainer: {
-        flex: 1,
-    },
-
-    profilItalicText: {
-        fontSize: 18,
-        fontFamily: 'Roboto-Italic',
-        color: '#FFECE7',
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000000',
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-            },
-            android: {
-                shadowColor: '#000000',
-                elevation: 4,
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-            },
-            web: {
-
-            }
-        }),
-        position: 'absolute',
-    },
-
-    loginButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#FFECE7',
-        borderWidth: 2,
-        borderRadius: 10,
-        height: 50,
-        position: 'absolute',
-        width: 177,
-    },
-
-    loginButtonText: {
-        fontSize: 20,
-        fontFamily: 'Roboto-Bold',
-        color: '#FFECE7',
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000000',
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.5,
-                shadowRadius: 20,
-            },
-            android: {
-                shadowColor: '#000000',
-                elevation: 4,
-                shadowOffset: { width: 0, height: 4},
-                shadowOpacity: 0.5,
-                shadowRadius: 20,
-            },
-            web: {
-                textShadowColor: '#000000',
-                textShadowOffset: { width: 0, height: 4},
-                textShadowRadius: 20,
-            }
-        }),
-    },
-
-    logo: {
-        position: 'absolute',
-        top: 38,
-        left: (width - 248) / 2,
-        width: 248,
-        height: 98,
-    },
-
-    logoContainer: {
-        position: 'absolute',
-        left: 92,
-        top: 38,
-    },
-
-    menuButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#FFECE7',
-        borderWidth: 2,
-        borderRadius: 10,
-        height: 50,
-        width: 50,
-        position: 'relative',
-    },
-
-    modalCloseButton: {
-        marginTop: 10,
-        padding: 10,
-        backgroundColor: '#ddd',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-
-    modalContainer: {
-        width: '80%',
-        padding: 20,
-        backgroundColor: '#FFECE7',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-    },
-
-    modalOption: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-
-    modalText: {
-        color: '#333',
-        fontSize: 18,
-    },
-
-    newHereText: {
-        width: 59,
-        height: 14,
-        fontSize: 18,
-        fontFamily: 'Roboto-Italic',
-        color: '#FFECE7',
-    },
-
-    picker: {
-        marginTop: 10,
-        width: '100%',
-        height: 80,
-        borderRadius: 15,
-        backgroundColor: 'rgba(248,248,248,0.47)',
-    },
-
-    pickerItem: {
-        alignItems: "center",
-        height: 80,
-    },
-
-
-
-    profileImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: '#FFECE7',
-    },
-
-    profileImageFriend: {
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: '#FFECE7',
-        marginRight: 10,
-        marginTop: 10,
-    },
-
-    profileImagePlaceholder: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginBottom: 20,
-        backgroundColor: '#transparent',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: '#FFECE7',
-    },
-
-
-
-    registerButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#FFECE7',
-        borderWidth: 2,
-        borderRadius: 10,
-        height: 50,
-    },
-
-    registerButtonText: {
-        fontSize: 20,
-        fontFamily: 'Roboto-Bold',
-        backgroundColor: 'transparent',
-        color: '#FFECE7',
-    },
-
-
-    scrollContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
-    scrollContentContainer: {
-        flexGrow: 1,
-        paddingBottom: 100,
-    },
-
-    scrollViewContainer: {
-        flex: 1,
-        marginTop: 20,
-        paddingBottom: 100,
-    },
-
-    scrollView: {
-      flex: 1,
-    },
-
-    scrollViewContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-
-
-    settingsContainer: {
-        padding: 20,
-        alignItems: 'center',
-    },
-
-    slider: {
-        width: '100%',
-    },
-
-    text: {
-        textAlign: 'center',
-        fontSize: 18,
-    },
-
-    textFieldInput: {
-        fontSize: 24,
-        fontFamily: 'Roboto-Bold',
-        marginBottom: 16,
-        color: '#FFECE7',
-    },
-
-    textInput: {
-        flex: 1,
-        fontFamily: 'Roboto-Italic',
-        fontSize: 16,
-        textAlign: 'right',
-        color: '#000000',
-        opacity: 0.5,
-    },
-
-    thirdPartyIcon: {
-        width: 48,
-        height: 48,
-        position: 'absolute',
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-    },
-
-    thirdPartyLogin: {
-        marginTop: 20,
-    },
-
-    thirdPartyRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        position: 'absolute',
-        top: 475,
-        width: 236,
-        height: 48,
-    },
-
-    toggleButton: {
-        fontSize: 18,
-        color: '#008080',
-        marginVertical: 10,
-        textAlign: 'center',
-    },
-
-    value: {
-        fontSize: 14,
-        paddingBottom: 10,
-    },
-
-
-
-
-
-
+                //Other Profile styles
+                        addPictureIcon: {
+                            fontSize: 40,
+                            color: '#FFECE7',
+                        },
+
+                        baseText: {
+                            fontFamily: 'Roboto-Flex',
+                        },
+
+                        boldText: {
+                            fontFamily: 'Roboto-Bold',
+                            color: '#FFECE7',
+                        },
+
+
+
+                        AreContainer: {
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        },
+
+                        contentContainer: {
+                            flex: 1,
+                            paddingTop: 24,
+                            position: 'relative',
+                        },
+
+                        customButton: {
+                          position: "relative",
+                          width: '90%',
+                          marginVertical: 8,
+                        },
+
+
+
+                        container: {
+                            flex: 1,
+                            padding: 10,
+                        },
+
+
+
+                        deleteButton: {
+                            marginTop: 20,
+                            backgroundColor: '#FF0000',
+                            padding: 10,
+                            borderRadius: 5,
+                            alignItems: 'center',
+                        },
+
+                        deleteButtonText: {
+                            color: '#FFF',
+                            fontSize: 16,
+                        },
+
+
+
+
+                        forgotPassword: {
+                            color: '#FFECE7',
+                            fontSize: 15,
+                            fontFamily: 'Roboto-Medium',
+                            //fontWeight: '600',
+                            position: 'absolute'
+                        },
+
+                        forgotPasswordText: {
+                            fontSize: 15,
+                            color: '#FFECE7',
+                            ...Platform.select({
+                                ios: {
+                                    shadowColor: '#000000',
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                },
+                                android: {
+                                    shadowColor: '#000000',
+                                    elevation: 4,
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                },
+                                web: {
+
+                                }
+                            }),
+                            position: 'absolute',
+                        },
+
+                        gradientBackground: {
+                            flex: 1,
+                            borderTopWidth: 0,
+                            borderWidth: 0,
+                            borderColor: 'transparent',
+                        },
+
+                        iconContainer: {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginRight: 0,
+                        },
+
+
+
+
+
+                        italicText: {
+                            fontSize: 18,
+                            fontFamily: 'Roboto-Italic',
+                            textAlign: 'right',
+                            color: '#000000',
+                            opacity: 0.5,
+                            borderColor: '#000000',
+                            borderRadius: 15,
+                        },
+
+                        keyboardAvoidingContainer: {
+                            flex: 1,
+                        },
+
+                        profilItalicText: {
+                            fontSize: 18,
+                            fontFamily: 'Roboto-Italic',
+                            color: '#FFECE7',
+                            ...Platform.select({
+                                ios: {
+                                    shadowColor: '#000000',
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                },
+                                android: {
+                                    shadowColor: '#000000',
+                                    elevation: 4,
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                },
+                                web: {
+
+                                }
+                            }),
+                            position: 'absolute',
+                        },
+
+                        loginButton: {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: '#FFECE7',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            height: 50,
+                            position: 'absolute',
+                            width: 177,
+                        },
+
+                        loginButtonText: {
+                            fontSize: 20,
+                            fontFamily: 'Roboto-Bold',
+                            color: '#FFECE7',
+                            ...Platform.select({
+                                ios: {
+                                    shadowColor: '#000000',
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.5,
+                                    shadowRadius: 20,
+                                },
+                                android: {
+                                    shadowColor: '#000000',
+                                    elevation: 4,
+                                    shadowOffset: { width: 0, height: 4},
+                                    shadowOpacity: 0.5,
+                                    shadowRadius: 20,
+                                },
+                                web: {
+                                    textShadowColor: '#000000',
+                                    textShadowOffset: { width: 0, height: 4},
+                                    textShadowRadius: 20,
+                                }
+                            }),
+                        },
+
+                        logo: {
+                            position: 'absolute',
+                            top: 38,
+                            left: (width - 248) / 2,
+                            width: 248,
+                            height: 98,
+                        },
+
+                        logoContainer: {
+                            position: 'absolute',
+                            left: 92,
+                            top: 38,
+                        },
+
+                        menuButton: {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: '#FFECE7',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            height: 50,
+                            width: 50,
+                            position: 'relative',
+                        },
+
+                        modalCloseButton: {
+                            marginTop: 10,
+                            padding: 10,
+                            backgroundColor: '#ddd',
+                            alignItems: 'center',
+                            borderRadius: 10,
+                        },
+
+                        modalContainer: {
+                            width: '80%',
+                            padding: 20,
+                            backgroundColor: '#FFECE7',
+                            borderRadius: 10,
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 2,
+                            elevation: 5,
+                        },
+
+                        modalOption: {
+                            padding: 10,
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#ccc',
+                        },
+
+                        modalOverlay: {
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        },
+
+                        modalText: {
+                            color: '#333',
+                            fontSize: 18,
+                        },
+
+                        newHereText: {
+                            width: 59,
+                            height: 14,
+                            fontSize: 18,
+                            fontFamily: 'Roboto-Italic',
+                            color: '#FFECE7',
+                        },
+
+                        picker: {
+                            marginTop: 10,
+                            width: '100%',
+                            height: 80,
+                            borderRadius: 15,
+                            backgroundColor: 'rgba(248,248,248,0.47)',
+                        },
+
+                        pickerItem: {
+                            alignItems: "center",
+                            height: 80,
+                        },
+
+
+
+                        profileImage: {
+                            width: 100,
+                            height: 100,
+                            borderRadius: 50,
+                            marginBottom: 20,
+                            borderWidth: 2,
+                            borderColor: '#FFECE7',
+                        },
+
+                        profileImageFriend: {
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50,
+                            marginBottom: 20,
+                            borderWidth: 2,
+                            borderColor: '#FFECE7',
+                            marginRight: 10,
+                            marginTop: 10,
+                        },
+
+                        profileImagePlaceholder: {
+                            width: 100,
+                            height: 100,
+                            borderRadius: 50,
+                            marginBottom: 20,
+                            backgroundColor: '#transparent',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderWidth: 2,
+                            borderColor: '#FFECE7',
+                        },
+
+
+
+                        registerButton: {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: '#FFECE7',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            height: 50,
+                        },
+
+                        registerButtonText: {
+                            fontSize: 20,
+                            fontFamily: 'Roboto-Bold',
+                            backgroundColor: 'transparent',
+                            color: '#FFECE7',
+                        },
+
+
+                        scrollContainer: {
+                            flexGrow: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        },
+
+                        scrollContentContainer: {
+                            flexGrow: 1,
+                            paddingBottom: 100,
+                        },
+
+                        scrollViewContainer: {
+                            flex: 1,
+                            marginTop: 20,
+                            paddingBottom: 100,
+                        },
+
+                        scrollView: {
+                          flex: 1,
+                        },
+
+                        scrollViewContent: {
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        },
+
+
+
+                        settingsContainer: {
+                            padding: 20,
+                            alignItems: 'center',
+                        },
+
+                        slider: {
+                            width: '100%',
+                        },
+
+                        text: {
+                            textAlign: 'center',
+                            fontSize: 18,
+                        },
+
+                        textFieldInput: {
+                            fontSize: 24,
+                            fontFamily: 'Roboto-Bold',
+                            marginBottom: 16,
+                            color: '#FFECE7',
+                        },
+
+                        textInput: {
+                            flex: 1,
+                            fontFamily: 'Roboto-Italic',
+                            fontSize: 16,
+                            textAlign: 'right',
+                            color: '#000000',
+                            opacity: 0.5,
+                        },
+
+                        thirdPartyIcon: {
+                            width: 48,
+                            height: 48,
+                            position: 'absolute',
+                            shadowColor: '#000000',
+                            shadowOffset: { width: 0, height: 4 },
+                            shadowOpacity: 0.5,
+                            shadowRadius: 10,
+                        },
+
+                        thirdPartyLogin: {
+                            marginTop: 20,
+                        },
+
+                        thirdPartyRow: {
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            padding: 10,
+                            position: 'absolute',
+                            top: 475,
+                            width: 236,
+                            height: 48,
+                        },
+
+                        toggleButton: {
+                            fontSize: 18,
+                            color: '#008080',
+                            marginVertical: 10,
+                            textAlign: 'center',
+                        },
+
+                        value: {
+                            fontSize: 14,
+                            paddingBottom: 10,
+                        },
 
 
 
@@ -1242,6 +1230,13 @@ export const styles = StyleSheet.create({
                                         fontWeight: 'bold',
                                         marginBottom: 40,
                                     },
+                                    CalendarBox: {
+                                        borderWidth: 1,
+                                        borderColor: '#1e1d1d',
+                                        borderRadius: 15,
+                                        margin: 10,
+                                        padding: 10,
+                                    },
                                     CalendarStyle: {
                                         borderRadius: 15,
                                         borderWidth: 1,
@@ -1249,15 +1244,17 @@ export const styles = StyleSheet.create({
                                         height:400,
                                     },
 
-
                                     modalOverlayCalendar: {
                                         flex: 1,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                     },
+
                                     modalContainerCalendar: {
                                         width: '80%',
+                                        marginTop: 220,
+                                        marginBottom: 160,
                                             padding: 20,
                                             backgroundColor: '#FFECE7',
                                             borderRadius: 10,
@@ -1274,8 +1271,16 @@ export const styles = StyleSheet.create({
                                     },
                                     modalTextCalendar: {
                                         color: '#333',
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             marginBottom: 10,
+                                        fontWeight: 'bold',
+                                        //padding: 10,
+                                    },
+                                    modalText2Calendar: {
+                                        color: '#333',
+                                        fontSize: 18,
+                                        marginBottom: 10,
+                                        //padding: 10,
                                     },
                                     modalCloseButtonCalendar: {
                                         marginTop: 10,

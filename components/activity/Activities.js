@@ -8,6 +8,7 @@ import Modal from 'react-native-modal';
 import CustomPicker from "../ui/CustomPicker";
 import { styles } from '../../styles';
 import { fetchFriendsAndRequests } from "../../firebase/FirebaseFunksjoner";
+import { useFocusEffect } from '@react-navigation/native';
 
 function Activities({ route, navigation }) {
     const { people, price, location } = route.params;
@@ -22,27 +23,26 @@ function Activities({ route, navigation }) {
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
 
-    useEffect(() => {
-        const fetchFriends = async () => {
-            try {
-                const userId = auth.currentUser.uid;
-                console.log("Fetching friends for user ID:", userId);
-                const { friends } = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
-            } catch (e) {
-                console.error('Error fetching friends:', e);
-            }
-        };
+    const fetchFriends = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const { friends } = await fetchFriendsAndRequests(userId);
+            setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
+        } catch (e) {
+            console.error('Error fetching friends:', e);
+        }
+    };
 
-        fetchFriends();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchFriends();
+        }, [])
+    );
 
     const numericPeople = Number(people);
     const locQuery = location ? location.toLowerCase() : null;
 
     useEffect(() => {
-        const numericPeople = Number(people); // Convert people to number
-        const locQuery = location ? location.toLowerCase() : null; // Ensure location is in lower case
         const q = query(
             collection(db, "Activities"),
             where("MinP", "<=", numericPeople),
@@ -85,7 +85,13 @@ function Activities({ route, navigation }) {
             selectedFriends: selectedFriends.map(friend => ({ id: friend.id, fullName: friend.fullName })),
             description,
             email: auth.currentUser.email,
+            creator: {
+                id: auth.currentUser.uid,
+                fullName: auth.currentUser.displayName || auth.currentUser.email || 'Unknown' // Set a default value
+            }
         };
+
+        console.log('Adding activity with data:', activityData); // Log the activity data
 
         Object.keys(activityData).forEach(key => {
             if (activityData[key] === undefined) {
@@ -176,12 +182,14 @@ function Activities({ route, navigation }) {
                                     <Text style={styles.textContActivities}>Mulige Deltagere: {activity.MinP} to {activity.MaxP}</Text>
                                     <Text style={styles.textCont2Activities}>{activity.Description}</Text>
                                     <Text style={styles.textLinkActivities}>{activity.WhatYouNeed}</Text>
-                                    <TouchableOpacity
-                                        style={styles.addButtonActivities}
-                                        onPress={() => openModalWithActivityDetails(activity)}
-                                    >
-                                        <Text style={styles.addButtonTextActivities}>Legg til</Text>
-                                    </TouchableOpacity>
+                                    {auth.currentUser && (
+                                        <TouchableOpacity
+                                            style={styles.addButtonActivities}
+                                            onPress={() => openModalWithActivityDetails(activity)}
+                                        >
+                                            <Text style={styles.addButtonTextActivities}>Legg til</Text>
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
                             )}
                         </TouchableOpacity>

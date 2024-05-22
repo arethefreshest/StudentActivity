@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 're
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/ui/GradientScreen";
 import CustomPicker from '../components/ui/CustomPicker';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {auth, db} from '../firebase/FirebaseConfig';
-import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
-import { styles } from '../styles'; // Import styles from styles.js
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { auth, db } from '../firebase/FirebaseConfig';
+import { addDoc, collection, doc, Timestamp, setDoc } from "firebase/firestore";
+import { styles } from '../styles';
 import { fetchFriendsAndRequests } from "../firebase/FirebaseFunksjoner";
 
 const Add = () => {
@@ -19,19 +19,21 @@ const Add = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    useEffect(() => {
-        const fetchFriends = async () => {
-            try {
-                const userId = auth.currentUser.uid;
-                console.log("Fetching friends for user ID:", userId);
-                const { friends } = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
-            } catch (e) {
-                console.error('Error fetching friends:', e);
-            }
-        };
-        fetchFriends();
-    }, []);
+    const fetchFriends = async () => {
+        try {
+            const userId = auth.currentUser.uid;
+            const { friends } = await fetchFriendsAndRequests(userId);
+            setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
+        } catch (e) {
+            console.error('Error fetching friends:', e);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchFriends();
+        }, [])
+    );
 
     useEffect(() => {
         if (route.params) {
@@ -55,7 +57,14 @@ const Add = () => {
             selectedFriends,
             description,
             email: auth.currentUser.email,
+            creator: {
+                id: auth.currentUser.uid,
+                fullName: auth.currentUser.displayName || auth.currentUser.email || 'Unknown' // Set a default value
+            }
         };
+
+        console.log('Adding activity with data:', activityData); // Log the activity data
+
         try {
             const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
             const userId = auth.currentUser.uid;

@@ -31,26 +31,6 @@ const ProfilRegistrering = () => {
         try {
             await registerUser(email, password, fullName);
             Alert.alert("Suksess", "Bruker ble registrert!");
-
-            /*const userRef = doc(db, "users", userCredential.user.uid);
-
-            await setDoc(userRef, {
-                fullName,
-                email
-            });
-
-            // Subcollections for the user to reference activities and other user collections
-            const activitiesRef = doc(db, `users/${userCredential.user.uid}/activities`, "init");
-            await setDoc(activitiesRef, { initialized: true });
-
-            const friendsRef = doc(db, `users/${userCredential.user.uid}/friends`, "init");
-            await setDoc(friendsRef, { initialized: true });
-
-            const friendRequestsRef = doc(db, `users/${userCredential.user.uid}/friendRequests`, "init");
-            await setDoc(friendRequestsRef, { initialized: true});
-
-            Alert.alert("Success", "User registered successfully!");
-            console.log('Current Navigation State:', navigation.getState()); */
             const action = navigation.navigate('ProfilHome');
             console.log('Navigation action response:', action);
             console.log('Display name:', auth.currentUser.displayName);
