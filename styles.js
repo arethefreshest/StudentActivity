@@ -428,6 +428,7 @@ export const styles = StyleSheet.create({
                     fontSize: 26,
                     fontWeight: 'bold',
                 },
+
             //InputField:
                 inputGroup: {
                     position: 'absolute',
@@ -630,23 +631,24 @@ export const styles = StyleSheet.create({
                 },
                 SafeAreaProfil: {
                     flex: 1,
+                    width: '100%',
                     marginTop: 30,
                     marginBottom: 100,
                 },
                 containerProfilContainer: {
                     width: '90%',
                     margin: '5%',
-                    padding: 10,
+                    padding: 0,
                     marginTop: 0,
                     marginBottom: 40,
                     height: 'auto',
                     backgroundColor: 'rgba(255,255,255,0.49)',
-                    borderRadius: 20,
+                    borderRadius: 15,
                     shadowColor: 'rgba(0,0,0,0.2)',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.8,
-                    shadowRadius: 2,
-                    elevation: 5,
+                    shadowRadius: 0,
+                    elevation: 0,
                     alignItems: 'center',
                     overflow: 'visible',
                 },
@@ -719,6 +721,7 @@ export const styles = StyleSheet.create({
 
                 feedListContainer: {
                     paddingBottom: 10,
+                    width: '100%',
                 },
 
                 feedText: {
@@ -752,9 +755,10 @@ export const styles = StyleSheet.create({
                 },
 
                 activityItem: {
-                    padding: 15,
+                    padding: 0,
                     borderBottomWidth: 1,
-                    borderBottomColor: '#FFECE7'
+                    borderBottomColor: '#FFECE7',
+                    width: '100%',
                 },
 
                 activityItemContainer: {
@@ -766,8 +770,9 @@ export const styles = StyleSheet.create({
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.8,
-                    shadowRadius: 2,
+                    shadowRadius: 0,
                     elevation: 5,
+                    width: '100%',
                 },
 
                 activityLocationContainer: {
