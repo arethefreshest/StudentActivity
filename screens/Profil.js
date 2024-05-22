@@ -3,26 +3,27 @@ import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary from 'expo-media-library';
-import { auth, db } from "../FirebaseConfig";
+import { auth, db } from "../firebase/FirebaseConfig";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { styles } from "../styles";
-import GradientScreen from "../components/GradientScreen";
-import Button from "../components/Button";
-import ActivityFeed from "../components/ActivityFeed";
-import FriendRequests from "../components/FriendRequests";
-import DropDownModal from "../components/DropDownModal";
-import FriendsList from "../components/FriendsList";
-import ProfilSettings from "../components/ProfilSettings";
+import GradientScreen from "../components/ui/GradientScreen";
+import Button from "../components/ui/Button";
+import ActivityFeed from "../components/activity/ActivityFeed";
+import FriendRequests from "../components/friend/FriendRequests";
+import DropDownModal from "../components/ui/DropDownModal";
+import FriendsList from "../components/friend/FriendsList";
+import ProfilSettings from "./ProfilSettings";
 import { FontAwesome } from '@expo/vector-icons';
-import { fetchUserActivities, fetchFriendsAndRequests, acceptFriendRequest, uploadProfileImage } from "../FirebaseFunksjoner";
+import { fetchUserActivities, fetchFriendsAndRequests, acceptFriendRequest, uploadProfileImage } from "../firebase/FirebaseFunksjoner";
 
 const Profil = ({ loggedInUserId }) => {
     const [image, setImage] = useState(null);
     const [activities, setActivities] = useState([]);
     const [friends, setFriends] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
+    const [profileSettings, setProfileSettings] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState('Feed');
     const navigation = useNavigation();
@@ -30,11 +31,27 @@ const Profil = ({ loggedInUserId }) => {
     const friend = route.params?.friend || null;
     const isCurrentUser = !friend || friend.id === loggedInUserId;
 
+    const calculateSemester = (startDate) => {
+        if (!startDate) return '';
+        const [day, month, year] = startDate.match(/\d{1,2}/g)
+        const start = new Date(`20${year}`, month - 1, day);
+        const now = new Date();
+        const diffInMonths = (now.getFullYear() - start.getFullYear()) * 12 + now.getMonth() - start.getMonth();
+        return Math.ceil(diffInMonths / 6);
+    }
+
     const fetchData = async (userId) => {
         const userDoc = await getDoc(doc(db, 'users', userId));
         if (userDoc.exists()) {
             const data = userDoc.data();
             setImage(data.profileImageUrl || null);
+            setProfileSettings({
+                university: data.university || "",
+                degree: data.degree || "",
+                startDate: data.startDate || "",
+                endDate: data.endDate || "",
+                semester: calculateSemester(data.startDate)
+            });
         }
         fetchUserActivities(userId).then(setActivities);
         fetchFriendsAndRequests(userId).then(({ friends, friendRequests }) => {
@@ -51,7 +68,7 @@ const Profil = ({ loggedInUserId }) => {
             if (userId) {
                 fetchData(userId);
             }
-        }, [friend, loggedInUserId])
+        }, [friend, loggedInUserId, route.params?.profileUpdated])
     );
 
     const openModal = () => {
@@ -146,6 +163,11 @@ const Profil = ({ loggedInUserId }) => {
                                             onFriendAccepted={handleFriendAccepted}
                             />
                         )}
+                        {isCurrentUser && (
+                            <View style={{ marginTop: '50%', alignItems: 'center' }}>
+                                <Button text="Logg ut" onPress={handleLogout} />
+                            </View>
+                        )}
                     </>
                 );
             default:
@@ -191,13 +213,15 @@ const Profil = ({ loggedInUserId }) => {
                         <Image source={{ uri: friend.profileImageUrl }} style={styles.profileImage} />
                     )}
                     <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
+                    {isCurrentUser && (
+                        <View style={styles.profileSettingsDetails}>
+                            {profileSettings.university && <Text style={styles.profileSettingText}>Student ved {profileSettings.university}</Text>}
+                            {profileSettings.degree && <Text style={styles.profileSettingText}>{profileSettings.degree}</Text>}
+                            {profileSettings.semester && <Text style={styles.profileSettingText}>{profileSettings.semester}. semester</Text>}
+                        </View>
+                    )}
                 </View>
                 {renderContent()}
-                {isCurrentUser && (
-                    <View style={{ marginTop: 0, alignItems: 'center' }}>
-                        <Button text="Logg ut" onPress={handleLogout} />
-                    </View>
-                )}
             </GradientScreen>
         </View>
     );

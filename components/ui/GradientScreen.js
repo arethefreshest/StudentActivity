@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Dimensions } from "react-native";
-import {View } from 'react-native';
-import {styles} from "../styles";
+import { View } from 'react-native';
+import { styles} from "../../styles";
 import Logo from "./Logo";
 
 const { width, height } = Dimensions.get('window');

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Picker } from '@react-native-picker/picker';
-import GradientScreen from "./GradientScreen";
+import GradientScreen from "../ui/GradientScreen";
 
 function ActivityFilter({ navigation }) {
     const [people, setPeople] = useState(5);

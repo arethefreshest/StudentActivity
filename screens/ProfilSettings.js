@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {View, Text, Alert, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform} from "react-native";
 import { styles } from "../styles";
-import { auth, db } from "../FirebaseConfig";
+import { auth, db } from "../firebase/FirebaseConfig";
 import {doc, updateDoc, deleteDoc, getDoc} from "firebase/firestore";
-import InputField from "./InputField";
-import Button from "./Button";
+import InputField from "../components/ui/InputField";
+import Button from "../components/ui/Button";
 import { EmailAuthProvider, reauthenticateWithCredential} from "@firebase/auth";
 import { useNavigation } from '@react-navigation/native';
+
 
 const ProfilSettings = () => {
     const [dob, setDob] = useState('');
@@ -37,9 +38,15 @@ const ProfilSettings = () => {
             .then(() => console.log('User data fetched'))
             .catch((e) => console.error('Error fetching user data:', e));
     }, []);
+
     const handleSave = async () => {
         const userId = auth.currentUser.uid;
         const userRef = doc(db, 'users', userId);
+
+        if (!/^\d{6}$/.test(startDate) || !/^\d{6}$/.test(endDate)) {
+            Alert.alert('Invalid Date Format', 'Please enter the dates in DDMMYY format.');
+            return;
+        }
 
         try {
             await updateDoc(userRef, {
@@ -50,6 +57,7 @@ const ProfilSettings = () => {
                 endDate
             });
             Alert.alert('Endringer lagret', 'Profilen din er oppdatert');
+            navigation.navigate('Profil', { profileUpdated: true }); // Notify Profil component to refresh
         } catch (e) {
             console.error('Error updating user:', e);
             Alert.alert('Feil', 'Kunne ikke lagre endringer');
@@ -123,14 +131,14 @@ const ProfilSettings = () => {
                     </View>
                     <View style={styles.inputGroup2}>
                         <InputField
-                            placeholder="Start Date"
+                            placeholder="Start Date (DDMMYY)"
                             value={startDate}
                             onChangeText={setStartDate}
                         />
                     </View>
                     <View style={styles.inputGroup2}>
                         <InputField
-                            placeholder="End Date"
+                            placeholder="End Date (DDMMYY)"
                             value={endDate}
                             onChangeText={setEndDate}
                         />

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import DateTimePickerAndroid from '@react-native-community/datetimepicker';
-import GradientScreen from "../components/GradientScreen";
-import CustomPicker from '../components/CustomPicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import GradientScreen from "../components/ui/GradientScreen";
+import CustomPicker from '../components/ui/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {auth, db} from '../FirebaseConfig';
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import {auth, db} from '../firebase/FirebaseConfig';
+import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
-import { fetchFriendsAndRequests } from "../FirebaseFunksjoner";
-import { addActivity } from '../addActivity';
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { fetchFriendsAndRequests } from "../firebase/FirebaseFunksjoner";
 
 const Add = () => {
     const [activityName, setActivityName] = useState('');
@@ -44,9 +42,7 @@ const Add = () => {
         fetchFriends();
     }, []);
 
-
     useEffect(() => {
-        console.log('Received route params:', route.params); // Debugging
         if (route.params) {
             if (route.params.activityName) {
                 setActivityName(route.params.activityName);
@@ -61,19 +57,36 @@ const Add = () => {
         date && setSelectedDate(date);
     };
 
-    const handleAddActivity = async () => {
-        const email = auth.currentUser.email;
+    const addActivity = async () => {
         const activityData = {
             activityName,
             selectedDate: Timestamp.fromDate(selectedDate),
             selectedFriends,
             description,
-            email, // Add the user's email to the activity data
+            email: auth.currentUser.email,
         };
-        const success = await addActivity(activityData);
+        try {
+            // Save to calendar collection
+            const calendarDocRef = await addDoc(collection(db, "calendar"), activityData);
 
-        if (success) {
-            Alert.alert("Success", "Activity added successfully");
+            // Save to user's subcollection with linkedActivityId
+            const userId = auth.currentUser.uid;
+            const userActivityRef = doc(collection(db, `users/${userId}/activities`));
+            await setDoc(userActivityRef, {
+                ...activityData,
+                linkedActivityId: calendarDocRef.id
+            });
+
+            // Save to each friend's subcollection
+            for (const friend of selectedFriends) {
+                const friendActivityRef = doc(collection(db, `users/${friend.id}/activities`));
+                await setDoc(friendActivityRef, {
+                    ...activityData,
+                    linkedActivityId: calendarDocRef.id
+                });
+            }
+
+            setIsAdded(true);
 
             // Clear the fields
             setActivityName('');
@@ -81,9 +94,11 @@ const Add = () => {
             setDescription('');
             setSelectedFriends([]);
 
-            // Navigate back to the calendar screen and pass the parameter
-            navigation.navigate('Calendar', { newActivityAdded: true });
-        } else {
+            // Show success message
+            Alert.alert("Success", "Activity added successfully");
+
+        } catch (error) {
+            console.error("Error adding activity: ", error);
             Alert.alert("Error", "There was an error adding the activity");
         }
     };
@@ -107,19 +122,13 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
-                    </View>
-                    <View style={styles.buttonAdd}>
-                        <TouchableOpacity style={styles.buttonAdd} onPress={RNDateTimePicker}>
-                            <Text style={styles.buttonTextAdd}>Velg dato</Text>
-                        <RNDateTimePicker
+                        <DateTimePicker
                             value={selectedDate}
                             mode="date"
-                            display="defult"
-                            //onChange={handleDateChange}
-                            onChange={this.setDate}
+                            display="default"
+                            onChange={handleDateChange}
                             style={styles.dateAdd}
                         />
-                    </TouchableOpacity>
                     </View>
 
                     <TextInput
@@ -131,9 +140,11 @@ const Add = () => {
                         onChangeText={setDescription}
                     />
 
-                    <TouchableOpacity style={styles.buttonAdd} onPress={handleAddActivity}>
+                    <TouchableOpacity style={styles.buttonAdd} onPress={addActivity}>
                         <Text style={styles.buttonTextAdd}>Legg til</Text>
                     </TouchableOpacity>
+
+                    {isAdded}
                 </View>
             </SafeAreaView>
         </GradientScreen>

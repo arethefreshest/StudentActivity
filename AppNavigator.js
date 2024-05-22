@@ -1,20 +1,20 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import HjemIkon from "./assets/HjemIkon";
-import LeggTilIkon from "./assets/LeggTilIkon";
-import ProfilIkon from "./assets/ProfilIkon";
-import Kalenderikon from "./assets/Kalenderikon";
-import ActivityFilter from "./components/ActivityFilter";
-import Activities from "./components/Activities";
-import SearchVenn from "./components/SearchVenn";
-import AddVenn from "./components/AddVenn";
+import HjemIkon from "./assets/icons/HjemIkon";
+import LeggTilIkon from "./assets/icons/LeggTilIkon";
+import ProfilIkon from "./assets/icons/ProfilIkon";
+import Kalenderikon from "./assets/icons/Kalenderikon";
+import ActivityFilter from "./components/activity/ActivityFilter";
+import Activities from "./components/activity/Activities";
+import SearchVenn from "./components/friend/SearchVenn";
+import AddVenn from "./components/friend/AddVenn";
 import ProfilLoggInn from "./screens/ProfilLoggInn";
 import Profil from "./screens/Profil";
 import ProfilRegistrering from "./screens/ProfilRegistrering";
 import Calendar from "./screens/Calendar";
 import Add from "./screens/Add";
-import Sosialtikon from "./assets/Sosialtikon";
+import Sosialtikon from "./assets/icons/Sosialtikon";
 
 
 const Stack = createStackNavigator();
@@ -49,46 +49,25 @@ function AppNavigator({ isAuthenticated, loggedInUserId }) {
     function CalendarStack() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                {isAuthenticated ? (
-                    <Stack.Screen name="Calendar" component={Calendar}/>
-                ) : (
-                    <>
-                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
-                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
-                    </>)}
+                <Stack.Screen name="Calendar" component={Calendar}/>
             </Stack.Navigator>
         );
     }
+
 
 
     function Social() {
         return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {isAuthenticated ? (
-                    <>
-                        <Stack.Screen name="SearchVenn" component={SearchVenn} />
-                        <Stack.Screen name="AddVenn" component={AddVenn} />
-                    </>
-                ) : (
-                    <>
-                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
-                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
-                    </>
-                )}
+                <Stack.Screen name="SearchVenn" component={SearchVenn} />
+                <Stack.Screen name="AddVenn" component={AddVenn} />
             </Stack.Navigator>
         );
     }
-
     function AddActivity() {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                {isAuthenticated ? (
-                    <Stack.Screen name="AddAktivitet" component={Add}/>
-                ) : (
-                    <>
-                        <Stack.Screen name="ProfilLoggInn" component={ProfilLoggInn} />
-                        <Stack.Screen name="ProfilRegistering" component={ProfilRegistrering} />
-                    </>)}
+                <Stack.Screen name="AddAktivitet" component={Add}/>
             </Stack.Navigator>
         );
     }
@@ -151,12 +130,12 @@ return (
                 />
                 <MaterialBottomTabs.Screen
                     name="Add"
-                    component={AddActivity}
+                    component={isAuthenticated ? AddActivity : ProfilLoggInn}
                     options={{tabBarLabel: 'Legg til'}}
                 />
                 <MaterialBottomTabs.Screen
                     name="Social"
-                    component={Social}
+                    component={isAuthenticated ? Social : ProfilLoggInn}
                     options={{tabBarLabel: 'Sosialt'}}
                 />
                 <MaterialBottomTabs.Screen
@@ -169,7 +148,7 @@ return (
                 />
                 <MaterialBottomTabs.Screen
                     name="calendar"
-                    component={CalendarStack}
+                    component={isAuthenticated ? CalendarStack : ProfilLoggInn}
                     options={{tabBarLabel: 'Kalender'}}
                 />
             </MaterialBottomTabs.Navigator>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
-import { styles } from '../styles';
+import { styles } from '../../styles';
 import { useNavigation } from "@react-navigation/native";
 
 const FriendsList = ({ friends }) => {
@@ -12,7 +12,7 @@ const FriendsList = ({ friends }) => {
     };
 
     return (
-        <View style={styles.feedContainer}>
+        <View style={styles.sectionContainer}>
             <TouchableOpacity onPress={() => setShowFriends(!showFriends)}>
                 <Text style={styles.sectionTitle}>Venner</Text>
             </TouchableOpacity>
@@ -20,12 +20,14 @@ const FriendsList = ({ friends }) => {
                 <FlatList
                     data={friends}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => handleFriendClick(item)} style={styles.friendItem}>
-                            {item.profileImageUrl && (
-                                <Image source={{ uri: item.profileImageUrl }} style={styles.profileImageFriend} />
-                            )}
-                            <Text style={styles.feedText}>{item.fullName}</Text>
-                        </TouchableOpacity>
+                        item ? (
+                            <TouchableOpacity onPress={() => handleFriendClick(item)} style={styles.friendItem}>
+                                {item.profileImageUrl && (
+                                    <Image source={{ uri: item.profileImageUrl }} style={styles.profileImageFriend} />
+                                )}
+                                <Text style={styles.feedText}>{item.fullName}</Text>
+                            </TouchableOpacity>
+                            ) : null
                     )}
                     keyExtractor={(item) => item.id.toString()}
                     contentContainerStyle={styles.feedListContainer}
