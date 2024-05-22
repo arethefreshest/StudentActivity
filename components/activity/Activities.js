@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
-import {collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc} from "firebase/firestore";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Platform } from 'react-native';
+import { collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc } from "firebase/firestore";
 import { db, auth } from '../../firebase/FirebaseConfig';
 import GradientScreen from "../ui/GradientScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,24 +21,15 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
-
-
-   /* const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
         const fetchFriends = async () => {
             try {
                 const userId = auth.currentUser.uid;
                 console.log("Fetching friends for user ID:", userId);
-                const {friends} = await fetchFriendsAndRequests(userId);
-                setFriendsList(friends.map(friend => ({id: friend.id, fullName: friend.fullName})));
+                const { friends } = await fetchFriendsAndRequests(userId);
+                setFriendsList(friends.map(friend => ({ id: friend.id, fullName: friend.fullName })));
             } catch (e) {
                 console.error('Error fetching friends:', e);
             }
@@ -87,7 +78,6 @@ function Activities({ route, navigation }) {
     const toggleExpand = (id) => {
         setExpandedId(expandedId === id ? null : id);
     };
-
 
     const handleAddActivity = async () => {
         const activityData = {
@@ -141,6 +131,15 @@ function Activities({ route, navigation }) {
         setActivityName(activity.Name);
         setDescription(activity.WhatYouNeed);
         setModalVisible(true);
+    };
+
+    const handleDateChange = (event, date) => {
+        if (date) {
+            setSelectedDate(date);
+            if (Platform.OS !== 'ios') {
+                setShowDatePicker(false);
+            }
+        }
     };
 
     if (loading) {
@@ -218,15 +217,19 @@ function Activities({ route, navigation }) {
                                 onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                 onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                             />
+                            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButtonAdd}>
+                                <Text style={styles.dateButtonTextAdd}>Velg Dato</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {showDatePicker && (
                             <DateTimePicker
                                 value={selectedDate}
                                 mode="date"
                                 display="default"
-                                onChange={(event, date) => date && setSelectedDate(date)}
-                                style={styles.date}
+                                onChange={handleDateChange}
                             />
-
-                        </View>
+                        )}
 
                         <TextInput
                             style={styles.textArea}

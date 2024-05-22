@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/ui/GradientScreen";
 import CustomPicker from '../components/ui/CustomPicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {auth, db} from '../firebase/FirebaseConfig';
-import {addDoc, collection, doc, Timestamp, setDoc} from "firebase/firestore";
+import { auth, db } from '../firebase/FirebaseConfig';
+import { addDoc, collection, doc, Timestamp, setDoc } from "firebase/firestore";
 import { styles } from '../styles'; // Import styles from styles.js
 import { fetchFriendsAndRequests } from "../firebase/FirebaseFunksjoner";
 
@@ -16,17 +16,9 @@ const Add = () => {
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
     const [isAdded, setIsAdded] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const navigation = useNavigation();
     const route = useRoute();
-
-    /*const friendsList = [
-        "Are Berntsen",
-        "Storm Selvig",
-        "Eivind Solberg",
-        "Ole Sveinung Berget",
-        "Tore Knudsen",
-        "David Holt"
-    ];*/
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -54,7 +46,12 @@ const Add = () => {
     }, [route.params]);
 
     const handleDateChange = (event, date) => {
-        date && setSelectedDate(date);
+        if (date) {
+            setSelectedDate(date);
+            if (Platform.OS !== 'ios') {
+                setShowDatePicker(false);
+            }
+        }
     };
 
     const addActivity = async () => {
@@ -122,14 +119,19 @@ const Add = () => {
                             onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                             onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                         />
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButtonAdd}>
+                            <Text style={styles.dateButtonTextAdd}>Velg Dato</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {showDatePicker && (
                         <DateTimePicker
                             value={selectedDate}
                             mode="date"
                             display="default"
                             onChange={handleDateChange}
-                            style={styles.dateAdd}
                         />
-                    </View>
+                    )}
 
                     <TextInput
                         style={styles.textAreaAdd}

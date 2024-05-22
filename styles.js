@@ -1004,4 +1004,14 @@ userName: {
         fontFamily: 'Roboto-Bold',
         color: '#FFECE7',
     },
+    dateButtonAdd: {
+        backgroundColor: '#007AFF',
+        padding: 10,
+        borderRadius: 5,
+        marginLeft: 10,
+    },
+    dateButtonTextAdd: {
+        color: '#fff',
+        fontSize: 16,
+    },
 });
