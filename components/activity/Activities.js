@@ -22,6 +22,7 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const fetchFriends = async () => {
         try {
@@ -234,7 +235,7 @@ function Activities({ route, navigation }) {
                             />
                         )}
 
-                        </View>
+
                         <TextInput
                             style={styles.textAreaActivities}
                             placeholder="Beskrivelse"
@@ -243,6 +244,7 @@ function Activities({ route, navigation }) {
                             value={description}
                             onChangeText={setDescription}
                         />
+
                         <View style={styles.buttonContainerActivities}>
                             <TouchableOpacity style={styles.buttonActivities} onPress={handleAddActivity}>
                                 <Text style={styles.buttonTextActivities}>Legg til</Text>
