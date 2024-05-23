@@ -2,7 +2,7 @@
   "expo": {
     "name": "StudentActivity",
     "slug": "StudentActivity",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/applogo.png",
     "userInterfaceStyle": "light",
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/applogo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gutteerz.StudentActivity"
+      "package": "com.gutteerz.StudentActivity",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
