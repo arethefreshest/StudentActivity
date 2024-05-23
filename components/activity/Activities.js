@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, TextInput, Platform } from 'react-native';
 import { collection, query, where, getDocs, addDoc, Timestamp, setDoc, doc } from "firebase/firestore";
 import { db, auth } from '../../firebase/FirebaseConfig';
 import GradientScreen from "../ui/GradientScreen";
@@ -22,6 +22,7 @@ function Activities({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [friendsList, setFriendsList] = useState([]);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const fetchFriends = async () => {
         try {
@@ -134,6 +135,15 @@ function Activities({ route, navigation }) {
         setModalVisible(true);
     };
 
+    const handleDateChange = (event, date) => {
+        if (date) {
+            setSelectedDate(date);
+            if (Platform.OS !== 'ios') {
+                setShowDatePicker(false);
+            }
+        }
+    };
+
     if (loading) {
         return (
             <GradientScreen>
@@ -211,14 +221,21 @@ function Activities({ route, navigation }) {
                                 onSelect={(friend) => setSelectedFriends([...selectedFriends, friend])}
                                 onRemove={(friend) => setSelectedFriends(selectedFriends.filter(f => f !== friend))}
                             />
+                            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButtonAdd}>
+                                <Text style={styles.dateButtonTextAdd}>Velg Dato</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {showDatePicker && (
                             <DateTimePicker
                                 value={selectedDate}
                                 mode="date"
                                 display="default"
-                                onChange={(event, date) => date && setSelectedDate(date)}
-                                style={styles.dateActivities}
+                                onChange={handleDateChange}
                             />
-                        </View>
+                        )}
+
+
                         <TextInput
                             style={styles.textAreaActivities}
                             placeholder="Beskrivelse"
@@ -227,6 +244,7 @@ function Activities({ route, navigation }) {
                             value={description}
                             onChangeText={setDescription}
                         />
+
                         <View style={styles.buttonContainerActivities}>
                             <TouchableOpacity style={styles.buttonActivities} onPress={handleAddActivity}>
                                 <Text style={styles.buttonTextActivities}>Legg til</Text>
