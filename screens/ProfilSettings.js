@@ -107,7 +107,7 @@ const ProfilSettings = () => {
     return (
             <View style={styles.profileSettingsContainer}>
                 <ScrollView contentContainerStyle={styles.scrollContainer} style={{ flex: 1}}>
-                    <Text style={styles.sectionTitle}>Profile Settings</Text>
+                    <Text style={styles.SettingsTitle}>Profile Settings</Text>
                     <View style={styles.inputGroup2}>
                         <InputField
                             placeholder="Date of Birth"
@@ -143,11 +143,12 @@ const ProfilSettings = () => {
                             onChangeText={setEndDate}
                         />
                     </View>
-                    <View style={styles.buttonContainer2}>
-                        <Button text="Lagre" onPress={handleSave} style={styles.customButton} />
-                        <Button text="Slett profil" onPress={handleDeleteProfile} style={styles.customButton}/>
-                    </View>
+
                 </ScrollView>
+                <View style={styles.rowContainerSettings}>
+                <Button text="Lagre" onPress={handleSave} style={styles.ButtonProfileSettings} />
+                <Button text="Slett profil" onPress={handleDeleteProfile} style={styles.ButtonCancelProfile}/>
+                </View>
             </View>
     );
 };

@@ -15,9 +15,9 @@ const FriendRequests = ({ friendRequests, acceptFriend, onFriendAccepted }) => {
     };
 
     return (
-        <View style={styles.sectionContainer}>
+        <View style={styles.containerFriendRequest}>
             <TouchableOpacity onPress={() => setShowRequests(!showRequests)}>
-                <Text style={styles.sectionTitle}>Venneforespørsler</Text>
+                <Text style={styles.titleFriendRequest}>Venneforespørsler</Text>
             </TouchableOpacity>
             {showRequests && (
                 <FlatList

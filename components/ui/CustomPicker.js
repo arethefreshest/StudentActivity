@@ -10,20 +10,20 @@ const CustomPicker = ({ items, selectedItems, onSelect, onRemove }) => {
     };
 
     return (
-        <View style={styles.pickerContainer}>
-            <TouchableOpacity onPress={toggleOpen} style={styles.labelContainer}>
-                <Text style={styles.label}>Venner</Text>
+        <View style={styles.pickerWrapper}>
+            <TouchableOpacity onPress={toggleOpen} style={styles.labelContainerActivities}>
+                <Text style={styles.labelActivities}>Venner</Text>
             </TouchableOpacity>
             {isOpen && (
-                <View style={styles.dropdown}>
+                <View style={styles.dropdownActivities}>
                     <ScrollView>
                         {items.map((friend, index) => (
                             <TouchableOpacity
                                 key={index}
                                 onPress={() => selectedItems.includes(friend) ? onRemove(friend) : onSelect(friend)}
-                                style={selectedItems.includes(friend) ? styles.selectedItem : styles.item}
+                                style={selectedItems.includes(friend) ? styles.selectedItemActivities : styles.itemActivities}
                             >
-                                <Text>{friend.fullName}</Text>
+                                <Text style={styles.labelPicker}>{friend.fullName}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>

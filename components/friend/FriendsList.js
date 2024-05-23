@@ -12,9 +12,9 @@ const FriendsList = ({ friends }) => {
     };
 
     return (
-        <View style={styles.sectionContainer}>
+        <View style={styles.containerFriendsList}>
             <TouchableOpacity onPress={() => setShowFriends(!showFriends)}>
-                <Text style={styles.sectionTitle}>Venner</Text>
+                <Text style={styles.titleFriendslist}>Venner</Text>
             </TouchableOpacity>
             {showFriends && (
                 <FlatList
@@ -25,7 +25,7 @@ const FriendsList = ({ friends }) => {
                                 {item.profileImageUrl && (
                                     <Image source={{ uri: item.profileImageUrl }} style={styles.profileImageFriend} />
                                 )}
-                                <Text style={styles.feedText}>{item.fullName}</Text>
+                                <Text style={styles.feedTextList}>{item.fullName}</Text>
                             </TouchableOpacity>
                             ) : null
                     )}

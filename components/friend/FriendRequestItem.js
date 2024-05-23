@@ -11,7 +11,7 @@ const FriendRequestItem = ({ item, acceptFriend }) => (
         <Text style={styles.feedText}>{item.fullName}</Text>
         <TouchableOpacity
                 onPress={() => acceptFriend(item.id)}
-                style={styles.acceptButton}
+                style={styles.friendacceptButton}
         >
             <FontAwesome name="check" size={18} color="white" />
         </TouchableOpacity>

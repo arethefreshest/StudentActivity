@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import {View, Text, Modal, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import GradientScreen from '../components/ui/GradientScreen';
-import {auth, db} from '../firebase/FirebaseConfig';
-import {collection, doc, getDoc, getDocs, onSnapshot} from 'firebase/firestore';
+import { auth, db } from '../firebase/FirebaseConfig';
+import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { styles } from '../styles';
 
 export default function CalendarScreen({ navigation, route }) {
@@ -40,15 +40,13 @@ export default function CalendarScreen({ navigation, route }) {
                         if (activity.selectedDate) {
                             userActivities.push({
                                 ...activity,
-                                data: activityData.data,
-                                time: activityData.time,
-                                participants: activityData.participants
+                                ...activityData,
                             });
                         }
                     }
                 } else {
                     if (activityData.selectedDate) {
-                        userActivities.push(activityData); // Push activity data even if there's no linkedActivityId
+                        userActivities.push(activityData);
                     }
                 }
             }
@@ -89,26 +87,40 @@ export default function CalendarScreen({ navigation, route }) {
                     showWeekNumbers={true}
                     style={styles.CalendarStyle}
                 />
+
                 <Modal
                     animationType="slide"
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => setModalVisible(false)}
                 >
+
                     <View style={styles.modalOverlayCalendar}>
                         <View style={styles.modalContainerCalendar}>
                             <Text style={styles.modalTitleCalendar}>{selectedDate}</Text>
+                            <ScrollView>
                             {activityDetails && activityDetails.length > 0 ? (
                                 activityDetails.map((activity, index) => (
-                                    <View key={index}>
+                                    <View key={index} style={styles.CalendarBox}>
                                         <Text style={styles.modalTextCalendar}>Activity: {activity.activityName}</Text>
-                                        <Text style={styles.modalTextCalendar}>Description: {activity.description}</Text>
-                                        <Text style={styles.modalTextCalendar}>Friends: {activity.selectedFriends.map(friend => friend.fullName).join(', ')}</Text>
+                                        <Text style={styles.modalText2Calendar}>Description: {activity.description}</Text>
+                                        <Text style={styles.modalText2Calendar}>
+                                            Friends: {activity.selectedFriends
+                                            .filter(friend => friend.id !== auth.currentUser.uid)
+                                            .map(friend => friend.fullName)
+                                            .join(', ')}
+                                        </Text>
+                                        <Text style={styles.modalText2Calendar}>
+                                            Added by: {activity.creator?.fullName || 'Unknown'}
+                                        </Text>
                                     </View>
+
                                 ))
                             ) : (
                                 <Text style={styles.modalTextCalendar}>No activities planned</Text>
                             )}
+                            </ScrollView>
+
                             <TouchableOpacity
                                 style={styles.modalCloseButtonCalendar}
                                 onPress={() => setModalVisible(false)}
@@ -117,6 +129,7 @@ export default function CalendarScreen({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                     </View>
+
                 </Modal>
             </View>
         </GradientScreen>
