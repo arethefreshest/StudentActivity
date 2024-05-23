@@ -212,11 +212,6 @@ const Profil = ({ loggedInUserId }) => {
                     <Text style={styles.userName}>{isCurrentUser ? `Hei ${auth.currentUser.displayName || 'User'}` : friend.fullName}</Text>
 
                     {isCurrentUser && (
-                        <View style={{ marginTop: '5%', marginBottom: '5%', alignItems: 'center' }}>
-                            <Button text="Logg ut" onPress={handleLogout} />
-                        </View>
-                    )}
-                    {isCurrentUser && (
                         <View style={styles.profileSettingsDetails}>
                             {profileSettings.university && <Text style={styles.profileSettingText}>Student ved {profileSettings.university}</Text>}
                             {profileSettings.degree && <Text style={styles.profileSettingText}>{profileSettings.degree}</Text>}
@@ -224,14 +219,13 @@ const Profil = ({ loggedInUserId }) => {
                         </View>
                     )}
                 </View>
+                <ScrollView style = {styles.scrollContainerProfil}>
                 <SafeAreaView style={styles.SafeAreaProfil}>
                     <View style={styles.containerProfilContainer}>
-                    <ScrollView>
-                {renderContent()}
-                    </ScrollView>
+                        {renderContent()}
                     </View>
                 </SafeAreaView>
-
+            </ScrollView>
             </GradientScreen>
         </View>
     );

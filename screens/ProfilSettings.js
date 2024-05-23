@@ -106,8 +106,8 @@ const ProfilSettings = () => {
 
     return (
             <View style={styles.profileSettingsContainer}>
-                <ScrollView contentContainerStyle={styles.scrollContainer} style={{ flex: 1}}>
-                    <Text style={styles.SettingsTitle}>Profile Settings</Text>
+                <Text style={styles.SettingsTitle}>Profile Settings</Text>
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.inputGroup2}>
                         <InputField
                             placeholder="Date of Birth"

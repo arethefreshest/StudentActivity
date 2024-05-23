@@ -1,4 +1,4 @@
-// activityService.js
+
 import { collection, addDoc } from "firebase/firestore";
 import { db } from './FirebaseConfig';
 

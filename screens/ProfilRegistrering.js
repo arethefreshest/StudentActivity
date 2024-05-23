@@ -88,7 +88,7 @@ const ProfilRegistrering = () => {
                     style={{ left: 126, top: 512}}
                 />
                 <Button
-                    text="Har bruker allerede"
+                    text="Har bruker "
                     onPress={() => navigation.navigate('ProfilLoggInn')}
                     style={{ left: 126, top: 572 }}
                 />

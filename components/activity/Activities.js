@@ -205,6 +205,7 @@ function Activities({ route, navigation }) {
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
+                <ScrollView>
                 <Modal isVisible={isModalVisible}>
                     <View style={styles.modalContentActivities}>
                         <Text style={styles.modalTitleActivities}>Legg til Aktivitet</Text>
@@ -255,6 +256,7 @@ function Activities({ route, navigation }) {
                         </View>
                     </View>
                 </Modal>
+                </ScrollView>
             </SafeAreaView>
         </GradientScreen>
     );

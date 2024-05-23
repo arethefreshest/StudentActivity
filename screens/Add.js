@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert, Platform } from 'react-native';
+import {View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert, Platform, ScrollView} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import GradientScreen from "../components/ui/GradientScreen";
 import CustomPicker from '../components/ui/CustomPicker';
@@ -103,6 +103,7 @@ const Add = () => {
     return (
         <GradientScreen>
             <SafeAreaView style={styles.safeAreaAdd}>
+                <ScrollView>
                 <View style={styles.containerAdd}>
                     <Text style={styles.labelAdd}>Legg til:</Text>
                     <TextInput
@@ -130,6 +131,7 @@ const Add = () => {
                             mode="date"
                             display="default"
                             onChange={handleDateChange}
+                            style={styles.dateAdd}
                         />
                     )}
 
@@ -148,6 +150,7 @@ const Add = () => {
 
                     {isAdded}
                 </View>
+                </ScrollView>
             </SafeAreaView>
         </GradientScreen>
     );
