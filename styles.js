@@ -497,7 +497,7 @@ export const styles = StyleSheet.create({
                     margin: '5%',
                     padding: 30,
                     marginTop: 20,
-                    height: '90%',
+                    height: 'auto',
                     backgroundColor: 'rgba(255,255,255,0.49)',
                     borderRadius: 20,
                     shadowColor: 'rgba(0,0,0,0.2)',
