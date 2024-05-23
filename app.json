@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*", "assets/fonts/*"
+      "**/*",
+      "assets/fonts/*"
     ],
     "ios": {
       "supportsTablet": true
@@ -21,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/applogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gutteerz.StudentActivity"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,9 +32,17 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/RobotoFlex.ttf"]
+          "fonts": [
+            "./assets/fonts/RobotoFlex.ttf"
+          ]
         }
-      ]
-    ]
+      ],
+      "expo-asset"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b1811c77-e897-4785-a71d-390340e265be"
+      }
+    }
   }
 }
